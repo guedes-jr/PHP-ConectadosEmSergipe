@@ -1,0 +1,106 @@
+# Cursor Rules - Guia de Serviços (PHP + MySQL)
+
+## 🎯 Objetivo do Projeto
+Desenvolver uma plataforma web leve para divulgação de serviços locais, com:
+
+- Backend: PHP puro (sem frameworks)
+- Banco: MySQL (PDO obrigatório)
+- Frontend: HTML, CSS, JS leve
+- Hospedagem: compatível com Hostinger (cPanel/hPanel)
+
+---
+
+## 📚 ORDEM DE LEITURA OBRIGATÓRIA
+
+Antes de QUALQUER alteração no código, o agente DEVE ler na seguinte ordem:
+
+1. AGENTS.md
+2. ia/INDEX.md
+3. Todos os arquivos da pasta /ia em ordem numérica
+
+⚠️ NÃO iniciar implementação sem ler esses arquivos.
+
+---
+
+## 🚫 REGRAS CRÍTICAS
+
+- NÃO usar frameworks (Laravel, Symfony, etc.)
+- NÃO adicionar dependências externas desnecessárias
+- NÃO alterar a estrutura base do projeto sem justificativa
+- NÃO criar abstrações complexas
+- NÃO duplicar lógica existente
+- NÃO ignorar segurança básica
+
+---
+
+## ✅ PADRÕES OBRIGATÓRIOS
+
+### Backend (PHP)
+- Usar PDO com prepared statements SEMPRE
+- Separar lógica em `/includes`
+- Validar TODOS os inputs
+- Escapar saída com `htmlspecialchars`
+- Código simples e legível
+
+### Banco de Dados
+- Usar `utf8mb4`
+- Criar índices quando necessário
+- Usar foreign keys corretamente
+- Evitar queries desnecessárias
+
+### Frontend
+- Mobile-first
+- HTML semântico
+- CSS leve (sem frameworks pesados)
+- JS mínimo (preferir Alpine.js se necessário)
+
+---
+
+## 🔐 SEGURANÇA
+
+Obrigatório:
+
+- `password_hash()` e `password_verify()`
+- Proteção de rotas admin via sessão
+- Validação de upload (tipo + tamanho)
+- Prevenção de SQL Injection (PDO)
+- Prevenção de XSS (`htmlspecialchars`)
+
+---
+
+## ⚡ PERFORMANCE
+
+- Evitar queries dentro de loops
+- Usar LIMIT em listagens
+- Carregar imagens com lazy loading
+- Minimizar uso de JS
+
+---
+
+## 🧠 COMPORTAMENTO DO AGENTE
+
+Antes de implementar qualquer feature:
+
+1. Verificar se já existe função similar
+2. Reutilizar código existente
+3. Seguir padrões do projeto
+4. Manter simplicidade
+
+---
+
+## 🧪 QUALIDADE
+
+Cada entrega deve:
+
+- Ser funcional
+- Estar organizada
+- Não quebrar código existente
+- Ser compatível com Hostinger
+
+---
+
+## 🚀 PRINCÍPIO CENTRAL
+
+> Simplicidade > Complexidade
+
+Se existir uma solução mais simples, ela deve ser escolhida.
