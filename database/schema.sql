@@ -1,63 +1,75 @@
-CREATE DATABASE IF NOT EXISTS guia_servicos CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE guia_servicos;
+-- Schema SQLite para testes locais
+-- Execute: sqlite3 database/db.sqlite < database/schema.sql
+
+PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS usuarios (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(100) NOT NULL UNIQUE,
-    nome VARCHAR(150) DEFAULT NULL,
-    password VARCHAR(255) NOT NULL,
-    is_active TINYINT(1) NOT NULL DEFAULT 1,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL UNIQUE,
+    nome TEXT,
+    password TEXT NOT NULL,
+    is_active INTEGER NOT NULL DEFAULT 1,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
 CREATE TABLE IF NOT EXISTS categorias (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(120) NOT NULL,
-    slug VARCHAR(140) NOT NULL UNIQUE,
-    descricao VARCHAR(255) DEFAULT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    slug TEXT NOT NULL UNIQUE,
+    descricao TEXT,
+    icone TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
 CREATE TABLE IF NOT EXISTS anuncios (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(180) NOT NULL,
-    slug VARCHAR(200) NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    titulo TEXT NOT NULL,
+    slug TEXT NOT NULL UNIQUE,
     descricao TEXT NOT NULL,
-    categoria_id INT UNSIGNED NOT NULL,
-    telefone VARCHAR(30) NOT NULL,
-    cidade VARCHAR(120) NOT NULL,
-    imagem_principal VARCHAR(255) DEFAULT NULL,
-    destaque TINYINT(1) NOT NULL DEFAULT 0,
-    status ENUM('ativo','inativo') NOT NULL DEFAULT 'ativo',
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_anuncios_categoria FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    INDEX idx_anuncios_categoria (categoria_id),
-    INDEX idx_anuncios_cidade (cidade),
-    INDEX idx_anuncios_destaque (destaque),
-    INDEX idx_anuncios_status (status)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    categoria_id INTEGER NOT NULL,
+    telefone TEXT NOT NULL,
+    whatsapp TEXT,
+    email TEXT,
+    endereco TEXT,
+    cidade TEXT NOT NULL,
+    imagem_principal TEXT,
+    destaque INTEGER NOT NULL DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'ativo',
+    nota REAL DEFAULT 0,
+    avaliacoes INTEGER DEFAULT 0,
+    visualizacoes INTEGER DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE RESTRICT
+);
 
 CREATE TABLE IF NOT EXISTS imagens (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    anuncio_id INT UNSIGNED NOT NULL,
-    caminho VARCHAR(255) NOT NULL,
-    ordem INT UNSIGNED NOT NULL DEFAULT 0,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_imagens_anuncio FOREIGN KEY (anuncio_id) REFERENCES anuncios(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    INDEX idx_imagens_anuncio (anuncio_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    anuncio_id INTEGER NOT NULL,
+    caminho TEXT NOT NULL,
+    ordem INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (anuncio_id) REFERENCES anuncios(id) ON DELETE CASCADE
+);
 
-INSERT INTO categorias (nome, slug, descricao) VALUES
-('Pedreiro', 'pedreiro', 'Serviços de alvenaria e reforma.'),
-('Encanador', 'encanador', 'Serviços hidráulicos residenciais e comerciais.'),
-('Eletricista', 'eletricista', 'Instalações e manutenção elétrica.'),
-('Pintor', 'pintor', 'Pintura residencial e comercial.'),
-('Limpeza', 'limpeza', 'Serviços gerais de limpeza.')
-ON DUPLICATE KEY UPDATE nome = VALUES(nome), descricao = VALUES(descricao);
+CREATE TABLE IF NOT EXISTS depoimentos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    texto TEXT NOT NULL,
+    nota INTEGER NOT NULL DEFAULT 5,
+    status TEXT NOT NULL DEFAULT 'aprovado',
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
--- Senha padrão sugerida para o seed: admin123
--- Gere novamente em produção se preferir.
-INSERT INTO usuarios (username, nome, password)
-VALUES ('admin', 'Administrador', '$2y$10$WjD1quI6C2K8j1rI6db2fuWw5LTBhl5xQJh9S0i5K3q8YfM9E4m6G')
-ON DUPLICATE KEY UPDATE nome = VALUES(nome);
+CREATE TABLE IF NOT EXISTS config (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    chave TEXT NOT NULL UNIQUE,
+    valor TEXT NOT NULL,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_anuncios_categoria ON anuncios(categoria_id);
+CREATE INDEX IF NOT EXISTS idx_anuncios_cidade ON anuncios(cidade);
+CREATE INDEX IF NOT EXISTS idx_anuncios_destaque ON anuncios(destaque);
+CREATE INDEX IF NOT EXISTS idx_anuncios_status ON anuncios(status);
+CREATE INDEX IF NOT EXISTS idx_imagens_anuncio ON imagens(anuncio_id);

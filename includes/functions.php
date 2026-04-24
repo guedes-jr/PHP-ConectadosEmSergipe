@@ -38,26 +38,37 @@ function whatsapp_link(string $phone): string
 
 function fetch_all_categories(PDO $pdo): array
 {
-    $stmt = $pdo->query('SELECT id, nome, slug FROM categorias ORDER BY nome ASC');
+    $stmt = $pdo->query('SELECT c.id, c.nome, c.slug, COUNT(a.id) AS Total FROM categorias c LEFT JOIN anuncios a ON a.categoria_id = c.id AND a.status = "ativo" GROUP BY c.id ORDER BY c.nome ASC');
     return $stmt->fetchAll();
 }
 
 function fetch_featured_ads(PDO $pdo, int $limit = 8): array
 {
     $stmt = $pdo->prepare(
-        'SELECT a.id, a.titulo, a.slug, a.cidade, a.imagem_principal, c.nome AS categoria_nome
+        'SELECT a.id, a.titulo, a.slug, a.descricao, a.cidade, a.imagem_principal, a.nota, a.avaliacoes,
+                c.nome AS categoria, a.destaque
          FROM anuncios a
          INNER JOIN categorias c ON c.id = a.categoria_id
-         WHERE a.status = :status AND a.destaque = :destaque
+         WHERE a.status = "ativo" AND a.destaque = 1
          ORDER BY a.created_at DESC
-         LIMIT :limite'
+         LIMIT ?'
     );
-    $status = 'ativo';
-    $destaque = 1;
-    $stmt->bindParam(':status', $status, PDO::PARAM_STR);
-    $stmt->bindParam(':destaque', $destaque, PDO::PARAM_INT);
-    $stmt->bindParam(':limite', $limit, PDO::PARAM_INT);
-    $stmt->execute();
+    $stmt->execute([$limit]);
+    return $stmt->fetchAll();
+}
+
+function fetch_recent_ads(PDO $pdo, int $limit = 6): array
+{
+    $stmt = $pdo->prepare(
+        'SELECT a.id, a.titulo, a.slug, a.descricao, a.cidade, a.imagem_principal, a.nota, a.avaliacoes,
+                c.nome AS categoria
+         FROM anuncios a
+         INNER JOIN categorias c ON c.id = a.categoria_id
+         WHERE a.status = "ativo"
+         ORDER BY a.created_at DESC
+         LIMIT ?'
+    );
+    $stmt->execute([$limit]);
     return $stmt->fetchAll();
 }
 
