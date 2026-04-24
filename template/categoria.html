@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eletricistas em Sergipe — Conectado em Sergipe</title>
+  <meta name="description" content="Encontre eletricistas confiáveis em Sergipe. Profissionais avaliados com telefone e WhatsApp.">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<header class="site-header">
+    <nav class="nav container">
+      <a class="brand" href="index.html" aria-label="Conectado em Sergipe">
+        <img src="assets/img/logo-hero.png" alt="Conectado em Sergipe">
+        <span><strong>Conectado em Sergipe</strong><small>Vitrine de serviços</small></span>
+      </a>
+      <div class="nav-center">
+        <a href="buscar.html">Buscar</a>
+        <a href="admin/">Painel</a>
+        <a href="admin/">Login</a>
+      </div>
+      <a class="btn btn-primary" href="buscar.html">Anunciar serviço</a>
+      <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="breadcrumbs-section">
+      <div class="container">
+        <nav class="breadcrumbs"><a href="index.html">Início</a><span>/</span><a href="buscar.html">Buscar</a><span>/</span><span>Eletricistas</span></nav>
+      </div>
+    </section>
+
+    <section class="quick-search container">
+      <div class="section-head compact">
+        <h2>Atalho rápido</h2>
+      </div>
+      <div class="search-panel">
+        <label>
+          <span>Selecionar categoria</span>
+          <select id="categoryFilter">
+            <option value="">Todas as categorias</option>
+            <option value="eletricista" selected>⚡ Eletricista</option>
+            <option value="encanador">🔧 Encanador</option>
+            <option value="pedreiro">👷 Pedreiro</option>
+            <option value="pintor">🎨 Pintor</option>
+            <option value="diarista">🧹 Diarista</option>
+            <option value="cabeleireiro">💇 Cabeleireiro</option>
+            <option value="fotografia">📸 Fotografia</option>
+            <option value="confeitaria">🎂 Confeitaria</option>
+            <option value="mecanico">🔩 Mecânico</option>
+            <option value="frete">🚚 Frete e Mudança</option>
+          </select>
+        </label>
+        <label>
+          <span>Selecionar cidade</span>
+          <select id="cityFilter">
+            <option value="">Todas as cidades</option>
+            <option>Aracaju</option>
+            <option>São Cristóvão</option>
+            <option>Nossa Senhora do Socorro</option>
+            <option>Itabaiana</option>
+            <option>Lagarto</option>
+            <option>Estância</option>
+            <option>Propriá</option>
+          </select>
+        </label>
+        <button id="clearFilters" class="btn btn-soft">Limpar</button>
+      </div>
+    </section>
+
+    <section class="container section">
+      <div class="section-head row-head">
+        <div><h2>Eletricistas em Sergipe</h2><p>32 profissionais encontrados</p></div>
+        <select class="filter-select">
+          <option>Mais relevantes</option>
+          <option>Mais avaliados</option>
+          <option>Mais recientes</option>
+        </select>
+      </div>
+      <div class="cards-grid">
+        <a href="loja/eletro-aju" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/hero-electrician.jpg" alt="Eletro Aju">
+            <span class="badge">★ Em destaque</span>
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Eletricista</span>
+            <h3>Eletro Aju</h3>
+            <p>Instalações elétricas residenciais e comerciais</p>
+            <div class="meta"><span>Aracaju</span><span class="rating">4.9 · 128</span></div>
+          </div>
+        </a>
+        <a href="loja/eletricista-joao" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/hero-electrician.jpg" alt="João Eletricista">
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Eletricista</span>
+            <h3>João Eletricista</h3>
+            <p>Reparos rápidos e instalações</p>
+            <div class="meta"><span>Aracaju</span><span class="rating">4.8 · 89</span></div>
+          </div>
+        </a>
+        <a href="loja/luz-e-forca" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/hero-electrician.jpg" alt="Luz & Força">
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Eletricista</span>
+            <h3>Luz & Força</h3>
+            <p>Instalações industriais e prediais</p>
+            <div class="meta"><span>São Cristóvão</span><span class="rating">4.7 · 45</span></div>
+          </div>
+        </a>
+        <a href="loja/eletro-aju" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/hero-electrician.jpg" alt="Eletro Aju">
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Eletricista</span>
+            <h3>Mega Ohm</h3>
+            <p>Manutenção corretiva e preventiva</p>
+            <div class="meta"><span>Aracaju</span><span class="rating">4.6 · 32</span></div>
+          </div>
+        </a>
+        <a href="loja/eletro-aju" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/hero-electrician.jpg" alt="Eletro Aju">
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Eletricista</span>
+            <h3>Eletric Service</h3>
+            <p>Serviços gerais de elétrica</p>
+            <div class="meta"><span>Itabaiana</span><span class="rating">4.5 · 18</span></div>
+          </div>
+        </a>
+        <a href="loja/eletro-aju" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/hero-electrician.jpg" alt="Eletro Aju">
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Eletricista</span>
+            <h3>Volt Eletric</h3>
+            <p>Especialista em quadros elétricos</p>
+            <div class="meta"><span>Lagarto</span><span class="rating">4.4 · 12</span></div>
+          </div>
+        </a>
+      </div>
+      <div class="pagination">
+        <button class="btn btn-soft" disabled>← Anterior</button>
+        <span class="page-info">1 de 6</span>
+        <button class="btn btn-soft">Próxima →</button>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container cta-card">
+        <div>
+          <span>É eletricista?</span>
+          <h2>Divulgue seu trabalho gratuitamente.</h2>
+          <p>Cadastre sua loja e receba clientes direto pelo WhatsApp.</p>
+        </div>
+        <a class="btn btn-light" href="https://wa.me/5579999999999" target="_blank" rel="noopener">Quero anunciar</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="footer-brand" href="index.html"><img src="assets/img/logo-sergipe-icon.png" alt="Conectado em Sergipe"><strong>Conectado em Sergipe</strong></a>
+        <p>Vitrine local de prestadores de serviço e pequenos negócios.</p>
+      </div>
+      <div><h3>Navegação</h3><a href="index.html">Início</a><a href="buscar.html">Buscar</a><a href="buscar.html">Categorias</a></div>
+      <div><h3>Fale conosco</h3><p>Aracaju — Sergipe</p><p>contato@conectadoemsergipe.com.br</p></div>
+    </div>
+    <div class="copyright">© 2026 Conectado em Sergipe.</div>
+  </footer>
+
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

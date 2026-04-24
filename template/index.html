@@ -1,38 +1,443 @@
 <!doctype html>
-<html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Conectados em Sergipe</title>
-  </head>
-  <body>
-    <header>
-        <div class="logo">
-            <div class="image">
-                <img src="https://conectadosemsergipe.com.br/wp-content/uploads/2024/12/logo-conectados.png" alt="Logo Conectados em Sergipe">
-            </div>
-            <div class="title">
-                <h1>Conectados <span>em Sergipe</span></h1>
-                <p>Vitrine de Serviços</p>
-            </div>
-        </div>
-        <div class="menu">
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Em alta</a></li>
-                <li><a href="#">Categorias</a></li>
-                <li><a href="#">Lojas Curadas</a></li>
-                <li><a href="#">Acabou de chegar</a></li>
-                <li><a href="#">Para prestadores</a></li>
-            </ul>
-        </div>
-        <div class="announce-now">
-            <a href="#">Anuncie aqui</a>
-        </div>
-    </header>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Conectado em Sergipe — Vitrine de serviços locais</title>
+  <meta name="description" content="Encontre prestadores de serviços e pequenos negócios em Sergipe.">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav container">
+      <a class="brand" href="index.html" aria-label="Conectado em Sergipe">
+        <img src="assets/img/logo-hero.png" alt="Conectado em Sergipe">
+        <span><strong>Conectado em Sergipe</strong><small>Vitrine de serviços</small></span>
+      </a>
+      <div class="nav-center">
+        <a href="buscar.html">Buscar</a>
+        <a href="admin/">Painel</a>
+        <a href="admin/">Login</a>
+      </div>
+      <a class="btn btn-primary" href="buscar.html">Anunciar serviço</a>
+      <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+    </nav>
+  </header>
 
-    <main></main>
+  <main id="inicio">
+    <section class="hero">
+      <div class="hero-slider">
+        <div class="hero-slide active">
+          <img src="assets/img/hero-orla.png" alt="Orla de Aracaju">
+          <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-slide">
+          <img src="assets/img/sergipe-cidade1.jpg" alt="Sergipe">
+          <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-slide">
+          <img src="assets/img/sergipe-cidade2.jpg" alt="Sergipe">
+          <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-slide">
+          <img src="assets/img/sergipe-cidade3.jpg" alt="Sergipe">
+          <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-slide">
+          <img src="assets/img/sergipe-caranguejo.png" alt="Cultura sergipana">
+          <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-nav">
+          <button class="hero-dot active" data-slide="0"></button>
+          <button class="hero-dot" data-slide="1"></button>
+          <button class="hero-dot" data-slide="2"></button>
+          <button class="hero-dot" data-slide="3"></button>
+          <button class="hero-dot" data-slide="4"></button>
+        </div>
+        <button class="hero-arrow prev">‹</button>
+        <button class="hero-arrow next">›</button>
+      </div>
+      <div class="container">
+        <div class="hero-content">
+          <h1>Conectado em Sergipe é a plataforma ideal para encontrar serviços locais na sua cidade.</h1>
+          <p class="lead">Conectamos prestadores qualificados a pessoas que realmente precisam, de forma rápida, simples e eficiente.</p>
+          <p>Encontre eletricistas, manicures, pedreiros e muito mais nas 75 cidades de Sergipe. Simples, rápido e gratuito.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="buscar.html">Explorar categorias</a>
+            <a class="btn btn-outline" href="admin/">Quero anunciar</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <footer></footer>
-  </body>
+<section class="quick-section container">
+      <div class="quick-card">
+        <div class="quick-header" style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;flex-wrap:wrap;gap:16px">
+          <div style="display:flex;flex-direction:column">
+            <span style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#0b4fb3;margin-bottom:4px">Atalho rápido</span>
+          </div>
+          <div class="quick-filters">
+            <select id="categoryFilter" class="quick-select">
+              <option value="">🗂️ Todas as categorias</option>
+              <option value="eletricista">⚡ Eletricista</option>
+              <option value="encanador">🔧 Encanador</option>
+              <option value="pedreiro">👷 Pedreiro</option>
+              <option value="pintor">🎨 Pintor</option>
+              <option value="diarista">🧹 Diarista</option>
+              <option value="cabeleireiro">💇 Cabeleireiro</option>
+              <option value="fotografia">📸 Fotografia</option>
+              <option value="confeitaria">🎂 Confeitaria</option>
+              <option value="mecanico">🔩 Mecânico</option>
+              <option value="frete">🚚 Frete e Mudança</option>
+            </select>
+            <select id="cityFilter" class="quick-select">
+              <option value="">📍 Todas as cidades</option>
+              <option>Amparo de São Francisco</option>
+              <option>Aquidabã</option>
+              <option>Aracaju</option>
+              <option>Arauá</option>
+              <option>Areia Branca</option>
+              <option>Barra dos Coqueiros</option>
+              <option>Boquim</option>
+              <option>Brejo Grande</option>
+              <option>Campo do Brito</option>
+              <option>Canhoba</option>
+              <option>Canindé de São Francisco</option>
+              <option>Capela</option>
+              <option>Carira</option>
+              <option>Carmópolis</option>
+              <option>Cedro de São João</option>
+              <option>Cristinápolis</option>
+              <option>Cumbe</option>
+              <option>Divina Pastora</option>
+              <option>Estância</option>
+              <option>Feira Nova</option>
+              <option>Frei Paulo</option>
+              <option>Gararu</option>
+              <option>General Maynard</option>
+              <option>Gracho Cardoso</option>
+              <option>Ilha das Flores</option>
+              <option>Indiaroba</option>
+              <option>Itabaiana</option>
+              <option>Itabaianinha</option>
+              <option>Itabi</option>
+              <option>Itaporanga d'Ajuda</option>
+              <option>Japaratuba</option>
+              <option>Japoatã</option>
+              <option>Lagarto</option>
+              <option>Laranjeiras</option>
+              <option>Macambira</option>
+              <option>Malhada dos Bois</option>
+              <option>Malhador</option>
+              <option>Maruim</option>
+              <option>Moita Bonita</option>
+              <option>Monte Alegre de Sergipe</option>
+              <option>Muribeca</option>
+              <option>Neópolis</option>
+              <option>Nossa Senhora Aparecida</option>
+              <option>Nossa Senhora da Glória</option>
+              <option>Nossa Senhora das Dores</option>
+              <option>Nossa Senhora de Lourdes</option>
+              <option>Nossa Senhora do Socorro</option>
+              <option>Pacatuba</option>
+              <option>Pedra Mole</option>
+              <option>Pedrinhas</option>
+              <option>Penedo do Sertão</option>
+              <option>Pinhão</option>
+              <option>Pirambu</option>
+              <option>Poço Redondo</option>
+              <option>Poço Verde</option>
+              <option>Porto da Folha</option>
+              <option>Propriá</option>
+              <option>Riachão do Dantas</option>
+              <option>Riachuelo</option>
+              <option>Ribeirópolis</option>
+              <option>Rosário do Catete</option>
+              <option>Salgado</option>
+              <option>Santa Luzia do Itanhy</option>
+              <option>Santa Rosa de Lima</option>
+              <option>Santana do São Francisco</option>
+              <option>Santo Amaro das Brotas</option>
+              <option>São Cristóvão</option>
+              <option>São Domingos</option>
+              <option>São Francisco</option>
+              <option>São Miguel do Aleixo</option>
+              <option>Simão Dias</option>
+              <option>Siriri</option>
+              <option>Telha</option>
+              <option>Tobias Barreto</option>
+              <option>Tomar do Geru</option>
+              <option>Umbaúba</option>
+</select>
+            <a href="buscar.html" class="view-all">Ver todas →</a>
+          </div>
+<div class="quick-pills">
+            <a href="buscar.html" class="pill">⚡ Eletricista</a>
+            <a href="buscar.html" class="pill">🔧 Encanador</a>
+            <a href="buscar.html" class="pill">👷 Pedreiro</a>
+            <a href="buscar.html" class="pill">🎨 Pintor</a>
+            <a href="buscar.html" class="pill">🧹 Diarista</a>
+            <a href="buscar.html" class="pill">💇 Cabeleireiro</a>
+            <a href="buscar.html" class="pill">📸 Fotografia</a>
+            <a href="buscar.html" class="pill pill-hidden">🎂 Confeitaria</a>
+            <a href="buscar.html" class="pill pill-hidden">🔩 Mecânico</a>
+            <a href="buscar.html" class="pill pill-hidden">🚚 Frete</a>
+            <button class="pill-btn" onclick="const hidden=document.querySelectorAll('.pill-hidden');const btn=this;if(btn.textContent==='+3'){hidden.forEach(e=>e.style.display='inline-flex');btn.textContent='−3'}else{hidden.forEach(el=>el.style.display='none');btn.textContent='+3'}">+3</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section card-box">
+      <div class="container section-head" style="display:flex;justify-content:space-between;align-items:flex-end;padding:16px 20px;border-bottom:1px solid #e3ebf7">
+        <div style="display:flex;flex-direction:column">
+          <span style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#0b4fb3;margin-bottom:4px">Em alta</span>
+          <h2 style="font-size:1.25rem;font-weight:600;margin:0">Mais procurados esta semana</h2>
+        </div>
+        <a href="buscar.html" style="color:#0b4fb3;font-weight:600;font-size:.9rem">Ver tudo →</a>
+      </div>
+      <div class="cat-carousel">
+        <a href="loja/eletro-aju" class="cat-card">
+          <img src="assets/img/hero-electrician.jpg" alt="Eletricista" width="36" height="36">
+          <div class="cat-info">
+            <span class="cat-title">⚡ Eletricista</span>
+            <span class="cat-desc">Instalações elétricas</span>
+          </div>
+        </a>
+        <a href="loja/doces-da-lu" class="cat-card">
+          <img src="assets/img/hero-cake.jpg" alt="Confeitaria" width="36" height="36">
+          <div class="cat-info">
+            <span class="cat-title">🧁 Confeitaria</span>
+            <span class="cat-desc">Bolos artesanais</span>
+          </div>
+        </a>
+        <a href="loja/pintura-do-cesar" class="cat-card">
+          <img src="assets/img/service-painter.jpg" alt="Pintor" width="36" height="36">
+          <div class="cat-info">
+            <span class="cat-title">🎨 Pintor</span>
+            <span class="cat-desc">Pintura residencial</span>
+          </div>
+        </a>
+        <a href="loja/diarista-marta" class="cat-card">
+          <img src="assets/img/service-cleaner.jpg" alt="Diarista" width="36" height="36">
+          <div class="cat-info">
+            <span class="cat-title">🧹 Diarista</span>
+            <span class="cat-desc">Limpeza profunda</span>
+          </div>
+        </a>
+        <a href="loja/studio-tata" class="cat-card">
+          <img src="assets/img/service-barber.jpg" alt="Cabeleireiro" width="36" height="36">
+          <div class="cat-info">
+            <span class="cat-title">💇 Cabeleireiro</span>
+            <span class="cat-desc">Cortes e coloração</span>
+          </div>
+        </a>
+        <a href="loja/encanador-pedro" class="cat-card">
+          <img src="assets/img/service-plumber.jpg" alt="Encanador" width="36" height="36">
+          <div class="cat-info">
+            <span class="cat-title">🔧 Encanador</span>
+            <span class="cat-desc">Reparos hidráulicos</span>
+          </div>
+        </a>
+        <a href="loja/lente-livre" class="cat-card">
+          <img src="assets/img/service-photographer.jpg" alt="Fotografia" width="36" height="36">
+          <div class="cat-info">
+            <span class="cat-title">📸 Fotografia</span>
+            <span class="cat-desc">Ensaios e eventos</span>
+          </div>
+        </a>
+        <a href="loja/eletro-aju" class="cat-card">
+          <img src="assets/img/hero-electrician.jpg" alt="Eletricista" width="36" height="36">
+          <div class="cat-info">
+            <span class="cat-title">⚡ Eletricista</span>
+            <span class="cat-desc">Instalações elétricas</span>
+          </div>
+        </a>
+        <a href="loja/doces-da-lu" class="cat-card">
+          <img src="assets/img/hero-cake.jpg" alt="Confeitaria" width="36" height="36">
+          <div class="cat-info">
+            <span class="cat-title">🧁 Confeitaria</span>
+            <span class="cat-desc">Bolos artesanais</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="section categories-area">
+      <div class="container">
+        <div class="section-head row-head">
+          <div><span class="section-title">Categorias</span><h2>Navegue por <em>especialidade</em></h2><p>Cada categoria reúne uma lista filtrada apenas dos profissionais da sua região em Sergipe.</p></div>
+          <a href="buscar.html">Ver todas</a>
+        </div>
+        <div class="category-grid">
+          <a href="buscar.html?categoria=eletricista" class="category-card"><strong>Eletricista</strong><small>32 profissionais</small></a>
+          <a href="buscar.html?categoria=encanador" class="category-card"><strong>Encanador</strong><small>21 profissionais</small></a>
+          <a href="buscar.html?categoria=pedreiro" class="category-card"><strong>Pedreiro</strong><small>18 profissionais</small></a>
+          <a href="buscar.html?categoria=pintor" class="category-card"><strong>Pintor</strong><small>14 profissionais</small></a>
+          <a href="buscar.html?categoria=diarista" class="category-card"><strong>Diarista</strong><small>27 profissionais</small></a>
+          <a href="buscar.html?categoria=cabeleireiro" class="category-card"><strong>Cabeleireiro</strong><small>22 profissionais</small></a>
+          <a href="buscar.html?categoria=fotografia" class="category-card"><strong>Fotografia</strong><small>9 profissionais</small></a>
+          <a href="buscar.html?categoria=confeitaria" class="category-card"><strong>Confeitaria</strong><small>16 profissionais</small></a>
+          <a href="buscar.html?categoria=mecanico" class="category-card"><strong>Mecânico</strong><small>12 profissionais</small></a>
+          <a href="buscar.html?categoria=frete" class="category-card"><strong>Frete e Mudança</strong><small>8 profissionais</small></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="container section">
+      <div class="section-head">
+        <span class="section-title">Lojas curadas</span>
+        <h2>Anúncios em destaque</h2>
+      </div>
+      <div class="cards-grid">
+        <a href="loja/eletro-aju" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/hero-electrician.jpg" alt="Eletro Aju">
+            <span class="badge">★ Em destaque</span>
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Eletricista</span>
+            <h3>Eletro Aju</h3>
+            <p>Instalações elétricas residenciais e comerciais</p>
+            <div class="meta"><span>Aracaju</span><span class="rating">4.9 · 128</span></div>
+          </div>
+        </a>
+        <a href="loja/doces-da-lu" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/hero-cake.jpg" alt="Doces da Lu">
+            <span class="badge">★ Em destaque</span>
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Confeitaria</span>
+            <h3>Doces da Lu</h3>
+            <p>Bolos artesanais e doces finos para qualquer ocasião</p>
+            <div class="meta"><span>Aracaju</span><span class="rating">5.0 · 214</span></div>
+          </div>
+        </a>
+        <a href="loja/pintura-do-cesar" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/service-painter.jpg" alt="Pintura do César">
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Pintor</span>
+            <h3>Pintura do César</h3>
+            <p>Pintura residencial e comercial com acabamento impecável</p>
+            <div class="meta"><span>Nossa Senhora do Socorro</span><span class="rating">4.8 · 76</span></div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section id="recentes" class="container section">
+      <div class="section-head">
+        <span class="section-title">Acabou de chegar</span>
+        <h2>Recentes em Sergipe</h2>
+      </div>
+      <div class="cards-grid">
+        <a href="loja/eletro-aju" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/hero-electrician.jpg" alt="Eletro Aju">
+            <span class="badge">★ Em destaque</span>
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Eletricista</span>
+            <h3>Eletro Aju</h3>
+            <p>Instalações elétricas residenciais e comerciais</p>
+            <div class="meta"><span>Aracaju</span><span class="rating">4.9 · 128</span></div>
+          </div>
+        </a>
+        <a href="loja/doces-da-lu" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/hero-cake.jpg" alt="Doces da Lu">
+            <span class="badge">★ Em destaque</span>
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Confeitaria</span>
+            <h3>Doces da Lu</h3>
+            <p>Bolos artesanais e doces finos para qualquer ocasião</p>
+            <div class="meta"><span>Aracaju</span><span class="rating">5.0 · 214</span></div>
+          </div>
+        </a>
+        <a href="loja/pintura-do-cesar" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/service-painter.jpg" alt="Pintura do César">
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Pintor</span>
+            <h3>Pintura do César</h3>
+            <p>Pintura residencial e comercial com acabamento impecável</p>
+            <div class="meta"><span>Nossa Senhora do Socorro</span><span class="rating">4.8 · 76</span></div>
+          </div>
+        </a>
+        <a href="loja/diarista-marta" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/service-cleaner.jpg" alt="Marta Diarista">
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Diarista</span>
+            <h3>Marta Diarista</h3>
+            <p>Diarista experiente, organização e limpeza profunda</p>
+            <div class="meta"><span>Aracaju</span><span class="rating">4.9 · 92</span></div>
+          </div>
+        </a>
+        <a href="loja/studio-tata" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/service-barber.jpg" alt="Studio Tata">
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Cabeleireiro</span>
+            <h3>Studio Tata</h3>
+            <p>Corte feminino e coloração</p>
+            <div class="meta"><span>Aracaju</span><span class="rating">4.7 · 145</span></div>
+          </div>
+        </a>
+        <a href="loja/encanador-pedro" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/service-plumber.jpg" alt="Pedro Encanador">
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Encanador</span>
+            <h3>Pedro Encanador</h3>
+            <p>Conserto de torneiras e vazamentos</p>
+            <div class="meta"><span>São Cristóvão</span><span class="rating">4.8 · 64</span></div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section id="anunciar" class="cta-section">
+      <div class="container cta-card">
+        <div>
+          <span class="section-title">Para prestadores</span>
+          <h2>Faça parte da maior vitrine de serviços de Sergipe.</h2>
+          <p>Cadastro gratuito de anúncio. Loja própria, descrição do trabalho e contato direto pelo WhatsApp.</p>
+        </div>
+        <a class="btn btn-light" href="https://wa.me/5579999999999" target="_blank" rel="noopener">Falar no WhatsApp</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="footer-brand" href="index.html"><img src="assets/img/logo-white.png" alt="Conectado em Sergipe"><strong>Conectado em Sergipe</strong></a>
+        <p>Vitrine local de prestadores de serviço e pequenos negócios. Conectamos clientes a profissionais de confiança.</p>
+      </div>
+      <div><h3>Navegação</h3><a href="index.html">Início</a><a href="buscar.html">Buscar serviços</a><a href="admin/">Área do anunciante</a></div>
+      <div><h3>Fale conosco</h3><p>Aracaju — Sergipe</p><p>contato@conectadoemsergipe.com.br</p></div>
+    </div>
+    <div class="copyright">© 2026 Conectado em Sergipe. Feito com carinho para o nordeste.</div>
+  </footer>
+
+  <script src="assets/js/script.js"></script>
+</body>
 </html>

@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Buscar serviços em Sergipe — Conectado em Sergipe</title>
+  <meta name="description" content="Busque prestadores de serviços em Sergipe. Encontre eletricistas, diaristas, pedreiros e mais.">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<header class="site-header">
+    <nav class="nav container">
+      <a class="brand" href="index.html" aria-label="Conectado em Sergipe">
+        <img src="assets/img/logo-hero.png" alt="Conectado em Sergipe">
+        <span><strong>Conectado em Sergipe</strong><small>Vitrine de serviços</small></span>
+      </a>
+      <div class="nav-center">
+        <a href="buscar.html">Buscar</a>
+        <a href="admin/">Painel</a>
+        <a href="admin/">Login</a>
+      </div>
+      <a class="btn btn-primary" href="buscar.html">Anunciar serviço</a>
+      <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="breadcrumbs-section">
+      <div class="container">
+        <nav class="breadcrumbs"><a href="index.html">Início</a><span>/</span><span>Buscar</span></nav>
+      </div>
+    </section>
+
+    <section class="search-hero">
+      <div class="container">
+        <h1>Buscar serviços</h1>
+        <p class="lead">Encontre o prestador ideal para sua necessidade</p>
+        <form class="search-form" action="buscar.html">
+          <div class="search-fields">
+            <label class="search-field">
+              <span>O que você precisa?</span>
+              <input type="text" name="q" placeholder="Ex.: eletricista, pedreiro, bolos..." value="">
+            </label>
+            <label class="search-field">
+              <span>Em qual cidade?</span>
+              <select name="cidade">
+                <option value="">Todas as cidades</option>
+                <option>Aracaju</option>
+                <option>São Cristóvão</option>
+                <option>Nossa Senhora do Socorro</option>
+                <option>Itabaiana</option>
+                <option>Lagarto</option>
+                <option>Estância</option>
+                <option>Propriá</option>
+              </select>
+            </label>
+            <label class="search-field">
+              <span>Categoria</span>
+              <select name="categoria">
+                <option value="">Todas as categorias</option>
+                <option>Eletricista</option>
+                <option>Encanador</option>
+                <option>Pedreiro</option>
+                <option>Pintor</option>
+                <option>Diarista</option>
+                <option>Cabeleireiro</option>
+                <option>Confeitaria</option>
+                <option>Fotografia</option>
+                <option>Mecânico</option>
+                <option>Frete e Mudança</option>
+              </select>
+            </label>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="container section">
+      <div class="section-head row-head">
+        <div><h2>179 serviços encontrados</h2></div>
+        <select class="filter-select">
+          <option>Mais relevantes</option>
+          <option>Mais avaliados</option>
+          <option>Mais recentes</option>
+        </select>
+      </div>
+      <div class="cards-grid">
+        <a href="loja/eletro-aju" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/hero-electrician.jpg" alt="Eletro Aju">
+            <span class="badge">★ Em destaque</span>
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Eletricista</span>
+            <h3>Eletro Aju</h3>
+            <p>Instalações elétricas residenciais e comerciais</p>
+            <div class="meta"><span>Aracaju</span><span class="rating">4.9 · 128</span></div>
+          </div>
+        </a>
+        <a href="loja/doces-da-lu" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/hero-cake.jpg" alt="Doces da Lu">
+            <span class="badge">★ Em destaque</span>
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Confeitaria</span>
+            <h3>Doces da Lu</h3>
+            <p>Bolos artesanais e doces finos para qualquer ocasião</p>
+            <div class="meta"><span>Aracaju</span><span class="rating">5.0 · 214</span></div>
+          </div>
+        </a>
+        <a href="loja/pintura-do-cesar" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/service-painter.jpg" alt="Pintura do César">
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Pintor</span>
+            <h3>Pintura do César</h3>
+            <p>Pintura residencial e comercial com acabamento impecável</p>
+            <div class="meta"><span>Nossa Senhora do Socorro</span><span class="rating">4.8 · 76</span></div>
+          </div>
+        </a>
+        <a href="loja/diarista-marta" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/service-cleaner.jpg" alt="Marta Diarista">
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Diarista</span>
+            <h3>Marta Diarista</h3>
+            <p>Diarista experiente, organização e limpeza profunda</p>
+            <div class="meta"><span>Aracaju</span><span class="rating">4.9 · 92</span></div>
+          </div>
+        </a>
+        <a href="loja/studio-tata" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/service-barber.jpg" alt="Studio Tata">
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Cabeleireiro</span>
+            <h3>Studio Tata</h3>
+            <p>Corte femenino e coloração</p>
+            <div class="meta"><span>Aracaju</span><span class="rating">4.7 · 145</span></div>
+          </div>
+        </a>
+        <a href="loja/encanador-pedro" class="service-card">
+          <div class="card-cover">
+            <img src="assets/img/service-plumber.jpg" alt="Pedro Encanador">
+            <span class="card-label">Loja</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Encanador</span>
+            <h3>Pedro Encanador</h3>
+            <p>Conserto de torneiras e vazamentos</p>
+            <div class="meta"><span>São Cristóvão</span><span class="rating">4.8 · 64</span></div>
+          </div>
+        </a>
+      </div>
+      <div class="pagination">
+        <button class="btn btn-soft" disabled>← Anterior</button>
+        <span class="page-info">1 de 30</span>
+        <button class="btn btn-soft">Próxima →</button>
+      </div>
+    </section>
+
+    <section class="container section popular-searches">
+      <h2>Buscas populares</h2>
+      <div class="search-tags">
+        <a href="buscar.html?categoria=eletricista" class="search-tag">Eletricista</a>
+        <a href="buscar.html?categoria=diarista" class="search-tag">Diarista</a>
+        <a href="buscar.html?categoria=pintor" class="search-tag">Pintor</a>
+        <a href="buscar.html?categoria=pedreiro" class="search-tag">Pedreiro</a>
+        <a href="buscar.html?categoria=encanador" class="search-tag">Encanador</a>
+        <a href="buscar.html?categoria=confeitaria" class="search-tag">Bolos artesanais</a>
+        <a href="buscar.html?categoria=cabeleireiro" class="search-tag">Corte de cabelo</a>
+        <a href="buscar.html?categoria=mecanico" class="search-tag">Mecânico</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="footer-brand" href="index.html"><img src="assets/img/logo-sergipe-icon.png" alt="Conectado em Sergipe"><strong>Conectado em Sergipe</strong></a>
+        <p>Vitrine local de prestadores de serviço e pequenos negócios.</p>
+      </div>
+      <div><h3>Navegação</h3><a href="index.html">Início</a><a href="buscar.html">Buscar</a><a href="buscar.html">Categorias</a></div>
+      <div><h3>Fale conosco</h3><p>Aracaju — Sergipe</p><p>contato@conectadoemsergipe.com.br</p></div>
+    </div>
+    <div class="copyright">© 2026 Conectado em Sergipe.</div>
+  </footer>
+
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

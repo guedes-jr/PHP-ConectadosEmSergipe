@@ -1,0 +1,32 @@
+const categories=[['⚡','Eletricista',32],['🔧','Encanador',21],['🧱','Pedreiro',18],['🎨','Pintor',14],['🧹','Diarista',27],['💇','Cabeleireiro',22],['📸','Fotografia',9],['🧁','Confeitaria',16],['🚗','Mecânico',12],['🚚','Frete e Mudança',8]];
+const cities=['Todas as cidades','Amparo de São Francisco','Aquidabã','Aracaju','Arauá','Areia Branca','Barra dos Coqueiros','Boquim','Brejo Grande','Campo do Brito','Canhoba','Canindé de São Francisco','Capela','Carira','Carmópolis','Cedro de São João','Cristinápolis','Cumbe','Divina Pastora','Estância','Feira Nova','Frei Paulo','Gararu','General Maynard','Gracho Cardoso','Ilha das Flores','Indiaroba','Itabaiana','Itabaianinha','Itabi',"Itaporanga d'Ajuda",'Japaratuba','Japoatã','Lagarto','Laranjeiras','Macambira','Malhada dos Bois','Malhador','Maruim','Moita Bonita','Monte Alegre de Sergipe','Muribeca','Neópolis','Nossa Senhora Aparecida','Nossa Senhora da Glória','Nossa Senhora das Dores','Nossa Senhora de Lourdes','Nossa Senhora do Socorro','Pacatuba','Pedra Mole','Pedrinhas','Penedo do Sertão','Pinhão','Pirambu','Poço Redondo','Poço Verde','Porto da Folha','Propriá','Riachão do Dantas','Riachuelo','Ribeirópolis','Rosário do Catete','Salgado','Santa Luzia do Itanhy','Santa Rosa de Lima','Santana do São Francisco','Santo Amaro das Brotas','São Cristóvão','São Domingos','São Francisco','São Miguel do Aleixo','Simão Dias','Siriri','Telha','Tobias Barreto','Tomar do Geru','Umbaúba'];
+const services=[
+{cat:'Eletricista',desc:'Instalações elétricas residenciais e comerciais',city:'Aracaju',rating:'4.9',reviews:128,featured:true,img:'421255097_2655577431255890_6125199078776516179_n.jpg'},
+{cat:'Confeitaria',desc:'Bolos artesanais e doces finos para qualquer ocasião',city:'Aracaju',rating:'5.0',reviews:214,featured:true,img:'578024674_3262695480544079_6989862239987177744_n.jpg'},
+{cat:'Pintor',desc:'Pintura residencial e comercial com acabamento impecável',city:'Nossa Senhora do Socorro',rating:'4.8',reviews:76,featured:false,img:'643887898_3376990805781212_3513980169143763483_n.jpg'},
+{cat:'Diarista',desc:'Diarista experiente, organização e limpeza profunda',city:'Aracaju',rating:'4.9',reviews:92,featured:false,img:'Captura de tela 2026-02-16 033905.png'},
+{cat:'Cabeleireiro',desc:'Corte feminino, escova, coloração e atendimento personalizado',city:'Aracaju',rating:'4.7',reviews:145,featured:false,img:'Captura de tela 2026-02-16 034155.png'},
+{cat:'Encanador',desc:'Conserto de torneiras, vazamentos e instalações hidráulicas',city:'São Cristóvão',rating:'4.8',reviews:64,featured:false,img:'421255097_2655577431255890_6125199078776516179_n.jpg'},
+{cat:'Fotografia',desc:'Ensaios externos, casamentos e eventos em Sergipe',city:'Lagarto',rating:'4.9',reviews:51,featured:false,img:'578024674_3262695480544079_6989862239987177744_n.jpg'}
+];
+const qs=s=>document.querySelector(s);const qsa=s=>document.querySelectorAll(s);
+function iconFor(cat){return categories.find(c=>c[1]===cat)?.[0]||'★'}
+
+// Hero Slider
+let currentSlide=0;
+const slides=qsa('.hero-slide');
+const dots=qsa('.hero-dot');
+const prevBtn=qs('.hero-arrow.prev');
+const nextBtn=qs('.hero-arrow.next');
+function goToSlide(n){currentSlide=n;slides.forEach((s,i)=>s.classList.toggle('active',i===n));dots.forEach((d,i)=>d.classList.toggle('active',i===n))}
+function nextSlide(){goToSlide((currentSlide+1)%slides.length)}
+function prevSlide(){goToSlide((currentSlide-1+slides.length)%slides.length)}
+if(slides.length){setInterval(nextSlide,5000);prevBtn?.addEventListener('click',()=>{prevSlide();goToSlide(currentSlide)});nextBtn?.addEventListener('click',()=>{nextSlide();goToSlide(currentSlide)});dots.forEach((d,i)=>d.addEventListener('click',()=>goToSlide(i)))}
+function iconFor(cat){return categories.find(c=>c[1]===cat)?.[0]||'★'}
+function fillSelects(){const cat=qs('#categoryFilter');cat.innerHTML='<option>Todas as categorias</option>'+categories.map(c=>`<option>${c[1]}</option>`).join('');const city=qs('#cityFilter');city.innerHTML=cities.map(c=>`<option>${c}</option>`).join('')}
+function renderCategories(){qs('#categoryPills').innerHTML=categories.map(c=>`<button class="pill" data-cat="${c[1]}">${c[0]} ${c[1]} <small>${c[2]}</small></button>`).join('');qs('#categoryGrid').innerHTML=categories.map(c=>`<article class="category-card"><div class="icon">${c[0]}</div><strong>${c[1]}</strong><small>${c[2]} profissionais</small></article>`).join('')}
+function serviceCard(s){return `<article class="service-card" data-cat="${s.cat}" data-city="${s.city}" data-text="${(s.cat+' '+s.desc+' '+s.city).toLowerCase()}"><div class="service-cover"><img src="assets/img/${s.img}" alt="${s.cat}">${s.featured?'<span class="badge">★ Em destaque</span>':''}</div><div class="service-body"><h3>${iconFor(s.cat)} ${s.cat}</h3><p>${s.desc}</p><div class="meta"><span>${s.city}</span><span class="rating">★ ${s.rating} · ${s.reviews}</span></div></div></article>`}
+function renderServices(){qs('#featuredCards').innerHTML=services.filter(s=>s.featured||['Pintor'].includes(s.cat)).slice(0,3).map(serviceCard).join('');qs('#recentCards').innerHTML=services.slice(0,6).map(serviceCard).join('');qs('#trendingCards').innerHTML=services.concat(services).slice(0,14).map(s=>`<article class="mini-card"><div class="icon">${iconFor(s.cat)}</div><strong>★ ${s.cat}</strong><p>${s.desc}</p></article>`).join('')}
+function filterCards(){const cat=qs('#categoryFilter').value;const city=qs('#cityFilter').value;const text=qs('#textSearch').value.trim().toLowerCase();qsa('.service-card').forEach(card=>{const okCat=cat==='Todas as categorias'||card.dataset.cat===cat;const okCity=city==='Todas as cidades'||card.dataset.city===city;const okText=!text||card.dataset.text.includes(text);card.classList.toggle('hidden',!(okCat&&okCity&&okText))})}
+function bind(){qs('.menu-toggle')?.addEventListener('click',()=>qs('.nav-links-mobile')?.classList.toggle('open'));['#categoryFilter','#cityFilter','#textSearch'].forEach(id=>{qs(id)?.addEventListener('input',filterCards)});qs('#clearFilters')?.addEventListener('click',()=>{if(qs('#categoryFilter'))qs('#categoryFilter').value='Todas as categorias';if(qs('#cityFilter'))qs('#cityFilter').value='Todas as cidades';if(qs('#textSearch'))qs('#textSearch').value='';filterCards()});qsa('.pill').forEach(p=>p.addEventListener('click',()=>{if(qs('#categoryFilter')){qs('#categoryFilter').value=p.dataset.cat;filterCards();document.querySelector('#recentes')?.scrollIntoView({behavior:'smooth'})}}))}
+fillSelects();renderCategories();renderServices();bind();
