@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_name('ADMIN_SESS');
+    session_start();
+}
+
 function csrf_token(): string
 {
     if (empty($_SESSION['csrf_token'])) {

@@ -119,9 +119,9 @@ function fetch_images_by_ad(PDO $pdo, int $adId): array
     return $stmt->fetchAll();
 }
 
-function search_ads(PDO $pdo, string $term = '', string $city = '', string $category = ''): array
+function search_ads(PDO $pdo, string $term = '', string $city = '', string $category = '', string $rating = ''): array
 {
-    $sql = 'SELECT a.id, a.titulo, a.slug, a.cidade, a.imagem_principal, c.nome AS categoria_nome
+    $sql = 'SELECT a.id, a.titulo, a.slug, a.cidade, a.imagem_principal, a.nota, a.avaliacoes, a.destaque, c.nome AS categoria_nome
             FROM anuncios a
             INNER JOIN categorias c ON c.id = a.categoria_id
             WHERE a.status = :status';
@@ -143,9 +143,45 @@ function search_ads(PDO $pdo, string $term = '', string $city = '', string $cate
         $params['category'] = $category;
     }
 
+    if ($rating !== '') {
+        $sql .= ' AND a.nota >= :rating';
+        $params['rating'] = (float)$rating;
+    }
+
     $sql .= ' ORDER BY a.destaque DESC, a.created_at DESC';
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
     return $stmt->fetchAll();
+}
+
+function fetch_unique_cities(PDO $pdo): array
+{
+    $stmt = $pdo->query("SELECT DISTINCT cidade FROM anuncios WHERE status = 'ativo' AND cidade IS NOT NULL AND cidade != '' ORDER BY cidade ASC");
+    return $stmt->fetchAll(PDO::FETCH_COLUMN);
+}
+function get_category_icon(string $name): string
+{
+    $name = mb_strtolower($name, 'UTF-8');
+    
+    $icons = [
+        'eletricista' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
+        'encanador' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.77 3.77z"/></svg>',
+        'pedreiro' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+        'pintor' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8a2 2 0 1 0-4 0 2 2 0 0 0 4 0z"/><path d="M12 20v2"/><path d="M14 17h-4"/><path d="M21 11V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6"/><path d="M12 12A10 10 0 0 0 2 22"/><path d="M12 12a10 10 0 0 1 10 10"/></svg>',
+        'diarista' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3"/><path d="M18.66 4.34l-2.12 2.12"/><path d="M21 11h-3"/><path d="M18.66 17.66l-2.12-2.12"/><path d="M12 21v-3"/><path d="M5.34 17.66l2.12-2.12"/><path d="M3 11h3"/><path d="M5.34 4.34l2.12 2.12"/><path d="M11.4 11.4a1.2 1.2 0 1 0 1.2 1.2 1.2 1.2 0 0 0-1.2-1.2z"/></svg>',
+        'cabeleireiro' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="12" x2="20" y2="17.53"/><line x1="4.47" y1="4.47" x2="9.53" y2="9.53"/></svg>',
+        'fotografia' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+        'confeitaria' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 11a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2"/><path d="M9 22v-4h6v4"/><path d="M12 2v3"/><path d="M12 7h.01"/></svg>',
+        'mecanico' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.77 3.77z"/><circle cx="12" cy="12" r="3"/></svg>',
+        'frete' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+    ];
+
+    foreach ($icons as $key => $svg) {
+        if (str_contains($name, $key)) {
+            return $svg;
+        }
+    }
+
+    return '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
 }

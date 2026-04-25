@@ -3,9 +3,9 @@
 
 -- Usuários (senha: admin123 para todos)
 INSERT INTO usuarios (username, nome, password) VALUES 
-('admin', 'Administrador', '$2y$10$WjD1quI6C2K8j1rI6db2fuWw5LTBhl5xQJh9S0i5K3q8YfM9E4m6G'),
-('joao', 'João Silva', '$2y$10$WjD1quI6C2K8j1rI6db2fuWw5LTBhl5xQJh9S0i5K3q8YfM9E4m6G'),
-('maria', 'Maria Santos', '$2y$10$WjD1quI6C2K8j1rI6db2fuWw5LTBhl5xQJh9S0i5K3q8YfM9E4m6G');
+('admin', 'Administrador', '$2y$12$GiFelnJHjsJK33YNnksQ4O5nQPcADt7vhd/LGs2etbi4DNu0FFI8e'),
+('joao', 'João Silva', '$2y$12$GiFelnJHjsJK33YNnksQ4O5nQPcADt7vhd/LGs2etbi4DNu0FFI8e'),
+('maria', 'Maria Santos', '$2y$12$GiFelnJHjsJK33YNnksQ4O5nQPcADt7vhd/LGs2etbi4DNu0FFI8e');
 
 -- Categorias
 INSERT INTO categorias (nome, slug, descricao, icone) VALUES 
