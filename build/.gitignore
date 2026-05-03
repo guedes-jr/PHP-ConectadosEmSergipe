@@ -1,0 +1,23 @@
+# Credentials (use environment variables in production)
+includes/config.php
+
+# Sessions
+sessions/
+
+# Uploads
+uploads/anuncios/*
+!uploads/anuncios/.gitkeep
+
+# System files
+.DS_Store
+Thumbs.db
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*
+
+# Backup files
+*.bak
+*.tmp
