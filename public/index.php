@@ -3,12 +3,15 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../includes/layout.php';
 require_once __DIR__ . '/../includes/seo.php';
+require_once __DIR__ . '/../includes/sergipe_data.php';
 
 $categories = fetch_all_categories($pdo);
 $featuredAds = fetch_featured_ads($pdo);
-$recentAds = fetch_recent_ads($pdo, 6);
+$recentAds = fetch_recent_ads($pdo, 8);
+$regions = get_sergipe_regions();
+$cityMapping = get_city_region_mapping();
 
-render_header(seo_title('Início'), 'Encontre serviços e negócios locais com facilidade.');
+render_header($pdo, 'Início', 'Encontre serviços e negócios locais com facilidade em Sergipe.');
 ?>
 
 <section class="hero">
@@ -17,110 +20,34 @@ render_header(seo_title('Início'), 'Encontre serviços e negócios locais com f
             <img src="/assets/img/hero-orla.png" alt="Orla de Aracaju">
             <div class="hero-overlay"></div>
         </div>
-        <div class="hero-slide">
-            <img src="/assets/img/sergipe-cidade1.jpg" alt="Sergipe">
-            <div class="hero-overlay"></div>
-        </div>
-        <div class="hero-slide">
-            <img src="/assets/img/sergipe-cidade2.jpg" alt="Sergipe">
-            <div class="hero-overlay"></div>
-        </div>
-        <div class="hero-slide">
-            <img src="/assets/img/sergipe-cidade3.jpg" alt="Sergipe">
-            <div class="hero-overlay"></div>
-        </div>
-        <div class="hero-slide">
-            <img src="/assets/img/caranguejo.png" alt="Cultura sergipana">
-            <div class="hero-overlay"></div>
-        </div>
-        <div class="hero-nav">
-            <button class="hero-dot active" data-slide="0"></button>
-            <button class="hero-dot" data-slide="1"></button>
-            <button class="hero-dot" data-slide="2"></button>
-            <button class="hero-dot" data-slide="3"></button>
-            <button class="hero-dot" data-slide="4"></button>
-        </div>
-        <button class="hero-arrow prev">‹</button>
-        <button class="hero-arrow next">›</button>
+        <!-- Outros slides podem ser adicionados aqui -->
     </div>
     <div class="container">
-        <div class="hero-content">
-            <h1>Conectado em Sergipe é a plataforma ideal para encontrar serviços locals na sua cidade.</h1>
-            <p class="lead">Conectamos prestadores qualificados a pessoas que realmente precisam, de forma rápida, simples e eficiente.</p>
-            <p>Encontre eletricistas, manicures, pedreiros e muito mais nas 75 cidades de Sergipe. Simples, rápido e gratuito.</p>
-            <div class="hero-actions">
-                <a class="btn btn-primary" href="/buscar">Explorar categorias</a>
-                <a class="btn btn-outline" href="/admin/criar">Quero anunciar</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="quick-section">
-    <div class="container">
-        <div class="quick-card">
-            <div class="quick-header">
-                <div>
-                    <span class="section-title">Busca Rápida</span>
-                    <h2>O que você procura hoje?</h2>
-                </div>
-                <div class="quick-filters">
-                    <select id="categoryFilter" class="quick-select">
-                        <option value="">Todas as categorias</option>
-                        <option value="eletricista">⚡ Eletricista</option>
-                        <option value="encanador">🔧 Encanador</option>
-                        <option value="pedreiro">👷 Pedreiro</option>
-                        <option value="pintor">🎨 Pintor</option>
-                    </select>
-                    <select id="cityFilter" class="quick-select">
-                        <option value="">Todas as cidades</option>
-                        <option>Aracaju</option>
-                        <option>Nossa Senhora do Socorro</option>
-                        <option>Lagarto</option>
-                        <option>Itabaiana</option>
-                        <option>São Cristóvão</option>
-                        <option>Estância</option>
-                    </select>
-                </div>
-            </div>
-            <div class="quick-pills">
-                <a href="/buscar?categoria=eletricista" class="pill">⚡ Eletricista</a>
-                <a href="/buscar?categoria=encanador" class="pill">🔧 Encanador</a>
-                <a href="/buscar?categoria=pedreiro" class="pill">👷 Pedreiro</a>
-                <a href="/buscar?categoria=pintor" class="pill">🎨 Pintor</a>
-                <a href="/buscar?categoria=diarista" class="pill">🧹 Diarista</a>
-                <a href="/buscar?categoria=cabeleireiro" class="pill">💇 Cabeleireiro</a>
-                <a href="/buscar?categoria=fotografia" class="pill">📸 Fotografia</a>
-                <a href="/buscar?categoria=confeitaria" class="pill">🎂 Confeitaria</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="section">
-    <div class="container">
-        <div class="section-head">
-            <div>
-                <span class="section-title">Em alta</span>
-                <h2>Mais procurados da semana</h2>
-            </div>
-            <a href="/buscar" class="view-all">Ver tudo →</a>
-        </div>
-        <div class="trending-carousel">
-            <div class="trending-track">
-                <?php foreach ($featuredAds as $ad): ?>
-                    <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="mini-card">
-                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>" alt="<?php echo e($ad['titulo']); ?>">
-                        <strong><?php echo e($ad['titulo']); ?></strong>
-                    </a>
-                <?php endforeach; ?>
-                <!-- Duplicate for infinite effect -->
-                <?php foreach ($featuredAds as $ad): ?>
-                    <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="mini-card">
-                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>" alt="<?php echo e($ad['titulo']); ?>">
-                        <strong><?php echo e($ad['titulo']); ?></strong>
-                    </a>
-                <?php endforeach; ?>
+        <div class="hero-content animate-fade-in">
+            <span class="search-subtitle" style="color: white; opacity: 0.8;">CONECTANDO SERGIPE</span>
+            <h1><?php echo e(get_setting($pdo, 'hero_titulo', 'Encontre os melhores profissionais de Sergipe em um só lugar.')); ?></h1>
+            <p class="lead"><?php echo e(get_setting($pdo, 'hero_subtitulo', 'Conectamos você aos serviços que você precisa, com a confiança que você merece.')); ?></p>
+            
+            <div class="quick-card animate-fade-in" style="margin-top: 2rem; background: rgba(255,255,255,0.1); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); color: white;">
+                <form action="/buscar" method="get" class="home-filters-wrapper">
+                    <div class="form-group region-select-home">
+                        <select name="regiao" id="homeRegiao" class="quick-select" style="width: 100%; height: 3.5rem; background: rgba(255,255,255,0.9); color: #1e293b;">
+                            <option value="">Todas as regiões</option>
+                            <?php foreach($regions as $r): ?>
+                                <option value="<?php echo e($r); ?>"><?php echo e($r); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group region-select-home">
+                        <select name="cidade" id="homeCidade" class="quick-select" style="width: 100%; height: 3.5rem; background: rgba(255,255,255,0.9); color: #1e293b;">
+                            <option value="">Todas as cidades</option>
+                            <!-- Cidades serão filtradas via JS se região for escolhida -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="height: 3.5rem; padding: 0 2rem;">
+                        <i data-lucide="search"></i> Buscar Agora
+                    </button>
+                </form>
             </div>
         </div>
     </div>
@@ -133,13 +60,13 @@ render_header(seo_title('Início'), 'Encontre serviços e negócios locais com f
                 <span class="section-title">Categorias</span>
                 <h2>Navegue por especialidade</h2>
             </div>
-            <a href="/buscar" class="view-all">Todas as categorias</a>
+            <a href="/buscar" class="view-all">Ver todas</a>
         </div>
         <div class="category-grid">
             <?php foreach ($categories as $category): ?>
-                <a href="/categoria/<?php echo e($category['slug']); ?>" class="category-card">
+                <a href="/buscar?categoria=<?php echo e($category['slug']); ?>" class="category-card">
                     <div class="cat-icon-wrapper">
-                        <?php echo get_category_icon($category['nome']); ?>
+                        <?php echo get_category_icon($category['nome'], $category['icone']); ?>
                     </div>
                     <strong><?php echo e($category['nome']); ?></strong>
                     <small><?php echo $category['Total']; ?> profissionais</small>
@@ -149,7 +76,7 @@ render_header(seo_title('Início'), 'Encontre serviços e negócios locais com f
     </div>
 </section>
 
-<section class="section">
+<section class="section" style="background: var(--muted-bg);">
     <div class="container">
         <div class="section-head">
             <div>
@@ -159,29 +86,39 @@ render_header(seo_title('Início'), 'Encontre serviços e negócios locais com f
         </div>
         <div class="cards-grid">
             <?php foreach ($featuredAds as $ad): ?>
-                <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="service-card">
-                    <div class="card-cover">
+                <div class="service-card animate-fade-in">
+                    <button class="btn-favorite" data-id="<?php echo $ad['id']; ?>" title="Favoritar">
+                        <i data-lucide="heart"></i>
+                    </button>
+                    <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="card-cover">
                         <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>" alt="<?php echo e($ad['titulo']); ?>">
                         <div class="card-badges">
                             <span class="badge-featured">★ EM DESTAQUE</span>
-                            <span class="badge-store">LOJA</span>
                         </div>
-                    </div>
+                    </a>
                     <div class="card-body">
-                        <span class="card-cat"><?php echo e($ad['categoria']); ?></span>
-                        <h3><?php echo e($ad['titulo']); ?></h3>
-                        <div class="card-footer">
-                            <div class="location">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                                <span><?php echo e($ad['cidade']); ?></span>
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.5rem;">
+                            <div class="card-cat-wrapper" style="display:flex; align-items:center; gap:0.5rem; color:var(--primary); font-size:0.75rem; font-weight:700;">
+                                <?php echo get_category_icon($ad['categoria'], $ad['categoria_icone']); ?>
+                                <span class="card-cat" style="color:var(--muted-foreground); text-transform:uppercase;"><?php echo e($ad['categoria']); ?></span>
                             </div>
                             <div class="rating">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                                <span><?php echo $ad['nota']; ?> · <?php echo $ad['avaliacoes'] ?? '0'; ?></span>
+                                <i data-lucide="star" style="width:14px; height:14px; fill:currentColor;"></i>
+                                <span><?php echo $ad['nota']; ?></span>
                             </div>
                         </div>
+                        <a href="/anuncio/<?php echo e($ad['slug']); ?>"><h3><?php echo e($ad['titulo']); ?></h3></a>
+                        <div class="card-footer">
+                            <div class="location">
+                                <i data-lucide="map-pin" style="width:14px; height:14px;"></i>
+                                <span><?php echo e($ad['cidade']); ?></span>
+                            </div>
+                            <a href="<?php echo whatsapp_link($ad['cliente_telefone'] ?? $ad['telefone'] ?? '0000000000'); ?>" target="_blank" class="whatsapp-float-btn">
+                                <i data-lucide="message-circle" style="width:14px; height:14px;"></i> Whats
+                            </a>
+                        </div>
                     </div>
-                </a>
+                </div>
             <?php endforeach; ?>
         </div>
     </div>
@@ -191,59 +128,110 @@ render_header(seo_title('Início'), 'Encontre serviços e negócios locais com f
     <div class="container">
         <div class="section-head">
             <div>
-                <span class="section-title">Acabou de chegar</span>
-                <h2>Recentes em Sergipe</h2>
+                <span class="section-title">Recém chegados</span>
+                <h2>Novos profissionais na rede</h2>
             </div>
-            <a href="/buscar" class="view-all">Ver todos →</a>
+            <a href="/buscar" class="view-all">Explorar tudo</a>
         </div>
         <div class="cards-grid">
             <?php foreach ($recentAds as $ad): ?>
-                <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="service-card">
-                    <div class="card-cover">
+                <div class="service-card">
+                    <button class="btn-favorite" data-id="<?php echo $ad['id']; ?>" title="Favoritar">
+                        <i data-lucide="heart"></i>
+                    </button>
+                    <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="card-cover">
                         <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>" alt="<?php echo e($ad['titulo']); ?>">
-                        <div class="card-badges">
-                            <?php if (isset($ad['destaque']) && $ad['destaque']): ?>
-                                <span class="badge-featured">★ EM DESTAQUE</span>
-                            <?php endif; ?>
-                            <span class="badge-store">LOJA</span>
-                        </div>
-                    </div>
+                    </a>
                     <div class="card-body">
-                        <span class="card-cat"><?php echo e($ad['categoria']); ?></span>
-                        <h3><?php echo e($ad['titulo']); ?></h3>
-                        <div class="card-footer">
-                            <div class="location">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                                <span><?php echo e($ad['cidade']); ?></span>
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.5rem;">
+                            <div class="card-cat-wrapper" style="display:flex; align-items:center; gap:0.5rem; color:var(--primary); font-size:0.75rem; font-weight:700;">
+                                <?php echo get_category_icon($ad['categoria'], $ad['categoria_icone']); ?>
+                                <span class="card-cat" style="color:var(--muted-foreground); text-transform:uppercase;"><?php echo e($ad['categoria']); ?></span>
                             </div>
                             <div class="rating">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                                <span><?php echo $ad['nota'] ?? '5.0'; ?> · <?php echo $ad['avaliacoes'] ?? '0'; ?></span>
+                                <i data-lucide="star" style="width:14px; height:14px; fill:currentColor;"></i>
+                                <span><?php echo $ad['nota'] ?? '5.0'; ?></span>
                             </div>
                         </div>
+                        <a href="/anuncio/<?php echo e($ad['slug']); ?>"><h3><?php echo e($ad['titulo']); ?></h3></a>
+                        <div class="card-footer">
+                            <div class="location">
+                                <i data-lucide="map-pin" style="width:14px; height:14px;"></i>
+                                <span><?php echo e($ad['cidade']); ?></span>
+                            </div>
+                            <a href="<?php echo whatsapp_link($ad['cliente_telefone'] ?? $ad['telefone'] ?? '0000000000'); ?>" target="_blank" class="whatsapp-float-btn">
+                                <i data-lucide="message-circle" style="width:14px; height:14px;"></i> Whats
+                            </a>
+                        </div>
                     </div>
-                </a>
+                </div>
             <?php endforeach; ?>
         </div>
     </div>
 </section>
 
-<section class="cta-section">
+<section class="cta-section" style="padding-bottom: 6rem;">
     <div class="container">
-        <div class="cta-card">
-            <div class="cta-content">
-                <span class="section-title" style="color: rgba(255,255,255,0.6);">Para prestadores</span>
-                <h2>Faça parte da maior vitrine de serviços de Sergipe.</h2>
-                <p>Cadastro gratuito de anúncio, Loja própria, descrição do trabalho e contato direto pelo WhatsApp.</p>
-                <div class="cta-actions">
-                    <a class="btn btn-primary whatsapp-btn" href="https://wa.me/5579999999999">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7 1 1 0 0 1 .5.1l3.6-1 1 3.6a1 1 0 0 1 .1.5 8.5 8.5 0 0 1 3.3 4.7z"/></svg>
-                        Falar no WhatsApp
-                    </a>
-                </div>
+        <div class="cta-card animate-fade-in" style="background: linear-gradient(135deg, var(--primary), #4f46e5); color: white; border-radius: 2rem; padding: 4rem; text-align: center;">
+            <span class="section-title" style="color: rgba(255,255,255,0.7);">PARA PRESTADORES</span>
+            <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Aumente sua visibilidade em Sergipe.</h2>
+            <p style="font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto 2.5rem;">Tenha sua própria vitrine digital, receba contatos diretos no WhatsApp e apareça para milhares de clientes locais.</p>
+            <div class="cta-actions" style="justify-content: center;">
+                <a class="btn btn-primary" href="/admin/criar" style="background: white; color: var(--primary); padding: 1rem 2.5rem;">Quero anunciar serviço</a>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    const cityMapping = <?php echo json_encode($cityMapping); ?>;
+    const allCities = <?php 
+        $allCities = $pdo->query("SELECT DISTINCT cidade FROM anuncios WHERE status = 'ativo' ORDER BY cidade")->fetchAll(PDO::FETCH_COLUMN);
+        echo json_encode($allCities);
+    ?>;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const homeRegiao = document.getElementById('homeRegiao');
+        const homeCidade = document.getElementById('homeCidade');
+
+        function populateCities(region) {
+            homeCidade.innerHTML = '<option value="">Todas as cidades</option>';
+            const filtered = region 
+                ? allCities.filter(city => cityMapping[city] === region)
+                : allCities;
+            
+            filtered.forEach(city => {
+                const opt = document.createElement('option');
+                opt.value = city;
+                opt.textContent = city;
+                homeCidade.appendChild(opt);
+            });
+        }
+
+        homeRegiao.addEventListener('change', (e) => populateCities(e.target.value));
+        populateCities(''); // Init
+
+        // Favorites Logic
+        const favorites = JSON.parse(localStorage.getItem('sergipe_favs') || '[]');
+        document.querySelectorAll('.btn-favorite').forEach(btn => {
+            const id = btn.dataset.id;
+            if (favorites.includes(id)) btn.classList.add('active');
+            
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const index = favorites.indexOf(id);
+                if (index > -1) {
+                    favorites.splice(index, 1);
+                    btn.classList.remove('active');
+                } else {
+                    favorites.push(id);
+                    btn.classList.add('active');
+                }
+                localStorage.setItem('sergipe_favs', JSON.stringify(favorites));
+            });
+        });
+    });
+</script>
 
 <?php render_footer(); ?>

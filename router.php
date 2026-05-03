@@ -42,9 +42,36 @@ if (str_starts_with($path, '/admin/')) {
         require __DIR__ . '/admin/editar.php';
         return;
     }
+    if (str_starts_with($adminPath, '/editar_cliente/')) {
+        $_GET['id'] = substr($adminPath, strlen('/editar_cliente/'));
+        require __DIR__ . '/admin/editar_cliente.php';
+        return;
+    }
+    if ($adminPath === '/excluir' || $adminPath === '/excluir/') {
+        require __DIR__ . '/admin/excluir.php';
+        return;
+    }
     if (str_starts_with($adminPath, '/excluir/')) {
         $_GET['id'] = substr($adminPath, strlen('/excluir/'));
         require __DIR__ . '/admin/excluir.php';
+        return;
+    }
+    if ($adminPath === '/clientes' || $adminPath === '/clientes/') {
+        require __DIR__ . '/admin/clientes.php';
+        return;
+    }
+    if ($adminPath === '/categorias' || $adminPath === '/categorias/') {
+        require __DIR__ . '/admin/categorias.php';
+        return;
+    }
+    if ($adminPath === '/anuncios' || $adminPath === '/anuncios/') {
+        // Como o dashboard já lista os anúncios, podemos apontar para ele 
+        // ou para uma página de listagem específica se houver.
+        require __DIR__ . '/admin/dashboard.php';
+        return;
+    }
+    if ($adminPath === '/configuracoes' || $adminPath === '/configuracoes/') {
+        require __DIR__ . '/admin/configuracoes.php';
         return;
     }
     if ($adminPath === '/dashboard' || $adminPath === '/dashboard/') {
@@ -53,6 +80,10 @@ if (str_starts_with($path, '/admin/')) {
     }
     if ($adminPath === '/criar' || $adminPath === '/criar/') {
         require __DIR__ . '/admin/criar.php';
+        return;
+    }
+    if ($adminPath === '/criar_cliente' || $adminPath === '/criar_cliente/') {
+        require __DIR__ . '/admin/criar_cliente.php';
         return;
     }
 }

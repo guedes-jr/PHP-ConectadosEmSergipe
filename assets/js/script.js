@@ -9,81 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Hero Slider
-    const slides = document.querySelectorAll('.hero-slide');
-    const dots = document.querySelectorAll('.hero-dot');
-    const prevBtn = document.querySelector('.hero-arrow.prev');
-    const nextBtn = document.querySelector('.hero-arrow.next');
-
-    if (slides.length > 0) {
-        let currentSlide = 0;
-        let slideInterval;
-
-        function goToSlide(n) {
-            slides[currentSlide].classList.remove('active');
-            dots[currentSlide]?.classList.remove('active');
-            currentSlide = (n + slides.length) % slides.length;
-            slides[currentSlide].classList.add('active');
-            dots[currentSlide]?.classList.add('active');
-        }
-
-        function nextSlide() {
-            goToSlide(currentSlide + 1);
-        }
-
-        function prevSlide() {
-            goToSlide(currentSlide - 1);
-        }
-
-        function startInterval() {
-            stopInterval();
-            slideInterval = setInterval(nextSlide, 5000);
-        }
-
-        function stopInterval() {
-            if (slideInterval) clearInterval(slideInterval);
-        }
-
-        // Event Listeners
-        if (nextBtn) nextBtn.addEventListener('click', () => {
-            nextSlide();
-            startInterval();
-        });
-        
-        if (prevBtn) prevBtn.addEventListener('click', () => {
-            prevSlide();
-            startInterval();
-        });
-
-        dots.forEach((dot, i) => {
-            dot.addEventListener('click', () => {
-                goToSlide(i);
-                startInterval();
-            });
-        });
-
-        startInterval();
-    }
-
-    // Filters
-    const categoryFilter = document.querySelector('#categoryFilter');
-    const cityFilter = document.querySelector('#cityFilter');
-
-    if (categoryFilter) {
-        categoryFilter.addEventListener('change', () => {
-            const val = categoryFilter.value;
-            if (val) window.location.href = `/buscar?categoria=${val}`;
-        });
-    }
-
-    if (cityFilter) {
-        cityFilter.addEventListener('change', () => {
-            const val = cityFilter.value;
-            if (val) window.location.href = `/buscar?cidade=${val}`;
-        });
-    }
-
-    // Theme Toggle Logic
+    // Theme Toggle Logic (Restored to Dropdown version)
     const themeContainer = document.querySelector('.theme-toggle-container');
     const themeBtn = document.getElementById('themeToggleBtn');
     const themeOptions = document.querySelectorAll('.theme-option');
@@ -97,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
             themeBtn.setAttribute('aria-expanded', !expanded);
         });
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!themeContainer.contains(e.target)) {
                 themeContainer.classList.remove('active');
@@ -107,9 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const getPreferredTheme = () => {
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                return savedTheme;
-            }
+            if (savedTheme) return savedTheme;
             return 'system';
         };
 
@@ -121,16 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 html.setAttribute('data-theme', theme);
             }
 
-            // Update active option in dropdown
             themeOptions.forEach(opt => {
-                if (opt.dataset.themeValue === theme) {
-                    opt.classList.add('active');
-                } else {
-                    opt.classList.remove('active');
-                }
+                if (opt.dataset.themeValue === theme) opt.classList.add('active');
+                else opt.classList.remove('active');
             });
 
-            // Update button icon
             const iconSun = themeBtn.querySelector('.icon-sun');
             const iconMoon = themeBtn.querySelector('.icon-moon');
             const iconSystem = themeBtn.querySelector('.icon-system');
@@ -146,11 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        // Initialize theme
         const initialTheme = getPreferredTheme();
         applyTheme(initialTheme);
 
-        // Handle option click
         themeOptions.forEach(opt => {
             opt.addEventListener('click', () => {
                 const theme = opt.dataset.themeValue;
@@ -161,11 +77,39 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Listen for system theme changes
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
             if (localStorage.getItem('theme') === 'system' || !localStorage.getItem('theme')) {
                 applyTheme('system');
             }
         });
     }
+
+    // Favorites Logic (Keep this as it's a new feature but non-intrusive)
+    const initFavorites = () => {
+        const favorites = JSON.parse(localStorage.getItem('sergipe_favs') || '[]');
+        document.querySelectorAll('.btn-favorite').forEach(btn => {
+            const id = btn.dataset.id;
+            if (favorites.includes(id)) {
+                btn.classList.add('active');
+            }
+            
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const index = favorites.indexOf(id);
+                if (index > -1) {
+                    favorites.splice(index, 1);
+                    btn.classList.remove('active');
+                } else {
+                    favorites.push(id);
+                    btn.classList.add('active');
+                    btn.style.transform = 'scale(1.3)';
+                    setTimeout(() => btn.style.transform = '', 200);
+                }
+                localStorage.setItem('sergipe_favs', JSON.stringify(favorites));
+            });
+        });
+    };
+    initFavorites();
 });

@@ -3,17 +3,21 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../includes/layout.php';
 require_once __DIR__ . '/../includes/seo.php';
+require_once __DIR__ . '/../includes/sergipe_data.php';
 
 $q = isset($_GET['q']) ? trim((string)$_GET['q']) : '';
 $cidade = isset($_GET['cidade']) ? trim((string)$_GET['cidade']) : '';
+$regiao = isset($_GET['regiao']) ? trim((string)$_GET['regiao']) : '';
 $categoria = isset($_GET['categoria']) ? trim((string)$_GET['categoria']) : '';
 $rating = isset($_GET['avaliacao']) ? trim((string)$_GET['avaliacao']) : '';
 
 $categories = fetch_all_categories($pdo);
 $cities = fetch_unique_cities($pdo);
-$results = search_ads($pdo, $q, $cidade, $categoria, $rating);
+$regions = fetch_unique_regions($pdo);
+$cityMapping = get_city_region_mapping();
+$results = search_ads($pdo, $q, $cidade, $categoria, $rating, $regiao);
 
-render_header(seo_title('Buscar'), 'Busque anúncios por título, categoria ou cidade.');
+render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categoria ou cidade.');
 ?>
 
 <section class="search-hero section">
@@ -23,17 +27,12 @@ render_header(seo_title('Buscar'), 'Busque anúncios por título, categoria ou c
         
         <form class="search-main-form" method="get" action="/buscar">
             <div class="search-input-wrapper">
-                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <i data-lucide="search" style="margin-right: 1rem; color: var(--muted-foreground);"></i>
                 <input type="text" name="q" value="<?php echo e($q); ?>" placeholder="Buscar por nome ou serviço...">
-                <?php if ($cidade): ?>
-                    <input type="hidden" name="cidade" value="<?php echo e($cidade); ?>">
-                <?php endif; ?>
-                <?php if ($categoria): ?>
-                    <input type="hidden" name="categoria" value="<?php echo e($categoria); ?>">
-                <?php endif; ?>
-                <?php if ($rating): ?>
-                    <input type="hidden" name="avaliacao" value="<?php echo e($rating); ?>">
-                <?php endif; ?>
+                <?php if ($cidade): ?><input type="hidden" name="cidade" value="<?php echo e($cidade); ?>"><?php endif; ?>
+                <?php if ($regiao): ?><input type="hidden" name="regiao" value="<?php echo e($regiao); ?>"><?php endif; ?>
+                <?php if ($categoria): ?><input type="hidden" name="categoria" value="<?php echo e($categoria); ?>"><?php endif; ?>
+                <?php if ($rating): ?><input type="hidden" name="avaliacao" value="<?php echo e($rating); ?>"><?php endif; ?>
                 <button type="submit" class="btn btn-primary">Buscar</button>
             </div>
         </form>
@@ -42,14 +41,24 @@ render_header(seo_title('Buscar'), 'Busque anúncios por título, categoria ou c
 
 <div class="search-layout container section">
     <aside class="search-sidebar">
-        <div class="sidebar-block">
+        <div class="sidebar-block animate-fade-in">
             <form id="filters-form" action="/buscar" method="get">
                 <input type="hidden" name="q" value="<?php echo e($q); ?>">
                 <input type="hidden" name="categoria" value="<?php echo e($categoria); ?>">
                 
-                <h3 style="margin-top: 0;">CIDADE</h3>
+                <h3>REGIÃO</h3>
                 <div class="select-wrapper" style="margin-bottom: 1.5rem;">
-                    <select name="cidade" class="quick-select" style="width: 100%;" onchange="document.getElementById('filters-form').submit()">
+                    <select name="regiao" id="searchRegiao" class="quick-select" style="width: 100%;" onchange="document.getElementById('filters-form').submit()">
+                        <option value="">Todas as regiões</option>
+                        <?php foreach ($regions as $r): ?>
+                            <option value="<?php echo e($r); ?>" <?php echo $regiao === $r ? 'selected' : ''; ?>><?php echo e($r); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <h3>CIDADE</h3>
+                <div class="select-wrapper" style="margin-bottom: 1.5rem;">
+                    <select name="cidade" id="searchCidade" class="quick-select" style="width: 100%;" onchange="document.getElementById('filters-form').submit()">
                         <option value="">Todas as cidades</option>
                         <?php foreach ($cities as $c): ?>
                             <option value="<?php echo e($c); ?>" <?php echo $cidade === $c ? 'selected' : ''; ?>><?php echo e($c); ?></option>
@@ -59,36 +68,31 @@ render_header(seo_title('Buscar'), 'Busque anúncios por título, categoria ou c
 
                 <hr style="border: none; border-top: 1px solid var(--border); margin: 1.5rem 0;">
 
-                <h3 style="margin-top: 0;">AVALIAÇÃO</h3>
+                <h3>AVALIAÇÃO</h3>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
-                    <label class="pill" style="cursor: pointer; padding: 0.375rem 0.875rem; <?php echo $rating === '5' ? 'background: var(--primary); color: white; border-color: var(--primary);' : ''; ?>">
-                        <input type="radio" name="avaliacao" value="5" <?php echo $rating === '5' ? 'checked' : ''; ?> onchange="document.getElementById('filters-form').submit()" style="display:none;">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; margin-right:2px; vertical-align:middle;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                        <span style="vertical-align:middle;">5+</span>
+                    <?php foreach(['5', '4', '3'] as $star): ?>
+                    <label class="pill" style="cursor: pointer; padding: 0.375rem 0.875rem; <?php echo $rating === $star ? 'background: var(--primary); color: white; border-color: var(--primary);' : ''; ?>">
+                        <input type="radio" name="avaliacao" value="<?php echo $star; ?>" <?php echo $rating === $star ? 'checked' : ''; ?> onchange="document.getElementById('filters-form').submit()" style="display:none;">
+                        <i data-lucide="star" style="width:12px; height:12px; fill:<?php echo $rating === $star ? 'white' : 'currentColor'; ?>; display:inline-block; margin-right:2px; vertical-align:middle;"></i>
+                        <span style="vertical-align:middle;"><?php echo $star; ?>+</span>
                     </label>
-                    <label class="pill" style="cursor: pointer; padding: 0.375rem 0.875rem; <?php echo $rating === '4' ? 'background: var(--primary); color: white; border-color: var(--primary);' : ''; ?>">
-                        <input type="radio" name="avaliacao" value="4" <?php echo $rating === '4' ? 'checked' : ''; ?> onchange="document.getElementById('filters-form').submit()" style="display:none;">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; margin-right:2px; vertical-align:middle;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                        <span style="vertical-align:middle;">4+</span>
-                    </label>
-                    <label class="pill" style="cursor: pointer; padding: 0.375rem 0.875rem; <?php echo $rating === '3' ? 'background: var(--primary); color: white; border-color: var(--primary);' : ''; ?>">
-                        <input type="radio" name="avaliacao" value="3" <?php echo $rating === '3' ? 'checked' : ''; ?> onchange="document.getElementById('filters-form').submit()" style="display:none;">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; margin-right:2px; vertical-align:middle;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                        <span style="vertical-align:middle;">3+</span>
-                    </label>
+                    <?php endforeach; ?>
                 </div>
             </form>
 
             <hr style="border: none; border-top: 1px solid var(--border); margin: 1.5rem 0;">
 
-            <h3 style="margin-top: 0;">CATEGORIA</h3>
+            <h3>CATEGORIA</h3>
             <div class="category-list">
-                <a href="/buscar?q=<?php echo urlencode($q); ?><?php echo $cidade ? '&cidade='.urlencode($cidade) : ''; ?><?php echo $rating ? '&avaliacao='.urlencode($rating) : ''; ?>" class="cat-link <?php echo empty($categoria) ? 'active' : ''; ?>">
+                <a href="/buscar?q=<?php echo urlencode($q); ?><?php echo $cidade ? '&cidade='.urlencode($cidade) : ''; ?><?php echo $regiao ? '&regiao='.urlencode($regiao) : ''; ?><?php echo $rating ? '&avaliacao='.urlencode($rating) : ''; ?>" class="cat-link <?php echo empty($categoria) ? 'active' : ''; ?>">
                     <span>Todas as categorias</span>
                 </a>
                 <?php foreach ($categories as $item): ?>
-                <a href="/buscar?q=<?php echo urlencode($q); ?><?php echo $cidade ? '&cidade='.urlencode($cidade) : ''; ?><?php echo $rating ? '&avaliacao='.urlencode($rating) : ''; ?>&categoria=<?php echo e($item['slug']); ?>" class="cat-link <?php echo $categoria === $item['slug'] ? 'active' : ''; ?>">
-                    <span><?php echo e($item['nome']); ?></span>
+                <a href="/buscar?q=<?php echo urlencode($q); ?><?php echo $cidade ? '&cidade='.urlencode($cidade) : ''; ?><?php echo $regiao ? '&regiao='.urlencode($regiao) : ''; ?><?php echo $rating ? '&avaliacao='.urlencode($rating) : ''; ?>&categoria=<?php echo e($item['slug']); ?>" class="cat-link <?php echo $categoria === $item['slug'] ? 'active' : ''; ?>">
+                    <div style="display:flex; align-items:center; gap:0.75rem;">
+                        <?php echo get_category_icon($item['nome'], $item['icone']); ?>
+                        <span><?php echo e($item['nome']); ?></span>
+                    </div>
                     <small><?php echo $item['Total'] ?? ''; ?></small>
                 </a>
                 <?php endforeach; ?>
@@ -97,47 +101,103 @@ render_header(seo_title('Buscar'), 'Busque anúncios por título, categoria ou c
     </aside>
 
     <main class="search-results">
-        <div class="results-header">
+        <div class="results-header animate-fade-in">
             <p><?php echo count($results); ?> profissionais encontrados</p>
         </div>
         
         <?php if (count($results) > 0): ?>
             <div class="cards-grid">
                 <?php foreach ($results as $ad): ?>
-                    <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="service-card">
-                        <div class="card-cover">
+                    <div class="service-card animate-fade-in">
+                        <button class="btn-favorite" data-id="<?php echo $ad['id']; ?>" title="Favoritar">
+                            <i data-lucide="heart"></i>
+                        </button>
+                        <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="card-cover">
                             <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>" alt="<?php echo e($ad['titulo']); ?>">
                             <div class="card-badges">
                                 <?php if (isset($ad['destaque']) && $ad['destaque']): ?>
                                     <span class="badge-featured">★ EM DESTAQUE</span>
                                 <?php endif; ?>
-                                <span class="badge-store">LOJA</span>
                             </div>
-                        </div>
+                        </a>
                         <div class="card-body">
-                            <span class="card-cat"><?php echo e($ad['categoria_nome'] ?? $ad['categoria'] ?? ''); ?></span>
-                            <h3><?php echo e($ad['titulo']); ?></h3>
-                            <div class="card-footer">
-                                <div class="location">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                                    <span><?php echo e($ad['cidade']); ?></span>
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.5rem;">
+                                <div class="card-cat-wrapper" style="display:flex; align-items:center; gap:0.5rem; color:var(--primary); font-size:0.75rem; font-weight:700;">
+                                    <?php echo get_category_icon($ad['categoria_nome'], $ad['categoria_icone']); ?>
+                                    <span class="card-cat" style="color:var(--muted-foreground); text-transform:uppercase;"><?php echo e($ad['categoria_nome']); ?></span>
                                 </div>
                                 <div class="rating">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                                    <span><?php echo isset($ad['nota']) ? $ad['nota'] : '5.0'; ?> · <?php echo $ad['avaliacoes'] ?? '120'; ?></span>
+                                    <i data-lucide="star" style="width:14px; height:14px; fill:currentColor;"></i>
+                                    <span><?php echo $ad['nota'] ?? '5.0'; ?></span>
                                 </div>
                             </div>
+                            <a href="/anuncio/<?php echo e($ad['slug']); ?>"><h3><?php echo e($ad['titulo']); ?></h3></a>
+                            <div class="card-footer">
+                                <div class="location">
+                                    <i data-lucide="map-pin" style="width:14px; height:14px;"></i>
+                                    <span><?php echo e($ad['cidade']); ?></span>
+                                </div>
+                                <a href="<?php echo whatsapp_link($ad['cliente_telefone'] ?? $ad['telefone'] ?? '0000000000'); ?>" target="_blank" class="whatsapp-float-btn">
+                                    <i data-lucide="message-circle" style="width:14px; height:14px;"></i> Whats
+                                </a>
+                            </div>
                         </div>
-                    </a>
+                    </div>
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <div class="no-results" style="padding: 3rem; text-align: center; background: var(--card); border-radius: 1rem; border: 1px solid var(--border);">
-                <h3>Nenhum resultado</h3>
-                <p style="color: var(--muted-foreground); margin-top: 0.5rem;">Não encontramos prestadores de serviço com os termos buscados.</p>
+            <div class="no-results animate-fade-in" style="padding: 4rem; text-align: center; background: var(--card); border-radius: 2rem; border: 1px solid var(--border);">
+                <i data-lucide="search-x" style="width:48px; height:48px; color:var(--muted-foreground); margin-bottom:1rem;"></i>
+                <h3>Nenhum resultado encontrado</h3>
+                <p style="color: var(--muted-foreground); margin-top: 0.5rem;">Tente ajustar seus filtros ou termos de busca.</p>
             </div>
         <?php endif; ?>
     </main>
 </div>
+
+<script>
+    const cityMapping = <?php echo json_encode($cityMapping); ?>;
+    const allCities = <?php echo json_encode($cities); ?>;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchRegiao = document.getElementById('searchRegiao');
+        const searchCidade = document.getElementById('searchCidade');
+
+        function filterCities(region) {
+            const currentCity = searchCidade.value;
+            searchCidade.innerHTML = '<option value="">Todas as cidades</option>';
+            const filtered = region 
+                ? allCities.filter(city => cityMapping[city] === region)
+                : allCities;
+            
+            filtered.forEach(city => {
+                const opt = document.createElement('option');
+                opt.value = city;
+                opt.textContent = city;
+                if (city === currentCity) opt.selected = true;
+                searchCidade.appendChild(opt);
+            });
+        }
+
+        if (searchRegiao) {
+            searchRegiao.addEventListener('change', (e) => filterCities(e.target.value));
+            if (searchRegiao.value) filterCities(searchRegiao.value);
+        }
+
+        // Favorites
+        const favorites = JSON.parse(localStorage.getItem('sergipe_favs') || '[]');
+        document.querySelectorAll('.btn-favorite').forEach(btn => {
+            if (favorites.includes(btn.dataset.id)) btn.classList.add('active');
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const id = btn.dataset.id;
+                const index = favorites.indexOf(id);
+                if (index > -1) { favorites.splice(index, 1); btn.classList.remove('active'); }
+                else { favorites.push(id); btn.classList.add('active'); }
+                localStorage.setItem('sergipe_favs', JSON.stringify(favorites));
+            });
+        });
+    });
+</script>
 
 <?php render_footer(); ?>

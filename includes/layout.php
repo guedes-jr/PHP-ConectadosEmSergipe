@@ -2,22 +2,19 @@
 
 declare(strict_types=1);
 
-function render_header(string $title, string $description = ''): void
+function render_header(PDO $pdo, string $title, string $description = '', string $image = '', string $url = ''): void
 {
-    $safeTitle = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
-    $safeDescription = htmlspecialchars($description, ENT_QUOTES, 'UTF-8');
     echo '<!DOCTYPE html>';
     echo '<html lang="pt-BR">';
     echo '<head>';
     echo '<meta charset="UTF-8">';
     echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
-    echo '<title>' . $safeTitle . '</title>';
-    echo '<meta name="description" content="' . $safeDescription . '">';
+    render_seo_tags($pdo, $title, $description, $image, $url);
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
     echo '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">';
     echo '<link rel="stylesheet" href="/assets/css/style.css">';
-    echo '<link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico">';
+    echo '<link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">';
     echo '</head>';
     echo '<body>';
     echo '<header class="site-header">';
@@ -55,7 +52,10 @@ function render_footer(): void
     echo '<footer class="site-footer">';
     echo '<div class="footer-main"><div class="container footer-grid">';
     echo '<div class="footer-col footer-about">';
-    echo '<a class="footer-brand" href="/"><img src="/assets/img/logo-hero.png" alt="Conectado em Sergipe" style="filter: brightness(0) invert(1);"><span>Conectado em Sergipe</span></a>';
+    echo '<a class="footer-brand" href="/" aria-label="Conectado em Sergipe">';
+    echo '<img src="/assets/img/logo-hero.png" alt="Conectado em Sergipe">';
+    echo '<span><strong>Conectado em Sergipe</strong><small>Vitrine de serviços</small></span>';
+    echo '</a>';
     echo '<p>A maior vitrine de serviços e profissionais autônomos de Sergipe. Conectamos quem precisa de um serviço confiável aos melhores profissionais da sua cidade.</p>';
     echo '<div class="footer-social">';
     echo '<a href="#" aria-label="Instagram"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.012-3.584.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.947.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.947-.072 4.357-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.221-4.402-2.561-6.775-6.979-6.979-1.281-.059-1.69-.073-4.949-.073z"/><path d="M12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8z"/><circle cx="18.406" cy="5.594" r="1.44"/></svg></a>';
@@ -78,7 +78,8 @@ function render_footer(): void
     echo '<button class="theme-option" data-theme-value="dark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> Escuro</button>';
     echo '<button class="theme-option" data-theme-value="system"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> Sistema</button>';
     echo '</div></div>';
+    echo '<script src="https://unpkg.com/lucide@latest"></script>';
+    echo '<script>lucide.createIcons();</script>';
     echo '<script src="/assets/js/script.js" defer></script>';
     echo '</body></html>';
 }
-

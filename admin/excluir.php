@@ -9,12 +9,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: /admin/dashboard');
         exit;
     }
-    $id = (int)($_POST['id'] ?? 0);
-    if ($id > 0) {
-        $stmt = $pdo->prepare('DELETE FROM anuncios WHERE id = :id');
-        $stmt->execute(['id' => $id]);
+    $ids = $_POST['ids'] ?? ($_POST['id'] ? [$_POST['id']] : []);
+    $type = $_POST['type'] ?? 'anuncios';
+    $redirect = $_POST['redirect'] ?? '/admin/anuncios';
+    
+    if (!empty($ids)) {
+        $ids = array_map('intval', (array)$ids);
+        $placeholders = str_repeat('?,', count($ids) - 1) . '?';
+        
+        if ($type === 'clientes') {
+            // Se deletar cliente, deleta os anúncios dele também
+            $stmt = $pdo->prepare("DELETE FROM anuncios WHERE cliente_id IN ($placeholders)");
+            $stmt->execute($ids);
+            
+            $stmt = $pdo->prepare("DELETE FROM clientes WHERE id IN ($placeholders)");
+            $stmt->execute($ids);
+        } else {
+            $stmt = $pdo->prepare("DELETE FROM anuncios WHERE id IN ($placeholders)");
+            $stmt->execute($ids);
+        }
     }
 }
 
-header('Location: /admin/dashboard');
+header('Location: ' . $redirect);
 exit;
