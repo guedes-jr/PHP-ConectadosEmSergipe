@@ -114,20 +114,44 @@ document.addEventListener('DOMContentLoaded', () => {
     initFavorites();
 });
 
-document.addEventListener('keydown', e => { if(e.key === 'Escape') closeImgModal(); });
+let galleryIndex = 0;
+let galleryImages = [];
 
-window.openImgModal = function(idx) {
-    const modal = document.getElementById('imgModal');
-    const modalImg = document.getElementById('imgModalImg');
+document.addEventListener('keydown', e => {
+    const modal = document.getElementById('galleryModal');
+    if (!modal || !modal.classList.contains('open')) return;
+    if (e.key === 'ArrowLeft') prevGallery();
+    else if (e.key === 'ArrowRight') nextGallery();
+    else if (e.key === 'Escape') closeGallery();
+});
+
+window.openGallery = function(index) {
     const imgs = document.querySelectorAll('.gallery-card img');
-    if(modal && modalImg && imgs[idx]) {
-        modalImg.src = imgs[idx].src;
+    galleryImages = Array.from(imgs).map(img => img.src);
+    galleryIndex = index;
+    const modal = document.getElementById('galleryModal');
+    const modalImg = document.getElementById('galleryImg');
+    if (modal && modalImg && galleryImages[index]) {
+        modalImg.src = galleryImages[index];
         modal.classList.add('open');
         document.body.style.overflow = 'hidden';
     }
 };
 
-window.closeImgModal = function() {
-    const modal = document.getElementById('imgModal');
-    if(modal) { modal.classList.remove('open'); document.body.style.overflow = ''; }
+window.closeGallery = function() {
+    const modal = document.getElementById('galleryModal');
+    if (modal) {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+};
+
+window.prevGallery = function() {
+    galleryIndex = (galleryIndex - 1 + galleryImages.length) % galleryImages.length;
+    document.getElementById('galleryImg').src = galleryImages[galleryIndex];
+};
+
+window.nextGallery = function() {
+    galleryIndex = (galleryIndex + 1) % galleryImages.length;
+    document.getElementById('galleryImg').src = galleryImages[galleryIndex];
 };

@@ -91,16 +91,20 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
                     <h2>Trabalhos realizados</h2>
                     <div class="ad-gallery-grid">
                         <?php foreach ($images as $i => $img): ?>
-                            <div class="gallery-card" onclick="openImgModal(<?php echo $i; ?>)">
+                            <div class="gallery-card" onclick="openGallery(<?php echo $i; ?>)">
                                 <img src="/<?php echo e($img['caminho']); ?>" alt="Trabalho realizado" loading="lazy">
                             </div>
                         <?php endforeach; ?>
                     </div>
                 </section>
 
-                <div id="imgModal" class="img-modal" onclick="closeImgModal()">
-                    <span class="img-modal-close">&times;</span>
-                    <img id="imgModalImg" src="" alt="Ampliado" onclick="event.stopPropagation()">
+                <div id="galleryModal" class="gallery-modal" onclick="closeGallery()">
+                    <button class="gallery-btn close" onclick="closeGallery()">&times;</button>
+                    <button class="gallery-btn prev" onclick="event.stopPropagation(); prevGallery()">&#10094;</button>
+                    <div class="gallery-content" onclick="event.stopPropagation()">
+                        <img id="galleryImg" src="" alt="Trabalho realizado">
+                    </div>
+                    <button class="gallery-btn next" onclick="event.stopPropagation(); nextGallery()">&#10095;</button>
                 </div>
                 <?php endif; ?>
             </div>

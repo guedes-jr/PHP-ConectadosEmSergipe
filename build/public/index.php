@@ -45,9 +45,11 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
     </div>
     <div class="container">
         <div class="hero-content">
-            <h1>Conectado em Sergipe é a plataforma ideal para encontrar serviços locals na sua cidade.</h1>
-            <p class="lead">Conectamos prestadores qualificados a pessoas que realmente precisam, de forma rápida, simples e eficiente.</p>
-            <p>Encontre eletricistas, manicures, pedreiros e muito mais nas 75 cidades de Sergipe. Simples, rápido e gratuito.</p>
+            <h1>Conectado em Sergipe é a plataforma ideal para encontrar serviços locais na sua cidade.</h1>
+            <p class="lead">Conectamos prestadores qualificados a pessoas que realmente precisam, de forma rápida,
+                simples e eficiente.</p>
+            <p>Encontre eletricistas, manicures, pedreiros e muito mais nas 75 cidades de Sergipe. Simples, rápido e
+                gratuito.</p>
             <div class="hero-actions">
                 <a class="btn btn-primary" href="/buscar">Explorar categorias</a>
                 <a class="btn btn-outline" href="/admin/criar">Quero anunciar</a>
@@ -110,14 +112,16 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
             <div class="trending-track">
                 <?php foreach ($featuredAds as $ad): ?>
                     <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="mini-card">
-                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>" alt="<?php echo e($ad['titulo']); ?>">
+                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>"
+                            alt="<?php echo e($ad['titulo']); ?>">
                         <strong><?php echo e($ad['titulo']); ?></strong>
                     </a>
                 <?php endforeach; ?>
                 <!-- Duplicate for infinite effect -->
                 <?php foreach ($featuredAds as $ad): ?>
                     <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="mini-card">
-                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>" alt="<?php echo e($ad['titulo']); ?>">
+                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>"
+                            alt="<?php echo e($ad['titulo']); ?>">
                         <strong><?php echo e($ad['titulo']); ?></strong>
                     </a>
                 <?php endforeach; ?>
@@ -161,7 +165,8 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
             <?php foreach ($featuredAds as $ad): ?>
                 <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="service-card">
                     <div class="card-cover">
-                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>" alt="<?php echo e($ad['titulo']); ?>">
+                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>"
+                            alt="<?php echo e($ad['titulo']); ?>">
                         <div class="card-badges">
                             <span class="badge-featured">★ EM DESTAQUE</span>
                             <span class="badge-store">LOJA</span>
@@ -172,11 +177,18 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                         <h3><?php echo e($ad['titulo']); ?></h3>
                         <div class="card-footer">
                             <div class="location">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                    <circle cx="12" cy="10" r="3" />
+                                </svg>
                                 <span><?php echo e($ad['cidade']); ?></span>
                             </div>
                             <div class="rating">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
                                 <span><?php echo $ad['nota']; ?> · <?php echo $ad['avaliacoes'] ?? '0'; ?></span>
                             </div>
                         </div>
@@ -200,7 +212,8 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
             <?php foreach ($recentAds as $ad): ?>
                 <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="service-card">
                     <div class="card-cover">
-                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>" alt="<?php echo e($ad['titulo']); ?>">
+                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>"
+                            alt="<?php echo e($ad['titulo']); ?>">
                         <div class="card-badges">
                             <?php if (isset($ad['destaque']) && $ad['destaque']): ?>
                                 <span class="badge-featured">★ EM DESTAQUE</span>
@@ -213,11 +226,18 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                         <h3><?php echo e($ad['titulo']); ?></h3>
                         <div class="card-footer">
                             <div class="location">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                    <circle cx="12" cy="10" r="3" />
+                                </svg>
                                 <span><?php echo e($ad['cidade']); ?></span>
                             </div>
                             <div class="rating">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
                                 <span><?php echo $ad['nota'] ?? '5.0'; ?> · <?php echo $ad['avaliacoes'] ?? '0'; ?></span>
                             </div>
                         </div>
@@ -237,7 +257,11 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                 <p>Cadastro gratuito de anúncio, Loja própria, descrição do trabalho e contato direto pelo WhatsApp.</p>
                 <div class="cta-actions">
                     <a class="btn btn-primary whatsapp-btn" href="https://wa.me/5579999999999">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7 1 1 0 0 1 .5.1l3.6-1 1 3.6a1 1 0 0 1 .1.5 8.5 8.5 0 0 1 3.3 4.7z"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7 1 1 0 0 1 .5.1l3.6-1 1 3.6a1 1 0 0 1 .1.5 8.5 8.5 0 0 1 3.3 4.7z" />
+                        </svg>
                         Falar no WhatsApp
                     </a>
                 </div>
