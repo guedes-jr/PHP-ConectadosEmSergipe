@@ -39,7 +39,7 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
             <div style="background: linear-gradient(135deg, var(--primary), #4f46e5); width:100%; height:100%;"></div>
         <?php endif; ?>
         <div class="banner-overlay"></div>
-        <a href="javascript:history.back()" class="btn-back">
+        <a href="javascript:history.back()" class="btn-back" style="background:#fff;color:#333;border:1px solid #e5e7eb;">
             <i data-lucide="arrow-left"></i> Voltar
         </a>
     </div>
@@ -74,9 +74,6 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
                 <a href="<?php echo e(whatsapp_link($ad['cliente_whatsapp'] ?: $ad['cliente_telefone'])); ?>" class="btn btn-primary" target="_blank">
                     <i data-lucide="message-circle"></i> Conversar agora
                 </a>
-                <button class="btn btn-outline btn-favorite" data-id="<?php echo $ad['id']; ?>">
-                    <i data-lucide="heart"></i> Salvar nos favoritos
-                </button>
             </div>
         </div>
 
@@ -85,7 +82,7 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
                 <section class="content-section animate-fade-in">
                     <span class="section-label">SOBRE</span>
                     <h2>Conheça o trabalho</h2>
-                    <p style="white-space: pre-line;"><?php echo e($ad['descricao']); ?></p>
+                    <p style="white-space: pre-line; color: var(--foreground);"><?php echo e($ad['descricao']); ?></p>
                 </section>
 
                 <?php if (!empty($images)): ?>
@@ -93,13 +90,18 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
                     <span class="section-label">GALERIA</span>
                     <h2>Trabalhos realizados</h2>
                     <div class="ad-gallery-grid">
-                        <?php foreach ($images as $img): ?>
-                            <a href="/<?php echo e($img['caminho']); ?>" target="_blank" class="gallery-card">
+                        <?php foreach ($images as $i => $img): ?>
+                            <div class="gallery-card" onclick="openImgModal(<?php echo $i; ?>)">
                                 <img src="/<?php echo e($img['caminho']); ?>" alt="Trabalho realizado" loading="lazy">
-                            </a>
+                            </div>
                         <?php endforeach; ?>
                     </div>
                 </section>
+
+                <div id="imgModal" class="img-modal" onclick="closeImgModal()">
+                    <span class="img-modal-close">&times;</span>
+                    <img id="imgModalImg" src="" alt="Ampliado" onclick="event.stopPropagation()">
+                </div>
                 <?php endif; ?>
             </div>
 

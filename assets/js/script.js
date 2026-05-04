@@ -113,3 +113,21 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     initFavorites();
 });
+
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeImgModal(); });
+
+window.openImgModal = function(idx) {
+    const modal = document.getElementById('imgModal');
+    const modalImg = document.getElementById('imgModalImg');
+    const imgs = document.querySelectorAll('.gallery-card img');
+    if(modal && modalImg && imgs[idx]) {
+        modalImg.src = imgs[idx].src;
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+};
+
+window.closeImgModal = function() {
+    const modal = document.getElementById('imgModal');
+    if(modal) { modal.classList.remove('open'); document.body.style.overflow = ''; }
+};

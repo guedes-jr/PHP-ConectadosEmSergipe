@@ -1522,13 +1522,42 @@ h1, h2, h3, h4 {
 }
 
 .gallery-card {
-    background: var(--card);
-    border-radius: 2rem;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
+  background: var(--card);
+  border-radius: 2rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.img-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-modal.open { display: flex; }
+
+.img-modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  color: white;
+  font-size: 2.5rem;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.img-modal img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
 }
 
 .gallery-card img {

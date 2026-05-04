@@ -19,7 +19,7 @@ $ads = fetch_ads_by_category($pdo, (int)$category['id']);
 render_header(seo_title($category['nome']), seo_description($category['descricao'] ?? $category['nome']));
 ?>
 <h1><?php echo e($category['nome']); ?></h1>
-<p><?php echo e($category['descricao'] ?? ''); ?></p>
+<p style="color:var(--foreground);"><?php echo e($category['descricao'] ?? ''); ?></p>
 <div class="grid cards-grid">
     <?php foreach ($ads as $ad): ?>
         <article class="card ad-card">
