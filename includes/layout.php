@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/seo.php';
+
 function render_header(PDO $pdo, string $title, string $description = '', string $image = '', string $url = ''): void
 {
     echo '<!DOCTYPE html>';
     echo '<html lang="pt-BR">';
     echo '<head>';
     echo '<meta charset="UTF-8">';
-    echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
+    echo '<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">';
     render_seo_tags($pdo, $title, $description, $image, $url);
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
@@ -63,7 +65,7 @@ function render_footer(): void
     echo '</div></div>';
     echo '<div class="footer-col"><h3>Para clientes</h3><nav class="footer-links"><a href="/buscar">Buscar serviços</a><a href="/buscar?categoria=eletricista">Eletricistas</a><a href="/buscar?categoria=diarista">Diaristas</a><a href="/buscar?categoria=pintor">Pintores</a><a href="/buscar?categoria=pedreiro">Pedreiros</a></nav></div>';
     echo '<div class="footer-col"><h3>Para profissionais</h3><nav class="footer-links"><a href="/admin/">Painel de Controle</a><a href="/admin/criar">Criar loja gratuita</a><a href="https://wa.me/5579999999999" target="_blank" rel="noopener">Falar no WhatsApp</a></nav></div>';
-    echo '<div class="footer-col"><h3>Institucional</h3><nav class="footer-links"><a href="/">Início</a><a href="/buscar">Buscar</a><a href="#">Política de privacidade</a><a href="#">Termos de uso</a></nav></div>';
+    echo '<div class="footer-col"><h3>Institucional</h3><nav class="footer-links"><a href="/">Início</a><a href="/buscar">Buscar</a><a href="/privacidade">Política de privacidade</a><a href="/termos">Termos de uso</a></nav></div>';
     echo '</div></div>';
     echo '<div class="footer-bottom"><div class="container footer-bottom-inner"><p>&copy; ' . $year . ' Conectado em Sergipe. Todos os direitos reservados.</p><p class="footer-location">📍 Sergipe — Brasil</p></div></div>';
     echo '</footer>';

@@ -34,7 +34,7 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
 <div class="ad-page-wrapper">
     <div class="ad-banner-hero">
         <?php if ($ad['imagem_banner']): ?>
-            <img src="/<?php echo e($ad['imagem_banner']); ?>" alt="Banner" class="banner-img">
+            <img src="<?php echo asset_url($ad['imagem_banner']); ?>" alt="Banner" class="banner-img">
         <?php else: ?>
             <div style="background: linear-gradient(135deg, var(--primary), #4f46e5); width:100%; height:100%;"></div>
         <?php endif; ?>
@@ -48,7 +48,7 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
         <div class="ad-header-card animate-fade-in">
             <div class="ad-header-main">
                 <div class="ad-header-profile">
-                    <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>" alt="<?php echo e($ad['titulo']); ?>">
+                    <img src="<?php echo asset_url($ad['imagem_principal']); ?>" alt="<?php echo e($ad['titulo']); ?>">
                 </div>
                 <div class="ad-header-info">
                     <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
@@ -94,8 +94,8 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
                     <h2>Trabalhos realizados</h2>
                     <div class="ad-gallery-grid">
                         <?php foreach ($images as $img): ?>
-                            <a href="/<?php echo e($img['caminho']); ?>" target="_blank" class="gallery-card">
-                                <img src="/<?php echo e($img['caminho']); ?>" alt="Trabalho realizado" loading="lazy">
+                            <a href="<?php echo asset_url($img['caminho']); ?>" target="_blank" class="gallery-card">
+                                <img src="<?php echo asset_url($img['caminho']); ?>" alt="Trabalho realizado" loading="lazy">
                             </a>
                         <?php endforeach; ?>
                     </div>

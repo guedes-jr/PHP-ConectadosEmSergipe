@@ -114,6 +114,20 @@ document.addEventListener('DOMContentLoaded', () => {
     initFavorites();
 });
 
+window.shareAd = function() {
+    if (navigator.share) {
+        navigator.share({
+            title: document.title,
+            url: window.location.href
+        }).catch(console.error);
+    } else {
+        // Fallback: copiar para o clipboard
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            alert('Link copiado para a área de transferência!');
+        });
+    }
+};
+
 let galleryIndex = 0;
 let galleryImages = [];
 
@@ -129,10 +143,28 @@ window.openGallery = function(index) {
     const imgs = document.querySelectorAll('.gallery-card img');
     galleryImages = Array.from(imgs).map(img => img.src);
     galleryIndex = index;
+    
     const modal = document.getElementById('galleryModal');
     const modalImg = document.getElementById('galleryImg');
+    const indicators = document.querySelector('.gallery-indicators');
+    
     if (modal && modalImg && galleryImages[index]) {
         modalImg.src = galleryImages[index];
+        
+        // Create indicators if they don't exist
+        if (indicators) {
+            indicators.innerHTML = '';
+            galleryImages.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = `indicator ${i === index ? 'active' : ''}`;
+                dot.onclick = (e) => {
+                    e.stopPropagation();
+                    goToGallery(i);
+                };
+                indicators.appendChild(dot);
+            });
+        }
+        
         modal.classList.add('open');
         document.body.style.overflow = 'hidden';
     }
@@ -146,12 +178,24 @@ window.closeGallery = function() {
     }
 };
 
+window.goToGallery = function(index) {
+    galleryIndex = index;
+    const modalImg = document.getElementById('galleryImg');
+    if (modalImg) modalImg.src = galleryImages[galleryIndex];
+    
+    // Update indicators
+    const dots = document.querySelectorAll('.indicator');
+    dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === galleryIndex);
+    });
+};
+
 window.prevGallery = function() {
-    galleryIndex = (galleryIndex - 1 + galleryImages.length) % galleryImages.length;
-    document.getElementById('galleryImg').src = galleryImages[galleryIndex];
+    const index = (galleryIndex - 1 + galleryImages.length) % galleryImages.length;
+    goToGallery(index);
 };
 
 window.nextGallery = function() {
-    galleryIndex = (galleryIndex + 1) % galleryImages.length;
-    document.getElementById('galleryImg').src = galleryImages[galleryIndex];
+    const index = (galleryIndex + 1) % galleryImages.length;
+    goToGallery(index);
 };

@@ -7,6 +7,15 @@ function e(?string $value): string
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
 }
 
+function asset_url(?string $path): string
+{
+    if (!$path) return '/assets/img/placeholder.svg';
+    if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+        return $path;
+    }
+    return '/' . ltrim($path, '/');
+}
+
 function redirect(string $path): void
 {
     header('Location: ' . $path);

@@ -112,7 +112,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
             <div class="trending-track">
                 <?php foreach ($featuredAds as $ad): ?>
                     <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="mini-card">
-                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>"
+                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>"
                             alt="<?php echo e($ad['titulo']); ?>">
                         <strong><?php echo e($ad['titulo']); ?></strong>
                     </a>
@@ -120,7 +120,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                 <!-- Duplicate for infinite effect -->
                 <?php foreach ($featuredAds as $ad): ?>
                     <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="mini-card">
-                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>"
+                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>"
                             alt="<?php echo e($ad['titulo']); ?>">
                         <strong><?php echo e($ad['titulo']); ?></strong>
                     </a>
@@ -165,7 +165,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
             <?php foreach ($featuredAds as $ad): ?>
                 <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="service-card">
                     <div class="card-cover">
-                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>"
+                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>"
                             alt="<?php echo e($ad['titulo']); ?>">
                         <div class="card-badges">
                             <span class="badge-featured">★ EM DESTAQUE</span>
@@ -212,7 +212,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
             <?php foreach ($recentAds as $ad): ?>
                 <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="service-card">
                     <div class="card-cover">
-                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>"
+                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>"
                             alt="<?php echo e($ad['titulo']); ?>">
                         <div class="card-badges">
                             <?php if (isset($ad['destaque']) && $ad['destaque']): ?>

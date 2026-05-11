@@ -34,7 +34,7 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
 <div class="ad-page-wrapper">
     <div class="ad-banner-hero">
         <?php if ($ad['imagem_banner']): ?>
-            <img src="/<?php echo e($ad['imagem_banner']); ?>" alt="Banner" class="banner-img">
+            <img src="<?php echo asset_url($ad['imagem_banner']); ?>" alt="Banner" class="banner-img">
         <?php else: ?>
             <div style="background: linear-gradient(135deg, var(--primary), #4f46e5); width:100%; height:100%;"></div>
         <?php endif; ?>
@@ -48,7 +48,7 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
         <div class="ad-header-card animate-fade-in">
             <div class="ad-header-main">
                 <div class="ad-header-profile">
-                    <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>" alt="<?php echo e($ad['titulo']); ?>">
+                    <img src="<?php echo asset_url($ad['imagem_principal']); ?>" alt="<?php echo e($ad['titulo']); ?>">
                 </div>
                 <div class="ad-header-info">
                     <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
@@ -71,9 +71,15 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
                 </div>
             </div>
             <div class="ad-header-actions">
-                <a href="<?php echo e(whatsapp_link($ad['cliente_whatsapp'] ?: $ad['cliente_telefone'])); ?>" class="btn btn-primary" target="_blank">
-                    <i data-lucide="message-circle"></i> Conversar agora
+                <a href="<?php echo e(whatsapp_link($ad['cliente_whatsapp'] ?: $ad['cliente_telefone'])); ?>" class="btn-action whatsapp" target="_blank">
+                    <i data-lucide="message-circle"></i> WhatsApp
                 </a>
+                <a href="tel:<?php echo only_digits($ad['cliente_telefone']); ?>" class="btn-action outline">
+                    <i data-lucide="phone"></i> Ligar
+                </a>
+                <button class="btn-action outline" onclick="shareAd()">
+                    <i data-lucide="share-2"></i> Compartilhar
+                </button>
             </div>
         </div>
 
@@ -92,19 +98,30 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
                     <div class="ad-gallery-grid">
                         <?php foreach ($images as $i => $img): ?>
                             <div class="gallery-card" onclick="openGallery(<?php echo $i; ?>)">
-                                <img src="/<?php echo e($img['caminho']); ?>" alt="Trabalho realizado" loading="lazy">
+                                <img src="<?php echo asset_url($img['caminho']); ?>" alt="Trabalho realizado" loading="lazy">
                             </div>
                         <?php endforeach; ?>
                     </div>
                 </section>
 
                 <div id="galleryModal" class="gallery-modal" onclick="closeGallery()">
-                    <button class="gallery-btn close" onclick="closeGallery()">&times;</button>
-                    <button class="gallery-btn prev" onclick="event.stopPropagation(); prevGallery()">&#10094;</button>
+                    <button class="gallery-btn prev" onclick="event.stopPropagation(); prevGallery()">
+                        <i data-lucide="chevron-left"></i>
+                    </button>
                     <div class="gallery-content" onclick="event.stopPropagation()">
                         <img id="galleryImg" src="" alt="Trabalho realizado">
                     </div>
-                    <button class="gallery-btn next" onclick="event.stopPropagation(); nextGallery()">&#10095;</button>
+                    <button class="gallery-btn next" onclick="event.stopPropagation(); nextGallery()">
+                        <i data-lucide="chevron-right"></i>
+                    </button>
+                    
+                    <div class="gallery-footer" onclick="event.stopPropagation()">
+                        <div class="gallery-indicators"></div>
+                        <button class="gallery-close-bottom" onclick="closeGallery()" aria-label="Fechar">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            <span>Fechar</span>
+                        </button>
+                    </div>
                 </div>
                 <?php endif; ?>
             </div>

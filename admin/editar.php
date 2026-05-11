@@ -313,7 +313,7 @@ render_admin_header('Editar Anúncio', 'anuncios', $headerButtons);
                     <input type="file" name="imagem_principal" accept="image/*" onchange="previewImage(this, 'p1')">
                     <div class="image-preview-box" id="p1">
                         <?php if($ad['imagem_principal']): ?>
-                            <img src="/<?php echo e($ad['imagem_principal']); ?>">
+                            <img src="<?php echo asset_url($ad['imagem_principal']); ?>">
                         <?php else: ?>
                             <span>Preview</span>
                         <?php endif; ?>
@@ -324,7 +324,7 @@ render_admin_header('Editar Anúncio', 'anuncios', $headerButtons);
                     <input type="file" name="imagem_banner" accept="image/*" onchange="previewImage(this, 'p2')">
                     <div class="image-preview-box" id="p2" style="aspect-ratio:16/9;">
                         <?php if($ad['imagem_banner']): ?>
-                            <img src="/<?php echo e($ad['imagem_banner']); ?>">
+                            <img src="<?php echo asset_url($ad['imagem_banner']); ?>">
                         <?php else: ?>
                             <span>Preview</span>
                         <?php endif; ?>
@@ -342,7 +342,7 @@ render_admin_header('Editar Anúncio', 'anuncios', $headerButtons);
                 <div id="galleryPreview" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
                     <?php foreach($images as $img): ?>
                         <div class="image-preview-box" style="position:relative;">
-                            <img src="/<?php echo e($img['caminho']); ?>">
+                            <img src="<?php echo asset_url($img['caminho']); ?>">
                             <button type="submit" name="delete_image_id" value="<?php echo $img['id']; ?>" 
                                     style="position:absolute; top:5px; right:5px; background:rgba(239, 68, 68, 0.9); color:white; border:none; border-radius:4px; width:24px; height:24px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:12px;"
                                     onclick="return confirm('Excluir esta foto?')">

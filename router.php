@@ -26,6 +26,16 @@ if ($path === '/buscar') {
     return;
 }
 
+if ($path === '/termos') {
+    require __DIR__ . '/public/termos.php';
+    return;
+}
+
+if ($path === '/privacidade') {
+    require __DIR__ . '/public/privacidade.php';
+    return;
+}
+
 if ($path === '/admin' || $path === '/admin/') {
     require __DIR__ . '/admin/index.php';
     return;

@@ -24,7 +24,7 @@ render_header(seo_title($category['nome']), seo_description($category['descricao
     <?php foreach ($ads as $ad): ?>
         <article class="card ad-card">
             <div class="thumb-wrap">
-                <img loading="lazy" src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>" alt="<?php echo e($ad['titulo']); ?>">
+                <img loading="lazy" src="<?php echo asset_url($ad['imagem_principal']); ?>" alt="<?php echo e($ad['titulo']); ?>">
             </div>
             <h2><?php echo e($ad['titulo']); ?></h2>
             <p><?php echo e($ad['cidade']); ?></p>

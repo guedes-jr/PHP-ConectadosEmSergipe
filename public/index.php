@@ -45,11 +45,8 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
     </div>
     <div class="container">
         <div class="hero-content">
-            <h1>Conectado em Sergipe é a plataforma ideal para encontrar serviços locais na sua cidade.</h1>
-            <p class="lead">Conectamos prestadores qualificados a pessoas que realmente precisam, de forma rápida,
-                simples e eficiente.</p>
-            <p>Encontre eletricistas, manicures, pedreiros e muito mais nas 75 cidades de Sergipe. Simples, rápido e
-                gratuito.</p>
+            <h1><?php echo get_setting($pdo, 'hero_titulo', 'A plataforma ideal para encontrar serviços locais na sua cidade'); ?></h1>
+            <p class="lead"><?php echo get_setting($pdo, 'hero_subtitulo', 'Conectamos prestadores qualificados a pessoas que realmente precisam.'); ?></p>
             <div class="hero-actions">
                 <a class="btn btn-primary" href="/buscar">Explorar categorias</a>
                 <a class="btn btn-outline" href="/admin/criar">Quero anunciar</a>
@@ -63,7 +60,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
         <div class="quick-card">
             <div class="quick-header">
                 <div>
-                    <span class="section-title">Busca Rápida</span>
+                    <span class="section-label">Busca Rápida</span>
                     <h2>O que você procura hoje?</h2>
                 </div>
                 <div class="quick-filters">
@@ -103,7 +100,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
     <div class="container">
         <div class="section-head">
             <div>
-                <span class="section-title">Em alta</span>
+                <span class="section-label">Em alta</span>
                 <h2>Mais procurados da semana</h2>
             </div>
             <a href="/buscar" class="view-all">Ver tudo →</a>
@@ -112,7 +109,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
             <div class="trending-track">
                 <?php foreach ($featuredAds as $ad): ?>
                     <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="mini-card">
-                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>"
+                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>"
                             alt="<?php echo e($ad['titulo']); ?>">
                         <strong><?php echo e($ad['titulo']); ?></strong>
                     </a>
@@ -120,7 +117,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                 <!-- Duplicate for infinite effect -->
                 <?php foreach ($featuredAds as $ad): ?>
                     <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="mini-card">
-                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>"
+                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>"
                             alt="<?php echo e($ad['titulo']); ?>">
                         <strong><?php echo e($ad['titulo']); ?></strong>
                     </a>
@@ -134,7 +131,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
     <div class="container">
         <div class="section-head">
             <div>
-                <span class="section-title">Categorias</span>
+                <span class="section-label">Categorias</span>
                 <h2>Navegue por especialidade</h2>
             </div>
             <a href="/buscar" class="view-all">Todas as categorias</a>
@@ -157,7 +154,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
     <div class="container">
         <div class="section-head">
             <div>
-                <span class="section-title">Lojas Curadas</span>
+                <span class="section-label">Lojas Curadas</span>
                 <h2>Anúncios em destaque</h2>
             </div>
         </div>
@@ -165,7 +162,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
             <?php foreach ($featuredAds as $ad): ?>
                 <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="service-card">
                     <div class="card-cover">
-                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>"
+                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>"
                             alt="<?php echo e($ad['titulo']); ?>">
                         <div class="card-badges">
                             <span class="badge-featured">★ EM DESTAQUE</span>
@@ -203,7 +200,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
     <div class="container">
         <div class="section-head">
             <div>
-                <span class="section-title">Acabou de chegar</span>
+                <span class="section-label">Acabou de chegar</span>
                 <h2>Recentes em Sergipe</h2>
             </div>
             <a href="/buscar" class="view-all">Ver todos →</a>
@@ -212,7 +209,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
             <?php foreach ($recentAds as $ad): ?>
                 <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="service-card">
                     <div class="card-cover">
-                        <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>"
+                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>"
                             alt="<?php echo e($ad['titulo']); ?>">
                         <div class="card-badges">
                             <?php if (isset($ad['destaque']) && $ad['destaque']): ?>
@@ -252,7 +249,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
     <div class="container">
         <div class="cta-card">
             <div class="cta-content">
-                <span class="section-title" style="color: rgba(255,255,255,0.6);">Para prestadores</span>
+                <span class="section-label" style="color: rgba(255,255,255,0.6);">Para prestadores</span>
                 <h2>Faça parte da maior vitrine de serviços de Sergipe.</h2>
                 <p>Cadastro gratuito de anúncio, Loja própria, descrição do trabalho e contato direto pelo WhatsApp.</p>
                 <div class="cta-actions">

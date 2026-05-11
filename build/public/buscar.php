@@ -113,7 +113,7 @@ render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categori
                             <i data-lucide="heart"></i>
                         </button>
                         <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="card-cover">
-                            <img src="/<?php echo e($ad['imagem_principal'] ?: 'assets/img/placeholder.svg'); ?>" alt="<?php echo e($ad['titulo']); ?>">
+                            <img loading="lazy" src="<?php echo asset_url($ad['imagem_principal']); ?>" alt="<?php echo e($ad['titulo']); ?>">
                             <div class="card-badges">
                                 <?php if (isset($ad['destaque']) && $ad['destaque']): ?>
                                     <span class="badge-featured">★ EM DESTAQUE</span>
