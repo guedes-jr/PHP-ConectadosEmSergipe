@@ -7,42 +7,53 @@ render_header($pdo, 'Política de Privacidade - Conectado em Sergipe', 'Saiba co
 ?>
 
 <div class="container section animate-fade-in" style="max-width: 800px; margin: 0 auto; padding: 4rem 1rem;">
-    <h1 style="font-size: 2.5rem; margin-bottom: 2rem; color: var(--foreground);">Política de Privacidade</h1>
+    <h1 style="font-size: 2.5rem; margin-bottom: 2rem; color: var(--foreground); line-height: 1.1;">POLÍTICA DE PRIVACIDADE – CONECTADO EM SERGIPE</h1>
     
-    <p style="font-weight: 600; color: var(--primary); margin-bottom: 2rem;">Vigência a partir de: <?php echo date('d/m/Y'); ?></p>
+    <p style="font-weight: 700; color: var(--primary); margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 0.05em;">Vigência: A partir de <?php echo date('d/m/Y'); ?></p>
 
     <div class="content-text" style="line-height: 1.8; color: var(--foreground); font-size: 1.1rem;">
-        <p>A sua privacidade é muito importante para nós. Esta Política de Privacidade explica como a plataforma <strong>Conectado em Sergipe</strong> coleta, utiliza, armazena e protege os dados pessoais dos usuários, em conformidade com a <strong>Lei Geral de Proteção de Dados (LGPD).</strong></p>
+        <p style="margin-bottom: 2rem;">A sua privacidade é muito importante para nós. Esta Política de Privacidade explica como a plataforma <strong>Conectado em Sergipe</strong> coleta, utiliza, armazena e protege os dados pessoais dos usuários, em conformidade com a <strong>Lei Geral de Proteção de Dados (Lei nº 13.709/2018 - LGPD).</strong></p>
 
-        <h3 style="margin-top: 2.5rem;">1. COLETA DE DADOS PESSOAIS</h3>
-        <p>Coletamos informações via Login Google (Nome, e-mail, foto) ou Cadastro Direto (CPF/CNPJ, telefone, cidade, profissão). Esses dados são essenciais para conectar você aos melhores profissionais da região.</p>
-
-        <h3 style="margin-top: 2.5rem;">2. FINALIDADE DO USO DOS DADOS</h3>
-        <ul style="margin-left: 1.5rem; margin-top: 1rem;">
-            <li>Identificação e Segurança: Prevenção de fraudes.</li>
-            <li>Exibição de Anúncios: Filtro regional por cidade.</li>
-            <li>Comunicação: Contato direto entre clientes e prestadores.</li>
-            <li>Melhoria do Serviço: Análise de uso da plataforma.</li>
+        <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 1.4rem;">1. COLETA DE DADOS PESSOAIS</h3>
+        <p>Para oferecer nossos serviços de divulgação e prestação de serviços dos usuários no site e conectar você aos melhores profissionais da região, coletamos as seguintes informações:</p>
+        <ul style="margin: 1rem 0; padding-left: 1.5rem; list-style-type: disc;">
+            <li><strong>Fotos do serviço:</strong> Nome, e-mail e foto de perfil (conforme autorizado pelo prestador).</li>
+            <li><strong>Dados Principais:</strong> Nome completo, e-mail, número de telefone.</li>
+            <li><strong>Dados Complementares:</strong> Cidade de atuação/residência, profissão ou tipo de serviço prestado e categoria de perfil.</li>
         </ul>
 
-        <h3 style="margin-top: 2.5rem;">3. COMPARTILHAMENTO DE DADOS</h3>
-        <p>Seus dados de contato (nome, telefone/e-mail) ficam visíveis apenas quando você anuncia. Dados como CPF e CNPJ são mantidos em sigilo para fins de validação interna. Não vendemos dados para terceiros.</p>
+        <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 1.4rem;">2. FINALIDADE DO USO DOS DADOS</h3>
+        <p>Os dados coletados pelo Conectados em Sergipe possuem as seguintes finalidades:</p>
+        <ul style="margin: 1rem 0; padding-left: 1.5rem; list-style-type: disc;">
+            <li><strong>Identificação e Segurança:</strong> Garantir que os usuários e anunciantes sejam pessoas reais, prevenindo fraudes.</li>
+            <li><strong>Exibição de Anúncios:</strong> Filtrar e exibir serviços e produtos prioritariamente na cidade informada pelo usuário.</li>
+            <li><strong>Comunicação:</strong> Permitir que clientes entrem em contato com prestadores de serviços e lojistas via telefone ou e-mail.</li>
+            <li><strong>Melhoria do Serviço:</strong> Analisar o uso da plataforma para otimizar a experiência do usuário.</li>
+        </ul>
 
-        <h3 style="margin-top: 2.5rem;">4. ARMAZENAMENTO E SEGURANÇA</h3>
-        <p>Os dados são armazenados em servidores seguros com medidas técnicas de proteção. Mantemos as informações enquanto sua conta estiver ativa.</p>
+        <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 1.4rem;">3. COMPARTILHAMENTO DE DADOS</h3>
+        <ul style="margin: 1rem 0; padding-left: 1.5rem; list-style-type: disc;">
+            <li><strong>Entre Usuários:</strong> Ao anunciar um serviço ou produto, o seu nome e telefone (ou e-mail) ficarão visíveis para que outros usuários possam entrar em contato e realizar negócios.</li>
+            <li><strong>Terceiros:</strong> Não vendemos nem alugamos seus dados pessoais para terceiros.</li>
+            <li><strong>Autoridades:</strong> Podemos compartilhar seus dados pessoais para órgãos governamentais ou autoridades mediante solicitação oficial ou ordem judicial.</li>
+        </ul>
 
-        <h3 style="margin-top: 2.5rem;">5. SEUS DIREITOS (LGPD)</h3>
-        <p>Você tem o direito de confirmar o tratamento, acessar, corrigir ou solicitar a exclusão definitiva de seus dados a qualquer momento.</p>
+        <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 1.4rem;">4. ARMAZENAMENTO E SEGURANÇA</h3>
+        <p>Todos os dados são armazenados em servidores seguros, com medidas técnicas de proteção para evitar acessos não autorizados, perda ou alteração das informações. O armazenamento ocorre enquanto o anúncio do usuário estiver ativo em nosso site.</p>
 
-        <h3 style="margin-top: 2.5rem;">6. COOKIES</h3>
-        <p>Utilizamos cookies para reconhecer seu navegador e lembrar suas preferências, facilitando sua navegação futura.</p>
+        <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 1.4rem;">5. SEUS DIREITOS (LGPD)</h3>
+        <p>Como titular dos dados, você tem o direito de, a qualquer momento solicitar:</p>
+        <ul style="margin: 1rem 0; padding-left: 1.5rem; list-style-type: disc;">
+            <li>Confirmar a existência do tratamento de seus dados.</li>
+            <li>Acessar, corrigir ou atualizar seus dados pessoais.</li>
+            <li>Solicitar a exclusão definitiva de seu perfil de anúncio e de todos os seus dados da nossa base de dados.</li>
+        </ul>
 
-        <h3 style="margin-top: 2.5rem;">7. ALTERAÇÕES</h3>
-        <p>Esta política pode ser atualizada periodicamente. Mudanças significativas serão avisadas via plataforma.</p>
+        <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 1.4rem;">6. COOKIES E TECNOLOGIAS DE RASTREAMENTO</h3>
+        <p>Podemos utilizar cookies para reconhecer seu navegador e lembrar suas preferências (como a cidade selecionada), facilitando sua navegação futura.</p>
 
-        <h3 style="margin-top: 2.5rem;">8. CONTATO</h3>
-        <p>Para dúvidas, entre em contato com o controlador:<br>
-        <strong>ANERSON PEREIRA DA SILVA</strong></p>
+        <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 1.4rem;">7. ALTERAÇÕES NESTA POLÍTICA</h3>
+        <p>Esta Política pode ser atualizada periodicamente. Sempre que houver mudanças significativas, avisaremos você através da plataforma ou por e-mail.</p>
     </div>
 </div>
 
