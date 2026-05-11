@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image_id'])) 
         $regiao = trim($_POST['regiao'] ?? '');
         $telefone = trim($_POST['telefone'] ?? '');
         $whatsapp = trim($_POST['whatsapp'] ?? '');
-        $email = trim($_POST['email'] ?? '');
+        $email = trim($_POST['email'] ?? '') ?: null;
         $instagram = trim($_POST['instagram'] ?? '');
         $facebook = trim($_POST['facebook'] ?? '');
         $destaque = isset($_POST['destaque']) ? 1 : 0;
@@ -274,8 +274,8 @@ render_admin_header('Editar Anúncio', 'anuncios', $headerButtons);
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>E-mail *</label>
-                    <input type="email" name="email" id="email" value="<?php echo e($ad['cliente_email']); ?>" required>
+                    <label>E-mail</label>
+                    <input type="email" name="email" id="email" value="<?php echo e($ad['cliente_email']); ?>">
                 </div>
                 <div class="form-group">
                     <label>Telefone Principal *</label>
