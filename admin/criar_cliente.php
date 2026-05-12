@@ -124,8 +124,8 @@ render_admin_header('Novo Profissional', 'clientes');
             </div>
 
             <div style="display:flex; flex-direction:column; gap:0.5rem;">
-                <label style="font-size:0.875rem; font-weight:600;">Estado (UF)</label>
-                <input type="text" name="estado" id="estado" maxlength="2" placeholder="SE" style="padding:0.75rem 1rem; border:1px solid var(--border); border-radius:0.75rem; background:var(--muted-bg); color:var(--foreground);">
+                <label style="font-size:0.875rem; font-weight:600;">Estado (Ex: Sergipe)</label>
+                <input type="text" name="estado" id="estado" placeholder="Sergipe" style="padding:0.75rem 1rem; border:1px solid var(--border); border-radius:0.75rem; background:var(--muted-bg); color:var(--foreground);">
             </div>
         </div>
 

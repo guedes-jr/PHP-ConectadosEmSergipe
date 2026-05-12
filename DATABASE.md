@@ -73,6 +73,7 @@ CREATE TABLE IF NOT EXISTS anuncios (
     email VARCHAR(100),
     endereco VARCHAR(255),
     cidade VARCHAR(100) NOT NULL,
+    estado VARCHAR(50) DEFAULT 'Sergipe',
     regiao VARCHAR(100),
     imagem_principal VARCHAR(255),
     imagem_banner VARCHAR(255),

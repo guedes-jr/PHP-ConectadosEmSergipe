@@ -49,7 +49,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
             <p class="lead"><?php echo get_setting($pdo, 'hero_subtitulo', 'Conectamos prestadores qualificados a pessoas que realmente precisam.'); ?></p>
             <div class="hero-actions">
                 <a class="btn btn-primary" href="/buscar">Explorar categorias</a>
-                <a class="btn btn-outline" href="/admin/criar">Quero anunciar</a>
+                <a class="btn btn-outline" href="https://wa.me/557996327084?text=Gostaria%20de%20anunciar%20na%20Conectado%20em%20Sergipe" target="_blank">Quero anunciar</a>
             </div>
         </div>
     </div>
@@ -138,7 +138,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
         </div>
         <div class="category-grid">
             <?php foreach ($categories as $category): ?>
-                <a href="/categoria/<?php echo e($category['slug']); ?>" class="category-card">
+                <a href="/buscar?categoria=<?php echo e($category['slug']); ?>" class="category-card">
                     <div class="cat-icon-wrapper">
                         <?php echo get_category_icon($category['nome']); ?>
                     </div>

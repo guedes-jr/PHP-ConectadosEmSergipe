@@ -10,8 +10,8 @@ if ($path === '' || $path === '/') {
 }
 
 if (str_starts_with($path, '/categoria/')) {
-    $_GET['slug'] = substr($path, strlen('/categoria/'));
-    require __DIR__ . '/public/categoria.php';
+    $slug = substr($path, strlen('/categoria/'));
+    header("Location: /buscar?categoria=$slug");
     return;
 }
 

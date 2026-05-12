@@ -85,8 +85,23 @@
   padding: 0;
 }
 
-html {
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Global overflow fix for Android */
+img, video, canvas, svg {
+  max-width: 100%;
+  height: auto;
 }
 
 body {
@@ -248,11 +263,18 @@ h1, h2, h3, h4 {
   gap: 1.25rem;
   border-bottom: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
-  z-index: 90;
+  z-index: 1000;
+  transition: all 0.3s ease;
 }
 
 .nav-links-mobile.open {
   display: flex;
+  animation: slideDown 0.3s ease forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Hero */
@@ -739,9 +761,14 @@ h1, h2, h3, h4 {
 
 .category-card:hover .cat-icon-wrapper {
   background-color: var(--primary);
-  color: white;
+  color: white !important;
   transform: scale(1.05);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-card:hover .cat-icon-wrapper svg {
+  color: white !important;
+  stroke: white !important;
 }
 
 .category-card strong {
@@ -1858,7 +1885,16 @@ input, textarea, select, button {
 /* ---- Mobile (max-width: 768px) ---- */
 @media (max-width: 768px) {
     .container {
-        width: calc(100% - 2rem);
+        width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Android Chrome Auto-zoom fix */
+    input, select, textarea {
+        font-size: 16px !important;
     }
 
     /* -- Header / Nav -- */
@@ -1901,10 +1937,14 @@ input, textarea, select, button {
     .hero-content {
         padding: 1rem;
         text-align: center;
+        width: 100%;
+        max-width: 100%;
+        overflow-wrap: break-word;
     }
 
     .hero-content h1 {
-        font-size: clamp(1.5rem, 6vw, 2.5rem);
+        font-size: clamp(1.5rem, 8vw, 2.2rem);
+        line-height: 1.2;
     }
 
     .hero-content p {
@@ -1942,6 +1982,19 @@ input, textarea, select, button {
     }
 
     /* -- Trending Carousel -- */
+    .trending-carousel {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 1.5rem;
+    }
+
+    .trending-track {
+        animation: none !important;
+        display: flex;
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+
     .mini-card {
         flex: 0 0 200px;
     }
@@ -2140,8 +2193,14 @@ input, textarea, select, button {
 
 /* ---- Small Phone (max-width: 480px) ---- */
 @media (max-width: 480px) {
+    html {
+        font-size: 14px; /* Slightly smaller base font for small Androids */
+    }
+
     .container {
-        width: calc(100% - 1rem);
+        width: 100%;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
     }
 
     .hero {
@@ -2342,22 +2401,6 @@ input, textarea, select, button {
 
 .animate-fade-in {
   animation: fadeInUp 0.6s ease forwards;
-}
-
-.category-card {
-  transition: all 0.3s ease;
-  border: 1px solid var(--border);
-}
-
-.category-card:hover {
-  background: var(--accent);
-  border-color: var(--primary);
-  transform: translateY(-5px);
-}
-
-.category-card i, .category-card svg {
-  color: var(--primary);
-  margin-bottom: 0.5rem;
 }
 
 /* Home Region Filter */

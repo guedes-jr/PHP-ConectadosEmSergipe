@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $categoria_id = (int)($_POST['categoria_id'] ?? 0);
         $descricao = trim($_POST['descricao'] ?? '');
         $cidade = trim($_POST['cidade'] ?? '');
+        $estado = trim($_POST['estado'] ?? 'Sergipe');
         $regiao = trim($_POST['regiao'] ?? '');
         $telefone = trim($_POST['telefone'] ?? '');
         $whatsapp = trim($_POST['whatsapp'] ?? '');
@@ -45,16 +46,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     if ($client) {
                         $clientId = $client['id'];
-                        $stmtUpdateClient = $pdo->prepare("UPDATE clientes SET nome = ?, telefone = ?, whatsapp = ?, cidade = ?, regiao = ? WHERE id = ?");
-                        $stmtUpdateClient->execute([$titulo, $telefone, $whatsapp, $cidade, $regiao, $clientId]);
+                        $stmtUpdateClient = $pdo->prepare("UPDATE clientes SET nome = ?, telefone = ?, whatsapp = ?, cidade = ?, estado = ?, regiao = ? WHERE id = ?");
+                        $stmtUpdateClient->execute([$titulo, $telefone, $whatsapp, $cidade, $estado, $regiao, $clientId]);
                     } else {
-                        $stmtInsertClient = $pdo->prepare("INSERT INTO clientes (nome, email, telefone, whatsapp, cidade, regiao) VALUES (?, ?, ?, ?, ?, ?)");
-                        $stmtInsertClient->execute([$titulo, $email, $telefone, $whatsapp, $cidade, $regiao]);
+                        $stmtInsertClient = $pdo->prepare("INSERT INTO clientes (nome, email, telefone, whatsapp, cidade, estado, regiao) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                        $stmtInsertClient->execute([$titulo, $email, $telefone, $whatsapp, $cidade, $estado, $regiao]);
                         $clientId = $pdo->lastInsertId();
                     }
                 } else {
-                    $stmtUpdateClient = $pdo->prepare("UPDATE clientes SET telefone = ?, whatsapp = ?, cidade = ?, regiao = ? WHERE id = ?");
-                    $stmtUpdateClient->execute([$telefone, $whatsapp, $cidade, $regiao, $clientId]);
+                    $stmtUpdateClient = $pdo->prepare("UPDATE clientes SET telefone = ?, whatsapp = ?, cidade = ?, estado = ?, regiao = ? WHERE id = ?");
+                    $stmtUpdateClient->execute([$telefone, $whatsapp, $cidade, $estado, $regiao, $clientId]);
                 }
 
                 $img_principal = '';
@@ -69,10 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $stmt = $pdo->prepare("
                     INSERT INTO anuncios (
-                        titulo, slug, descricao, categoria_id, cliente_id, cidade, regiao,
+                        titulo, slug, descricao, categoria_id, cliente_id, cidade, estado, regiao,
                         imagem_principal, imagem_banner, destaque, status, instagram, facebook
                     ) VALUES (
-                        :titulo, :slug, :descricao, :categoria_id, :cliente_id, :cidade, :regiao,
+                        :titulo, :slug, :descricao, :categoria_id, :cliente_id, :cidade, :estado, :regiao,
                         :imagem_principal, :imagem_banner, :destaque, :status, :instagram, :facebook
                     )
                 ");
@@ -84,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'categoria_id' => $categoria_id,
                     'cliente_id' => $clientId,
                     'cidade' => $cidade,
+                    'estado' => $estado,
                     'regiao' => $regiao,
                     'imagem_principal' => $img_principal ?: null,
                     'imagem_banner' => $img_banner ?: null,
@@ -178,6 +180,15 @@ render_admin_header('Cadastrar Anúncio', 'anuncios', $headerButtons);
                     <input type="text" name="cidade" id="ad_cidade" required>
                 </div>
                 <div class="form-group">
+                    <label>Estado *</label>
+                    <select name="estado" id="ad_estado" required>
+                        <option value="Sergipe" selected>Sergipe</option>
+                        <option value="Alagoas">Alagoas</option>
+                        <option value="Bahia">Bahia</option>
+                        <option value="Pernambuco">Pernambuco</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label>Região</label>
                     <select name="regiao" id="ad_regiao">
                         <option value="">Selecione...</option>
@@ -216,7 +227,7 @@ render_admin_header('Cadastrar Anúncio', 'anuncios', $headerButtons);
                     <select id="selectClient" name="cliente_id_selected">
                         <option value="">-- Novo Profissional --</option>
                         <?php foreach(fetch_all_clients($pdo) as $c): ?>
-                            <option value="<?php echo $c['id']; ?>" data-email="<?php echo e($c['email']); ?>" data-telefone="<?php echo e($c['telefone']); ?>" data-whatsapp="<?php echo e($c['whatsapp']); ?>" data-cidade="<?php echo e($c['cidade']); ?>" data-regiao="<?php echo e($c['regiao']); ?>">
+                            <option value="<?php echo $c['id']; ?>" data-email="<?php echo e($c['email']); ?>" data-telefone="<?php echo e($c['telefone']); ?>" data-whatsapp="<?php echo e($c['whatsapp']); ?>" data-cidade="<?php echo e($c['cidade']); ?>" data-estado="<?php echo e($c['estado'] ?? 'Sergipe'); ?>" data-regiao="<?php echo e($c['regiao']); ?>">
                                 <?php echo e($c['nome']); ?>
                             </option>
                         <?php endforeach; ?>
@@ -233,6 +244,14 @@ render_admin_header('Cadastrar Anúncio', 'anuncios', $headerButtons);
                 <div class="form-group">
                     <label>WhatsApp</label>
                     <input type="text" name="whatsapp" id="whatsapp">
+                </div>
+                <div class="form-group">
+                    <label>Instagram</label>
+                    <input type="text" name="instagram" id="instagram" placeholder="@seu-perfil">
+                </div>
+                <div class="form-group">
+                    <label>Facebook</label>
+                    <input type="text" name="facebook" id="facebook" placeholder="link-do-perfil">
                 </div>
             </div>
         </div>
@@ -285,6 +304,7 @@ render_admin_header('Cadastrar Anúncio', 'anuncios', $headerButtons);
                     document.getElementById('telefone').value = opt.dataset.telefone;
                     document.getElementById('whatsapp').value = opt.dataset.whatsapp;
                     adCidade.value = opt.dataset.cidade;
+                    document.getElementById('ad_estado').value = opt.dataset.estado;
                     adRegiao.value = opt.dataset.regiao;
                 }
             });

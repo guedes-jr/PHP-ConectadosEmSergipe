@@ -55,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image_id'])) 
         $categoria_id = (int)($_POST['categoria_id'] ?? 0);
         $descricao = trim($_POST['descricao'] ?? '');
         $cidade = trim($_POST['cidade'] ?? '');
+        $estado = trim($_POST['estado'] ?? 'Sergipe');
         $regiao = trim($_POST['regiao'] ?? '');
         $telefone = trim($_POST['telefone'] ?? '');
         $whatsapp = trim($_POST['whatsapp'] ?? '');
@@ -71,8 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image_id'])) 
                 $pdo->beginTransaction();
 
                 if ($ad['cliente_id']) {
-                    $stmtUpd = $pdo->prepare("UPDATE clientes SET email = ?, telefone = ?, whatsapp = ?, cidade = ?, regiao = ? WHERE id = ?");
-                    $stmtUpd->execute([$email, $telefone, $whatsapp, $cidade, $regiao, $ad['cliente_id']]);
+                    $stmtUpd = $pdo->prepare("UPDATE clientes SET email = ?, telefone = ?, whatsapp = ?, cidade = ?, estado = ?, regiao = ? WHERE id = ?");
+                    $stmtUpd->execute([$email, $telefone, $whatsapp, $cidade, $estado, $regiao, $ad['cliente_id']]);
                 }
 
                 $img_principal = $ad['imagem_principal'];
@@ -87,19 +88,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image_id'])) 
 
                 $stmt = $pdo->prepare("
                     UPDATE anuncios SET 
-                        titulo = ?, descricao = ?, categoria_id = ?, 
-                        cidade = ?, regiao = ?,
-                        imagem_principal = ?, imagem_banner = ?, 
-                        destaque = ?, status = ?, instagram = ?, facebook = ?,
-                        cliente_id = ?
-                    WHERE id = ?
+                        titulo = :titulo,
+                        descricao = :descricao, 
+                        categoria_id = :categoria_id, 
+                        cidade = :cidade, 
+                        estado = :estado,
+                        regiao = :regiao,
+                        imagem_principal = :imagem_principal, 
+                        imagem_banner = :imagem_banner, 
+                        destaque = :destaque, 
+                        status = :status, 
+                        instagram = :instagram, 
+                        facebook = :facebook,
+                        cliente_id = :cliente_id
+                    WHERE id = :id
                 ");
                 $stmt->execute([
-                    $titulo, $descricao, $categoria_id, 
-                    $cidade, $regiao,
-                    $img_principal, $img_banner, 
-                    $destaque, $status, $instagram, $facebook,
-                    (int)($_POST['cliente_id'] ?? $ad['cliente_id']), $id
+                    'titulo' => $titulo,
+                    'descricao' => $descricao,
+                    'categoria_id' => $categoria_id,
+                    'cidade' => $cidade,
+                    'estado' => $estado,
+                    'regiao' => $regiao,
+                    'imagem_principal' => $img_principal,
+                    'imagem_banner' => $img_banner,
+                    'destaque' => $destaque,
+                    'status' => $status,
+                    'instagram' => $instagram,
+                    'facebook' => $facebook,
+                    'cliente_id' => (int)($_POST['cliente_id'] ?? $ad['cliente_id']),
+                    'id' => $id
                 ]);
 
                 $diasKeys = ['seg', 'ter', 'qua', 'qui', 'sex', 'sab', 'dom'];
@@ -210,6 +228,16 @@ render_admin_header('Editar Anúncio', 'anuncios', $headerButtons);
                 <div class="form-group">
                     <label>Cidade *</label>
                     <input type="text" name="cidade" id="ad_cidade" value="<?php echo e($ad['cidade']); ?>" required>
+                </div>
+                <div class="form-group">
+                    <label>Estado *</label>
+                    <select name="estado" id="ad_estado" required>
+                        <?php 
+                        $estados = ['Sergipe', 'Alagoas', 'Bahia', 'Pernambuco'];
+                        foreach($estados as $est): ?>
+                            <option value="<?php echo $est; ?>" <?php echo ($ad['estado'] ?? 'Sergipe') === $est ? 'selected' : ''; ?>><?php echo $est; ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Região de Sergipe</label>

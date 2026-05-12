@@ -8,14 +8,16 @@ require_once __DIR__ . '/../includes/sergipe_data.php';
 $q = isset($_GET['q']) ? trim((string)$_GET['q']) : '';
 $cidade = isset($_GET['cidade']) ? trim((string)$_GET['cidade']) : '';
 $regiao = isset($_GET['regiao']) ? trim((string)$_GET['regiao']) : '';
+$estado = isset($_GET['estado']) ? trim((string)$_GET['estado']) : '';
 $categoria = isset($_GET['categoria']) ? trim((string)$_GET['categoria']) : '';
 $rating = isset($_GET['avaliacao']) ? trim((string)$_GET['avaliacao']) : '';
 
 $categories = fetch_all_categories($pdo);
-$cities = fetch_unique_cities($pdo);
-$regions = fetch_unique_regions($pdo);
+$states = fetch_unique_states($pdo);
+$cities = fetch_unique_cities($pdo, $estado);
+$regions = fetch_unique_regions($pdo, $estado);
 $cityMapping = get_city_region_mapping();
-$results = search_ads($pdo, $q, $cidade, $categoria, $rating, $regiao);
+$results = search_ads($pdo, $q, $cidade, $categoria, $rating, $regiao, $estado);
 
 render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categoria ou cidade.');
 ?>
@@ -29,6 +31,7 @@ render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categori
             <div class="search-input-wrapper">
                 <i data-lucide="search" style="margin-right: 1rem; color: var(--muted-foreground);"></i>
                 <input type="text" name="q" value="<?php echo e($q); ?>" placeholder="Buscar por nome ou serviço...">
+                <?php if ($estado): ?><input type="hidden" name="estado" value="<?php echo e($estado); ?>"><?php endif; ?>
                 <?php if ($cidade): ?><input type="hidden" name="cidade" value="<?php echo e($cidade); ?>"><?php endif; ?>
                 <?php if ($regiao): ?><input type="hidden" name="regiao" value="<?php echo e($regiao); ?>"><?php endif; ?>
                 <?php if ($categoria): ?><input type="hidden" name="categoria" value="<?php echo e($categoria); ?>"><?php endif; ?>
@@ -46,9 +49,19 @@ render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categori
                 <input type="hidden" name="q" value="<?php echo e($q); ?>">
                 <input type="hidden" name="categoria" value="<?php echo e($categoria); ?>">
                 
+                <h3>ESTADO</h3>
+                <div class="select-wrapper" style="margin-bottom: 1.5rem;">
+                    <select name="estado" id="searchEstado" class="quick-select" style="width: 100%;">
+                        <option value="">Todos os estados</option>
+                        <?php foreach ($states as $st): ?>
+                            <option value="<?php echo e($st); ?>" <?php echo $estado === $st ? 'selected' : ''; ?>><?php echo e($st); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
                 <h3>REGIÃO</h3>
                 <div class="select-wrapper" style="margin-bottom: 1.5rem;">
-                    <select name="regiao" id="searchRegiao" class="quick-select" style="width: 100%;" onchange="document.getElementById('filters-form').submit()">
+                    <select name="regiao" id="searchRegiao" class="quick-select" style="width: 100%;">
                         <option value="">Todas as regiões</option>
                         <?php foreach ($regions as $r): ?>
                             <option value="<?php echo e($r); ?>" <?php echo $regiao === $r ? 'selected' : ''; ?>><?php echo e($r); ?></option>
@@ -58,7 +71,7 @@ render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categori
 
                 <h3>CIDADE</h3>
                 <div class="select-wrapper" style="margin-bottom: 1.5rem;">
-                    <select name="cidade" id="searchCidade" class="quick-select" style="width: 100%;" onchange="document.getElementById('filters-form').submit()">
+                    <select name="cidade" id="searchCidade" class="quick-select" style="width: 100%;">
                         <option value="">Todas as cidades</option>
                         <?php foreach ($cities as $c): ?>
                             <option value="<?php echo e($c); ?>" <?php echo $cidade === $c ? 'selected' : ''; ?>><?php echo e($c); ?></option>
@@ -160,11 +173,22 @@ render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categori
     const allCities = <?php echo json_encode($cities); ?>;
 
     document.addEventListener('DOMContentLoaded', function() {
+        const searchEstado = document.getElementById('searchEstado');
         const searchRegiao = document.getElementById('searchRegiao');
         const searchCidade = document.getElementById('searchCidade');
 
+        if (searchEstado) {
+            searchEstado.addEventListener('change', () => {
+                if (searchRegiao) searchRegiao.value = '';
+                if (searchCidade) searchCidade.value = '';
+                document.getElementById('filters-form').submit();
+            });
+        }
+
         function filterCities(region) {
-            const currentCity = searchCidade.value;
+            const currentCity = searchCidade ? searchCidade.value : '';
+            if (!searchCidade) return;
+            
             searchCidade.innerHTML = '<option value="">Todas as cidades</option>';
             const filtered = region 
                 ? allCities.filter(city => cityMapping[city] === region)
@@ -180,8 +204,18 @@ render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categori
         }
 
         if (searchRegiao) {
-            searchRegiao.addEventListener('change', (e) => filterCities(e.target.value));
+            searchRegiao.addEventListener('change', (e) => {
+                if (searchCidade) searchCidade.value = '';
+                filterCities(e.target.value);
+                document.getElementById('filters-form').submit();
+            });
             if (searchRegiao.value) filterCities(searchRegiao.value);
+        }
+
+        if (searchCidade) {
+            searchCidade.addEventListener('change', () => {
+                document.getElementById('filters-form').submit();
+            });
         }
 
         // Favorites

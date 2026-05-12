@@ -138,7 +138,7 @@ function fetch_images_by_ad(PDO $pdo, int $adId): array
     return $stmt->fetchAll();
 }
 
-function search_ads(PDO $pdo, string $term = '', string $city = '', string $category = '', string $rating = '', string $region = ''): array
+function search_ads(PDO $pdo, string $term = '', string $city = '', string $category = '', string $rating = '', string $region = '', string $estado = ''): array
 {
     $sql = 'SELECT a.id, a.titulo, a.slug, a.cidade, a.regiao, a.imagem_principal, a.nota, a.avaliacoes, a.destaque, c.nome AS categoria_nome, c.icone AS categoria_icone
             FROM anuncios a
@@ -162,6 +162,11 @@ function search_ads(PDO $pdo, string $term = '', string $city = '', string $cate
         $params['region'] = $region;
     }
 
+    if ($estado !== '') {
+        $sql .= ' AND a.estado = :estado';
+        $params['estado'] = $estado;
+    }
+
     if ($category !== '') {
         $sql .= ' AND c.slug = :category';
         $params['category'] = $category;
@@ -179,15 +184,31 @@ function search_ads(PDO $pdo, string $term = '', string $city = '', string $cate
     return $stmt->fetchAll();
 }
 
-function fetch_unique_cities(PDO $pdo): array
+function fetch_unique_states(PDO $pdo): array
 {
-    $stmt = $pdo->query("SELECT DISTINCT cidade FROM anuncios WHERE status = 'ativo' AND cidade IS NOT NULL AND cidade != '' ORDER BY cidade ASC");
+    $stmt = $pdo->query("SELECT DISTINCT estado FROM anuncios WHERE status = 'ativo' AND estado IS NOT NULL AND estado != '' ORDER BY estado ASC");
     return $stmt->fetchAll(PDO::FETCH_COLUMN);
 }
 
-function fetch_unique_regions(PDO $pdo): array
+function fetch_unique_cities(PDO $pdo, string $estado = ''): array
 {
-    $stmt = $pdo->query("SELECT DISTINCT regiao FROM anuncios WHERE status = 'ativo' AND regiao IS NOT NULL AND regiao != '' ORDER BY regiao ASC");
+    if ($estado !== '') {
+        $stmt = $pdo->prepare("SELECT DISTINCT cidade FROM anuncios WHERE status = 'ativo' AND estado = ? AND cidade IS NOT NULL AND cidade != '' ORDER BY cidade ASC");
+        $stmt->execute([$estado]);
+    } else {
+        $stmt = $pdo->query("SELECT DISTINCT cidade FROM anuncios WHERE status = 'ativo' AND cidade IS NOT NULL AND cidade != '' ORDER BY cidade ASC");
+    }
+    return $stmt->fetchAll(PDO::FETCH_COLUMN);
+}
+
+function fetch_unique_regions(PDO $pdo, string $estado = ''): array
+{
+    if ($estado !== '') {
+        $stmt = $pdo->prepare("SELECT DISTINCT regiao FROM anuncios WHERE status = 'ativo' AND estado = ? AND regiao IS NOT NULL AND regiao != '' ORDER BY regiao ASC");
+        $stmt->execute([$estado]);
+    } else {
+        $stmt = $pdo->query("SELECT DISTINCT regiao FROM anuncios WHERE status = 'ativo' AND regiao IS NOT NULL AND regiao != '' ORDER BY regiao ASC");
+    }
     return $stmt->fetchAll(PDO::FETCH_COLUMN);
 }
 function get_category_icon(string $name, ?string $storedIcon = null): string
