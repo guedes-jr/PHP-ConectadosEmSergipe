@@ -14,7 +14,7 @@ if (!$ad) {
     echo '<i data-lucide="search-x" style="width:64px; height:64px; color:var(--muted-foreground); margin-bottom:1rem;"></i>';
     echo '<h1>Anúncio não encontrado</h1>';
     echo '<p>O profissional que você procura pode ter removido o anúncio ou o link está incorreto.</p>';
-    echo '<a href="/" class="btn btn-primary" style="margin-top:2rem;">Voltar para o Início</a>';
+    echo '<a href="' . url('/') . '" class="btn btn-primary" style="margin-top:2rem;">Voltar para o Início</a>';
     echo '</div>';
     render_footer();
     exit;
@@ -55,6 +55,12 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
                         <span class="ad-badge-category" style="background: var(--accent); padding: 0.25rem 0.75rem; border-radius: 99px;"><?php echo e($ad['categoria_nome']); ?></span>
                         <?php if($ad['destaque']): ?>
                             <span style="background: #fef3c7; color: #92400e; font-size: 0.7rem; font-weight: 800; padding: 0.25rem 0.75rem; border-radius: 99px;">★ DESTAQUE</span>
+                        <?php endif; ?>
+                        <span class="ad-badge-type" style="background: var(--muted-bg); color: var(--muted-foreground); border: 1px solid var(--border); font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 99px;">
+                            <?php echo $ad['tipo'] === 'loja' ? '🏪 Loja' : '🛠️ Prestador'; ?>
+                        </span>
+                        <?php if ($ad['cnpj']): ?>
+                            <span style="font-size: 0.75rem; color: var(--muted-foreground); margin-left: 0.5rem;">CNPJ: <?php echo e($ad['cnpj']); ?></span>
                         <?php endif; ?>
                     </div>
                     <h1 style="font-family: 'Outfit', sans-serif;"><?php echo e($ad['titulo']); ?></h1>

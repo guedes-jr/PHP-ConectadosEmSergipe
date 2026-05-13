@@ -112,6 +112,68 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     initFavorites();
+
+    // Hero Slider Carousel
+    const heroSection = document.querySelector('.hero');
+    if (heroSection) {
+        const slides = heroSection.querySelectorAll('.hero-slide');
+        const dots = heroSection.querySelectorAll('.hero-dot');
+        const prevBtn = heroSection.querySelector('.hero-arrow.prev');
+        const nextBtn = heroSection.querySelector('.hero-arrow.next');
+        let currentSlide = 0;
+        let slideInterval;
+
+        const showSlide = (index) => {
+            if (slides.length === 0) return;
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+            
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            if (dots[currentSlide]) dots[currentSlide].classList.add('active');
+        };
+
+        const nextSlide = () => showSlide(currentSlide + 1);
+        const prevSlide = () => showSlide(currentSlide - 1);
+
+        if (nextBtn) nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            nextSlide();
+            resetInterval();
+        });
+
+        if (prevBtn) prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            prevSlide();
+            resetInterval();
+        });
+
+        dots.forEach((dot, i) => {
+            dot.addEventListener('click', (e) => {
+                e.preventDefault();
+                showSlide(i);
+                resetInterval();
+            });
+        });
+
+        const startInterval = () => {
+            slideInterval = setInterval(nextSlide, 60000); // 1 minute interval
+        };
+
+        const resetInterval = () => {
+            clearInterval(slideInterval);
+            startInterval();
+        };
+
+        slides.forEach(slide => {
+            slide.addEventListener('click', () => {
+                nextSlide();
+                resetInterval();
+            });
+        });
+
+        startInterval();
+    }
 });
 
 window.shareAd = function() {

@@ -2,23 +2,47 @@
 
 declare(strict_types=1);
 
+if (!function_exists('mb_strlen')) {
+    function mb_strlen($string, $encoding = 'UTF-8') {
+        return strlen($string);
+    }
+}
+
+if (!function_exists('mb_substr')) {
+    function mb_substr($string, $start, $length = null, $encoding = 'UTF-8') {
+        return substr($string, $start, $length);
+    }
+}
+
+if (!function_exists('mb_strtolower')) {
+    function mb_strtolower($string, $encoding = 'UTF-8') {
+        return strtolower($string);
+    }
+}
+
 function e(?string $value): string
 {
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
 }
 
+function url(string $path): string
+{
+    $basePath = defined('BASE_PATH') ? BASE_PATH : '';
+    return $basePath . '/' . ltrim($path, '/');
+}
+
 function asset_url(?string $path): string
 {
-    if (!$path) return '/assets/img/placeholder.svg';
+    if (!$path) return url('assets/img/placeholder.svg');
     if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
         return $path;
     }
-    return '/' . ltrim($path, '/');
+    return url($path);
 }
 
 function redirect(string $path): void
 {
-    header('Location: ' . $path);
+    header('Location: ' . url($path));
     exit;
 }
 
@@ -60,7 +84,7 @@ function fetch_all_clients(PDO $pdo): array
 function fetch_featured_ads(PDO $pdo, int $limit = 8): array
 {
     $stmt = $pdo->prepare(
-        'SELECT a.id, a.titulo, a.slug, a.descricao, a.cidade, a.imagem_principal, a.nota, a.avaliacoes,
+        'SELECT a.id, a.titulo, a.slug, a.descricao, a.cidade, a.imagem_principal, a.imagem_banner, a.nota, a.avaliacoes,
                 c.nome AS categoria, c.icone AS categoria_icone, a.destaque
          FROM anuncios a
          INNER JOIN categorias c ON c.id = a.categoria_id
@@ -148,8 +172,9 @@ function search_ads(PDO $pdo, string $term = '', string $city = '', string $cate
     $params = ['status' => 'ativo'];
 
     if ($term !== '') {
-        $sql .= ' AND (a.titulo LIKE :term OR a.descricao LIKE :term)';
-        $params['term'] = '%' . $term . '%';
+        $sql .= ' AND (a.titulo LIKE :term1 OR a.descricao LIKE :term2)';
+        $params['term1'] = '%' . $term . '%';
+        $params['term2'] = '%' . $term . '%';
     }
 
     if ($city !== '') {

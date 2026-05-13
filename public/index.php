@@ -5,50 +5,61 @@ require_once __DIR__ . '/../includes/layout.php';
 require_once __DIR__ . '/../includes/seo.php';
 
 $categories = fetch_all_categories($pdo);
+$allCities = fetch_unique_cities($pdo);
 $featuredAds = fetch_featured_ads($pdo);
 $recentAds = fetch_recent_ads($pdo, 6);
+
+$heroBanners = [];
+foreach ($featuredAds as $ad) {
+    if (!empty($ad['imagem_banner'])) {
+        $heroBanners[] = [
+            'src' => asset_url($ad['imagem_banner']),
+            'alt' => $ad['titulo'],
+            'url' => url('/anuncio/' . $ad['slug'])
+        ];
+    }
+}
+if (empty($heroBanners)) {
+    $heroBanners = [
+        ['src' => '/assets/img/hero-orla.png', 'alt' => 'Orla de Aracaju', 'url' => ''],
+        ['src' => '/assets/img/sergipe-cidade1.jpg', 'alt' => 'Sergipe', 'url' => ''],
+        ['src' => '/assets/img/sergipe-cidade2.jpg', 'alt' => 'Sergipe', 'url' => ''],
+        ['src' => '/assets/img/sergipe-cidade3.jpg', 'alt' => 'Sergipe', 'url' => ''],
+        ['src' => '/assets/img/caranguejo.png', 'alt' => 'Cultura sergipana', 'url' => '']
+    ];
+}
 
 render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais com facilidade.');
 ?>
 
 <section class="hero">
     <div class="hero-slider">
-        <div class="hero-slide active">
-            <img src="/assets/img/hero-orla.png" alt="Orla de Aracaju">
+        <?php foreach ($heroBanners as $index => $banner): ?>
+        <div class="hero-slide <?php echo $index === 0 ? 'active' : ''; ?>">
+            <?php if (!empty($banner['url'])): ?>
+            <a href="<?php echo $banner['url']; ?>" style="display:block; width:100%; height:100%;">
+            <?php endif; ?>
+            <img src="<?php echo $banner['src']; ?>" alt="<?php echo e($banner['alt']); ?>" style="object-fit: cover; width:100%; height:100%;">
             <div class="hero-overlay"></div>
+            <?php if (!empty($banner['url'])): ?>
+            </a>
+            <?php endif; ?>
         </div>
-        <div class="hero-slide">
-            <img src="/assets/img/sergipe-cidade1.jpg" alt="Sergipe">
-            <div class="hero-overlay"></div>
-        </div>
-        <div class="hero-slide">
-            <img src="/assets/img/sergipe-cidade2.jpg" alt="Sergipe">
-            <div class="hero-overlay"></div>
-        </div>
-        <div class="hero-slide">
-            <img src="/assets/img/sergipe-cidade3.jpg" alt="Sergipe">
-            <div class="hero-overlay"></div>
-        </div>
-        <div class="hero-slide">
-            <img src="/assets/img/caranguejo.png" alt="Cultura sergipana">
-            <div class="hero-overlay"></div>
-        </div>
-        <div class="hero-nav">
-            <button class="hero-dot active" data-slide="0"></button>
-            <button class="hero-dot" data-slide="1"></button>
-            <button class="hero-dot" data-slide="2"></button>
-            <button class="hero-dot" data-slide="3"></button>
-            <button class="hero-dot" data-slide="4"></button>
-        </div>
-        <button class="hero-arrow prev">‹</button>
-        <button class="hero-arrow next">›</button>
+        <?php endforeach; ?>
     </div>
+    <div class="hero-nav">
+        <?php foreach ($heroBanners as $index => $banner): ?>
+        <button class="hero-dot <?php echo $index === 0 ? 'active' : ''; ?>" data-slide="<?php echo $index; ?>"></button>
+        <?php endforeach; ?>
+    </div>
+    <button class="hero-arrow prev">‹</button>
+    <button class="hero-arrow next">›</button>
     <div class="container">
         <div class="hero-content">
             <h1><?php echo get_setting($pdo, 'hero_titulo', 'A plataforma ideal para encontrar serviços locais na sua cidade'); ?></h1>
             <p class="lead"><?php echo get_setting($pdo, 'hero_subtitulo', 'Conectamos prestadores qualificados a pessoas que realmente precisam.'); ?></p>
             <div class="hero-actions">
-                <a class="btn btn-primary" href="/buscar">Explorar categorias</a>
+                <a class="btn btn-primary" href="<?php echo url('/buscar'); ?>">Explorar categorias</a>
                 <a class="btn btn-outline" href="https://wa.me/557996327084?text=Gostaria%20de%20anunciar%20na%20Conectado%20em%20Sergipe" target="_blank">Quero anunciar</a>
             </div>
         </div>
@@ -63,34 +74,28 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                     <span class="section-label">Busca Rápida</span>
                     <h2>O que você procura hoje?</h2>
                 </div>
-                <div class="quick-filters">
+                <div class="quick-filters" style="display: flex; gap: 1rem; align-items: center;">
                     <select id="categoryFilter" class="quick-select">
                         <option value="">Todas as categorias</option>
-                        <option value="eletricista">⚡ Eletricista</option>
-                        <option value="encanador">🔧 Encanador</option>
-                        <option value="pedreiro">👷 Pedreiro</option>
-                        <option value="pintor">🎨 Pintor</option>
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?php echo e($cat['slug']); ?>"><?php echo e($cat['nome']); ?></option>
+                        <?php endforeach; ?>
                     </select>
                     <select id="cityFilter" class="quick-select">
                         <option value="">Todas as cidades</option>
-                        <option>Aracaju</option>
-                        <option>Nossa Senhora do Socorro</option>
-                        <option>Lagarto</option>
-                        <option>Itabaiana</option>
-                        <option>São Cristóvão</option>
-                        <option>Estância</option>
+                        <?php foreach ($allCities as $city): ?>
+                            <option value="<?php echo e($city); ?>"><?php echo e($city); ?></option>
+                        <?php endforeach; ?>
                     </select>
+                    <button id="btnConsultar" class="btn btn-primary" style="height: 48px; padding: 0 1.5rem; border-radius: 0.75rem;">Consultar</button>
                 </div>
             </div>
             <div class="quick-pills">
-                <a href="/buscar?categoria=eletricista" class="pill">⚡ Eletricista</a>
-                <a href="/buscar?categoria=encanador" class="pill">🔧 Encanador</a>
-                <a href="/buscar?categoria=pedreiro" class="pill">👷 Pedreiro</a>
-                <a href="/buscar?categoria=pintor" class="pill">🎨 Pintor</a>
-                <a href="/buscar?categoria=diarista" class="pill">🧹 Diarista</a>
-                <a href="/buscar?categoria=cabeleireiro" class="pill">💇 Cabeleireiro</a>
-                <a href="/buscar?categoria=fotografia" class="pill">📸 Fotografia</a>
-                <a href="/buscar?categoria=confeitaria" class="pill">🎂 Confeitaria</a>
+                <?php foreach (array_slice($categories, 0, 8) as $cat): ?>
+                    <a href="<?php echo url('/buscar?categoria=' . $cat['slug']); ?>" class="pill">
+                        <?php echo $cat['nome']; ?>
+                    </a>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
@@ -103,7 +108,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                 <span class="section-label">Em alta</span>
                 <h2>Mais procurados da semana</h2>
             </div>
-            <a href="/buscar" class="view-all">Ver tudo →</a>
+            <a href="<?php echo url('/buscar'); ?>" class="view-all">Ver tudo →</a>
         </div>
         <div class="trending-carousel">
             <div class="trending-track">
@@ -111,7 +116,10 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                     <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="mini-card">
                         <img src="<?php echo asset_url($ad['imagem_principal']); ?>"
                             alt="<?php echo e($ad['titulo']); ?>">
-                        <strong><?php echo e($ad['titulo']); ?></strong>
+                        <div class="mini-card-body">
+                            <span class="card-cat"><?php echo e($ad['categoria']); ?></span>
+                            <strong><?php echo e($ad['titulo']); ?></strong>
+                        </div>
                     </a>
                 <?php endforeach; ?>
                 <!-- Duplicate for infinite effect -->
@@ -119,7 +127,10 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                     <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="mini-card">
                         <img src="<?php echo asset_url($ad['imagem_principal']); ?>"
                             alt="<?php echo e($ad['titulo']); ?>">
-                        <strong><?php echo e($ad['titulo']); ?></strong>
+                        <div class="mini-card-body">
+                            <span class="card-cat"><?php echo e($ad['categoria']); ?></span>
+                            <strong><?php echo e($ad['titulo']); ?></strong>
+                        </div>
                     </a>
                 <?php endforeach; ?>
             </div>
@@ -134,7 +145,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                 <span class="section-label">Categorias</span>
                 <h2>Navegue por especialidade</h2>
             </div>
-            <a href="/buscar" class="view-all">Todas as categorias</a>
+            <a href="<?php echo url('/buscar'); ?>" class="view-all">Todas as categorias</a>
         </div>
         <div class="category-grid">
             <?php foreach ($categories as $category): ?>
@@ -203,7 +214,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                 <span class="section-label">Acabou de chegar</span>
                 <h2>Recentes em Sergipe</h2>
             </div>
-            <a href="/buscar" class="view-all">Ver todos →</a>
+            <a href="<?php echo url('/buscar'); ?>" class="view-all">Ver todos →</a>
         </div>
         <div class="cards-grid">
             <?php foreach ($recentAds as $ad): ?>
@@ -267,4 +278,4 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
     </div>
 </section>
 
-<?php render_footer(); ?>
+<script>document.addEventListener("DOMContentLoaded", function() { const btnConsultar = document.getElementById("btnConsultar"); const categoryFilter = document.getElementById("categoryFilter"); const cityFilter = document.getElementById("cityFilter"); if (btnConsultar) { btnConsultar.addEventListener("click", function() { const cat = categoryFilter.value; const city = cityFilter.value; let url = "<?php echo url("/buscar"); ?>?"; const params = []; if (cat) params.push("categoria=" + encodeURIComponent(cat)); if (city) params.push("cidade=" + encodeURIComponent(city)); window.location.href = url + params.join("&"); }); } });</script><?php render_footer(); ?>

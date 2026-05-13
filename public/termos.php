@@ -11,7 +11,7 @@ render_header($pdo, 'Termos de Uso - Conectado em Sergipe', 'Leia nossos termos 
     
     <p style="font-weight: 700; color: var(--primary); margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 0.05em;">Vigência: A partir de 11 de maio de 2026</p>
     
-    <div class="content-text" style="line-height: 1.8; color: var(--foreground); font-size: 1.1rem;">
+    <div class="content-text" style="line-height: 1.8; color: var(--foreground); font-size: 1.1rem; text-align: justify;">
         <p style="margin-bottom: 1.5rem; font-size: 1.2rem; font-weight: 500;">Seja bem-vindo ao Conectado em Sergipe. Agradecemos por utilizar nossa plataforma.</p>
         
         <p style="margin-bottom: 2rem;">Os presentes Termos de Uso regem a utilização do site e dos serviços oferecidos pelo Conectado em Sergipe. Ao acessar ou utilizar nossa plataforma e canais de comunicação, você manifesta sua total concordância com as regras aqui estabelecidas.</p>
@@ -38,8 +38,14 @@ render_header($pdo, 'Termos de Uso - Conectado em Sergipe', 'Leia nossos termos 
         <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 1.4rem;">5. PROPRIEDADE INTELECTUAL E DIREITOS AUTORAIS</h3>
         <p>Respeitamos os direitos de propriedade intelectual. Se você identificar que qualquer conteúdo publicado viola seus direitos autorais ou marca registrada, por favor, envie-nos uma mensagem imediatamente para que possamos analisar e tomar as providências cabíveis.</p>
 
-        <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 1.4rem;">6. DISPOSIÇÕES GERAIS</h3>
-        <p>Ao publicar ou utilizar o portal, você declara ser o único responsável pelas informações fornecidas e pelas interações realizadas.</p>
+        <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 1.4rem;">7. PARA ENTRAR EM CONTATO CONOSCO</h3>
+        <p>Caso tenha alguma dúvida sobre o Serviço ou sobre estes Termos, entre em contato conosco.</p>
+        <p style="margin-top: 1rem;">Para assuntos relacionados aos seus Dados Pessoais ou solicitações de direitos, entre em contato com o nosso Encarregado pelo Tratamento de Dados Pessoais ("Data Protection Officer").</p>
+        
+        <div style="margin-top: 2rem; padding: 1.5rem; background: var(--muted-bg); border-radius: 1rem; border: 1px solid var(--border);">
+            <p style="margin-bottom: 0.5rem;"><strong>DPO (encarregado):</strong> Anderson Pereira</p>
+            <p style="margin-bottom: 0.5rem;"><strong>E-mail:</strong> <a href="mailto:conectadoemsergipe@gmail.com" style="color: var(--primary); text-decoration: none;">conectadoemsergipe@gmail.com</a></p>
+        </div>
     </div>
 </div>
 

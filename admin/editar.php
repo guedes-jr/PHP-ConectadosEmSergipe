@@ -24,8 +24,7 @@ $stmt->execute([$id]);
 $ad = $stmt->fetch();
 
 if (!$ad) {
-    header('Location: /admin/dashboard');
-    exit;
+    redirect('/admin/dashboard');
 }
 
 $horarios = fetch_horarios_by_ad($pdo, $id);
@@ -42,8 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_image_id'])) {
     if ($imgToDelete) {
         @unlink(__DIR__ . '/../' . $imgToDelete['caminho']);
         $pdo->prepare("DELETE FROM imagens WHERE id = ?")->execute([$imgId]);
-        header("Location: /admin/editar/$id?msg=deleted");
-        exit;
+        redirect("/admin/editar/$id?msg=deleted");
     }
 }
 
@@ -64,6 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image_id'])) 
         $facebook = trim($_POST['facebook'] ?? '');
         $destaque = isset($_POST['destaque']) ? 1 : 0;
         $status = $_POST['status'] ?? 'ativo';
+        $tipo = $_POST['tipo'] ?? 'prestador';
+        $cnpj = trim($_POST['cnpj'] ?? '') ?: null;
 
         if (!$titulo || !$categoria_id || !$descricao) {
             $error = 'Preencha os campos obrigatórios.';
@@ -72,8 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image_id'])) 
                 $pdo->beginTransaction();
 
                 if ($ad['cliente_id']) {
-                    $stmtUpd = $pdo->prepare("UPDATE clientes SET email = ?, telefone = ?, whatsapp = ?, cidade = ?, estado = ?, regiao = ? WHERE id = ?");
-                    $stmtUpd->execute([$email, $telefone, $whatsapp, $cidade, $estado, $regiao, $ad['cliente_id']]);
+                    $stmtUpd = $pdo->prepare("UPDATE clientes SET email = ?, telefone = ?, whatsapp = ?, cidade = ?, estado = ?, regiao = ?, tipo = ?, cnpj = ? WHERE id = ?");
+                    $stmtUpd->execute([$email, $telefone, $whatsapp, $cidade, $estado, $regiao, $tipo, $cnpj, $ad['cliente_id']]);
                 }
 
                 $img_principal = $ad['imagem_principal'];
@@ -97,10 +97,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image_id'])) 
                         imagem_principal = :imagem_principal, 
                         imagem_banner = :imagem_banner, 
                         destaque = :destaque, 
-                        status = :status, 
                         instagram = :instagram, 
                         facebook = :facebook,
-                        cliente_id = :cliente_id
+                        cliente_id = :cliente_id,
+                        tipo = :tipo,
+                        cnpj = :cnpj
                     WHERE id = :id
                 ");
                 $stmt->execute([
@@ -117,6 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image_id'])) 
                     'instagram' => $instagram,
                     'facebook' => $facebook,
                     'cliente_id' => (int)($_POST['cliente_id'] ?? $ad['cliente_id']),
+                    'tipo' => $tipo,
+                    'cnpj' => $cnpj,
                     'id' => $id
                 ]);
 
@@ -151,8 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image_id'])) 
                 }
 
                 $pdo->commit();
-                header("Location: /admin/editar/$id?msg=success");
-                exit;
+                redirect("/admin/editar/$id?msg=success");
 
             } catch (Exception $e) {
                 $pdo->rollBack();
@@ -163,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image_id'])) 
 }
 
 $headerButtons = '
-    <a href="/anuncio/'.$ad['slug'].'" target="_blank" class="btn btn-outline" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem; border-color:var(--border); color:var(--foreground);">
+    <a href="'.url('/anuncio/'.$ad['slug']).'" target="_blank" class="btn btn-outline" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem; border-color:var(--border); color:var(--foreground);">
         <i data-lucide="external-link" style="width:16px;"></i> Ver no Site
     </a>';
 render_admin_header('Editar Anúncio', 'anuncios', $headerButtons);
@@ -219,11 +221,15 @@ render_admin_header('Editar Anúncio', 'anuncios', $headerButtons);
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Status</label>
-                    <select name="status">
-                        <option value="ativo" <?php echo $ad['status'] === 'ativo' ? 'selected' : ''; ?>>Ativo</option>
-                        <option value="inativo" <?php echo $ad['status'] === 'inativo' ? 'selected' : ''; ?>>Inativo</option>
+                    <label>Tipo de Anunciante *</label>
+                    <select name="tipo" required>
+                        <option value="prestador" <?php echo $ad['tipo'] === 'prestador' ? 'selected' : ''; ?>>Prestador de Serviço</option>
+                        <option value="loja" <?php echo $ad['tipo'] === 'loja' ? 'selected' : ''; ?>>Loja / Comércio</option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label>CNPJ (Opcional)</label>
+                    <input type="text" name="cnpj" value="<?php echo e($ad['cnpj']); ?>" placeholder="00.000.000/0000-00">
                 </div>
                 <div class="form-group">
                     <label>Cidade *</label>

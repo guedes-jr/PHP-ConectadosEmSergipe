@@ -30,6 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $facebook = trim($_POST['facebook'] ?? '');
         $destaque = isset($_POST['destaque']) ? 1 : 0;
         $status = $_POST['status'] ?? 'ativo';
+        $tipo = $_POST['tipo'] ?? 'prestador';
+        $cnpj = trim($_POST['cnpj'] ?? '') ?: null;
         $slug = slugify($titulo);
 
         if (!$titulo || !$categoria_id || !$descricao || !$cidade || !$telefone) {
@@ -49,13 +51,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $stmtUpdateClient = $pdo->prepare("UPDATE clientes SET nome = ?, telefone = ?, whatsapp = ?, cidade = ?, estado = ?, regiao = ? WHERE id = ?");
                         $stmtUpdateClient->execute([$titulo, $telefone, $whatsapp, $cidade, $estado, $regiao, $clientId]);
                     } else {
-                        $stmtInsertClient = $pdo->prepare("INSERT INTO clientes (nome, email, telefone, whatsapp, cidade, estado, regiao) VALUES (?, ?, ?, ?, ?, ?, ?)");
-                        $stmtInsertClient->execute([$titulo, $email, $telefone, $whatsapp, $cidade, $estado, $regiao]);
+                        $stmtInsertClient = $pdo->prepare("INSERT INTO clientes (nome, email, telefone, whatsapp, cidade, estado, regiao, tipo, cnpj) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                        $stmtInsertClient->execute([$titulo, $email, $telefone, $whatsapp, $cidade, $estado, $regiao, $tipo, $cnpj]);
                         $clientId = $pdo->lastInsertId();
                     }
                 } else {
-                    $stmtUpdateClient = $pdo->prepare("UPDATE clientes SET telefone = ?, whatsapp = ?, cidade = ?, estado = ?, regiao = ? WHERE id = ?");
-                    $stmtUpdateClient->execute([$telefone, $whatsapp, $cidade, $estado, $regiao, $clientId]);
+                    $stmtUpdateClient = $pdo->prepare("UPDATE clientes SET telefone = ?, whatsapp = ?, cidade = ?, estado = ?, regiao = ?, tipo = ?, cnpj = ? WHERE id = ?");
+                    $stmtUpdateClient->execute([$telefone, $whatsapp, $cidade, $estado, $regiao, $tipo, $cnpj, $clientId]);
                 }
 
                 $img_principal = '';
@@ -71,10 +73,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = $pdo->prepare("
                     INSERT INTO anuncios (
                         titulo, slug, descricao, categoria_id, cliente_id, cidade, estado, regiao,
-                        imagem_principal, imagem_banner, destaque, status, instagram, facebook
+                        imagem_principal, imagem_banner, destaque, status, instagram, facebook, tipo, cnpj
                     ) VALUES (
                         :titulo, :slug, :descricao, :categoria_id, :cliente_id, :cidade, :estado, :regiao,
-                        :imagem_principal, :imagem_banner, :destaque, :status, :instagram, :facebook
+                        :imagem_principal, :imagem_banner, :destaque, :status, :instagram, :facebook, :tipo, :cnpj
                     )
                 ");
 
@@ -92,7 +94,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'destaque' => $destaque,
                     'status' => $status,
                     'instagram' => $instagram ?: null,
-                    'facebook' => $facebook ?: null
+                    'facebook' => $facebook ?: null,
+                    'tipo' => $tipo,
+                    'cnpj' => $cnpj
                 ]);
 
                 $adId = $pdo->lastInsertId();
@@ -176,6 +180,17 @@ render_admin_header('Cadastrar Anúncio', 'anuncios', $headerButtons);
                     </select>
                 </div>
                 <div class="form-group">
+                    <label>Tipo de Anunciante *</label>
+                    <select name="tipo" required>
+                        <option value="prestador">Prestador de Serviço</option>
+                        <option value="loja">Loja / Comércio</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>CNPJ (Opcional)</label>
+                    <input type="text" name="cnpj" placeholder="00.000.000/0000-00">
+                </div>
+                <div class="form-group">
                     <label>Cidade *</label>
                     <input type="text" name="cidade" id="ad_cidade" required>
                 </div>
@@ -227,7 +242,7 @@ render_admin_header('Cadastrar Anúncio', 'anuncios', $headerButtons);
                     <select id="selectClient" name="cliente_id_selected">
                         <option value="">-- Novo Profissional --</option>
                         <?php foreach(fetch_all_clients($pdo) as $c): ?>
-                            <option value="<?php echo $c['id']; ?>" data-email="<?php echo e($c['email']); ?>" data-telefone="<?php echo e($c['telefone']); ?>" data-whatsapp="<?php echo e($c['whatsapp']); ?>" data-cidade="<?php echo e($c['cidade']); ?>" data-estado="<?php echo e($c['estado'] ?? 'Sergipe'); ?>" data-regiao="<?php echo e($c['regiao']); ?>">
+                            <option value="<?php echo $c['id']; ?>" data-email="<?php echo e($c['email']); ?>" data-telefone="<?php echo e($c['telefone']); ?>" data-whatsapp="<?php echo e($c['whatsapp']); ?>" data-cidade="<?php echo e($c['cidade']); ?>" data-estado="<?php echo e($c['estado'] ?? 'Sergipe'); ?>" data-regiao="<?php echo e($c['regiao']); ?>" data-tipo="<?php echo e($c['tipo'] ?? 'prestador'); ?>" data-cnpj="<?php echo e($c['cnpj'] ?? ''); ?>">
                                 <?php echo e($c['nome']); ?>
                             </option>
                         <?php endforeach; ?>
@@ -306,6 +321,8 @@ render_admin_header('Cadastrar Anúncio', 'anuncios', $headerButtons);
                     adCidade.value = opt.dataset.cidade;
                     document.getElementById('ad_estado').value = opt.dataset.estado;
                     adRegiao.value = opt.dataset.regiao;
+                    document.querySelector('select[name="tipo"]').value = opt.dataset.tipo;
+                    document.querySelector('input[name="cnpj"]').value = opt.dataset.cnpj;
                 }
             });
         }

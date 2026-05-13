@@ -1,12 +1,5 @@
-php_value upload_max_filesize 64M
-php_value post_max_size 64M
-php_value memory_limit 128M
-php_value max_execution_time 300
-
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php [L,QSA]
-</IfModule>
+# Protect uploads directory
+<Files ~ "\.(php|phtml|phar|pl|cgi|py|asp|aspx)$">
+    Deny from all
+</Files>
+Options -Indexes

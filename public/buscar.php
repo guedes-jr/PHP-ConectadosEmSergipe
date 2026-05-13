@@ -27,7 +27,7 @@ render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categori
         <span class="search-subtitle">ENCONTRE POR AQUI</span>
         <h1 class="search-title">Busque o serviço <span class="text-primary">ideal.</span></h1>
         
-        <form class="search-main-form" method="get" action="/buscar">
+        <form class="search-main-form" method="get" action="<?php echo url('/buscar'); ?>">
             <div class="search-input-wrapper">
                 <i data-lucide="search" style="margin-right: 1rem; color: var(--muted-foreground);"></i>
                 <input type="text" name="q" value="<?php echo e($q); ?>" placeholder="Buscar por nome ou serviço...">
@@ -36,16 +36,27 @@ render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categori
                 <?php if ($regiao): ?><input type="hidden" name="regiao" value="<?php echo e($regiao); ?>"><?php endif; ?>
                 <?php if ($categoria): ?><input type="hidden" name="categoria" value="<?php echo e($categoria); ?>"><?php endif; ?>
                 <?php if ($rating): ?><input type="hidden" name="avaliacao" value="<?php echo e($rating); ?>"><?php endif; ?>
-                <button type="submit" class="btn btn-primary">Buscar</button>
+                <button type="submit" class="btn btn-primary">Consultar</button>
             </div>
         </form>
     </div>
 </section>
 
 <div class="search-layout container section">
-    <aside class="search-sidebar">
+    <button id="btnOpenFilters" class="btn-filter-mobile">
+        <i data-lucide="sliders-horizontal" style="width: 18px; height: 18px;"></i>
+        Filtrar resultados
+    </button>
+
+    <aside class="search-sidebar" id="sidebar">
+        <div class="sidebar-header-mobile">
+            <h3>Filtros</h3>
+            <button id="btnCloseFilters" class="btn-close-sidebar">
+                <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+            </button>
+        </div>
         <div class="sidebar-block animate-fade-in">
-            <form id="filters-form" action="/buscar" method="get">
+            <form id="filters-form" action="<?php echo url('/buscar'); ?>" method="get">
                 <input type="hidden" name="q" value="<?php echo e($q); ?>">
                 <input type="hidden" name="categoria" value="<?php echo e($categoria); ?>">
                 
@@ -232,6 +243,36 @@ render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categori
             });
         });
     });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btnOpenFilters = document.getElementById('btnOpenFilters');
+    const btnCloseFilters = document.getElementById('btnCloseFilters');
+    const sidebar = document.getElementById('sidebar');
+
+    if (btnOpenFilters && sidebar) {
+        btnOpenFilters.addEventListener('click', function() {
+            sidebar.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    if (btnCloseFilters && sidebar) {
+        btnCloseFilters.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
+    // Close on click outside for mobile
+    sidebar.addEventListener('click', function(e) {
+        if (window.innerWidth <= 992 && e.target === sidebar) {
+            sidebar.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+});
 </script>
 
 <?php render_footer(); ?>

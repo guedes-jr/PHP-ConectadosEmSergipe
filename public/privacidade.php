@@ -11,7 +11,7 @@ render_header($pdo, 'Política de Privacidade - Conectado em Sergipe', 'Saiba co
     
     <p style="font-weight: 700; color: var(--primary); margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 0.05em;">Vigência: A partir de <?php echo date('d/m/Y'); ?></p>
 
-    <div class="content-text" style="line-height: 1.8; color: var(--foreground); font-size: 1.1rem;">
+    <div class="content-text" style="line-height: 1.8; color: var(--foreground); font-size: 1.1rem; text-align: justify;">
         <p style="margin-bottom: 2rem;">A sua privacidade é muito importante para nós. Esta Política de Privacidade explica como a plataforma <strong>Conectado em Sergipe</strong> coleta, utiliza, armazena e protege os dados pessoais dos usuários, em conformidade com a <strong>Lei Geral de Proteção de Dados (Lei nº 13.709/2018 - LGPD).</strong></p>
 
         <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 1.4rem;">1. COLETA DE DADOS PESSOAIS</h3>
@@ -52,8 +52,14 @@ render_header($pdo, 'Política de Privacidade - Conectado em Sergipe', 'Saiba co
         <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 1.4rem;">6. COOKIES E TECNOLOGIAS DE RASTREAMENTO</h3>
         <p>Podemos utilizar cookies para reconhecer seu navegador e lembrar suas preferências (como a cidade selecionada), facilitando sua navegação futura.</p>
 
-        <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 1.4rem;">7. ALTERAÇÕES NESTA POLÍTICA</h3>
-        <p>Esta Política pode ser atualizada periodicamente. Sempre que houver mudanças significativas, avisaremos você através da plataforma ou por e-mail.</p>
+        <h3 style="margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 1.4rem;">8. PARA ENTRAR EM CONTATO CONOSCO</h3>
+        <p>Caso tenha alguma dúvida sobre o Serviço, entre em contato conosco pelo nosso site ou pelos canais oficiais.</p>
+        <p style="margin-top: 1rem;">Se tiver alguma dúvida, comentário ou sugestão sobre assuntos relacionados aos seus Dados Pessoais ou a esta Política de Privacidade, ou solicitação de uso de seus direitos e escolhas, entre em contato com o nosso Encarregado pelo Tratamento de Dados Pessoais ("Data Protection Officer").</p>
+        
+        <div style="margin-top: 2rem; padding: 1.5rem; background: var(--muted-bg); border-radius: 1rem; border: 1px solid var(--border);">
+            <p style="margin-bottom: 0.5rem;"><strong>DPO (encarregado):</strong> Anderson Pereira</p>
+            <p style="margin-bottom: 0.5rem;"><strong>E-mail:</strong> <a href="mailto:conectadoemsergipe@gmail.com" style="color: var(--primary); text-decoration: none;">conectadoemsergipe@gmail.com</a></p>
+        </div>
     </div>
 </div>
 

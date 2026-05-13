@@ -28,7 +28,7 @@ render_header(seo_title($category['nome']), seo_description($category['descricao
             </div>
             <h2><?php echo e($ad['titulo']); ?></h2>
             <p><?php echo e($ad['cidade']); ?></p>
-            <a class="button" href="/anuncio/<?php echo e($ad['slug']); ?>">Ver mais</a>
+            <a class="button" href="<?php echo url('/anuncio/' . $ad['slug']); ?>">Ver mais</a>
         </article>
     <?php endforeach; ?>
 </div>

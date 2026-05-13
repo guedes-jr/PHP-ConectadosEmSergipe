@@ -63,7 +63,7 @@ if ($isAdsList) {
         </button>';
 }
 $headerButtons .= '
-    <a href="/admin/criar" class="btn btn-primary" style="padding:0.625rem 1.25rem; font-size:0.875rem; text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
+    <a href="' . url('/admin/criar') . '" class="btn btn-primary" style="padding:0.625rem 1.25rem; font-size:0.875rem; text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         Cadastrar Anúncio
     </a>
@@ -113,17 +113,17 @@ render_admin_header($isAdsList ? 'Gerenciar Anúncios' : 'Dashboard', $activeMen
 
     <?php if ($isAdsList): ?>
     <!-- Filter Bar -->
-    <form class="filter-bar" method="get" action="/admin/anuncios">
+    <form class="filter-bar" method="get" action="<?php echo url('/admin/anuncios'); ?>">
         <div class="filter-group">
             <label>Buscar por título, cliente ou cidade</label>
             <input type="text" name="q" value="<?php echo e($search ?? ''); ?>" placeholder="Ex: Eletricista, João...">
         </div>
         <button type="submit" class="btn btn-primary" style="height: 42px; padding: 0 1.5rem;">Filtrar</button>
-        <a href="/admin/anuncios" class="btn btn-outline" style="height: 42px; display: flex; align-items: center; padding: 0 1.5rem; text-decoration: none;">Limpar</a>
+        <a href="<?php echo url('/admin/anuncios'); ?>" class="btn btn-outline" style="height: 42px; display: flex; align-items: center; padding: 0 1.5rem; text-decoration: none;">Limpar</a>
     </form>
     <?php endif; ?>
 
-    <form id="bulkDeleteForm" method="post" action="/admin/excluir" onsubmit="return confirm('Excluir todos os anúncios selecionados?')">
+    <form id="bulkDeleteForm" method="post" action="<?php echo url('/admin/excluir'); ?>" onsubmit="return confirm('Excluir todos os anúncios selecionados?')">
         <?php echo csrf_field(); ?>
         <input type="hidden" name="redirect" value="<?php echo $isAdsList ? '/admin/anuncios' : '/admin/dashboard'; ?>">
         <div class="table-card">
@@ -133,7 +133,7 @@ render_admin_header($isAdsList ? 'Gerenciar Anúncios' : 'Dashboard', $activeMen
                     <h3 style="margin:0; font-size:1.1rem;"><?php echo $isAdsList ? 'Todos os Anúncios (' . count($ads) . ')' : 'Últimos profissionais'; ?></h3>
                 </div>
                 <?php if (!$isAdsList): ?>
-                    <a href="/admin/anuncios" style="font-size:0.85rem; font-weight:600; color:var(--primary);">Ver todos →</a>
+                    <a href="<?php echo url('/admin/anuncios'); ?>" style="font-size:0.85rem; font-weight:600; color:var(--primary);">Ver todos →</a>
                 <?php endif; ?>
             </div>
             <div class="table-responsive">
@@ -174,13 +174,13 @@ render_admin_header($isAdsList ? 'Gerenciar Anúncios' : 'Dashboard', $activeMen
                             <td><?php echo date('d/m/Y', strtotime($ad['created_at'])); ?></td>
                             <td>
                                 <div class="actions">
-                                    <a href="/admin/editar/<?php echo $ad['id']; ?>" class="btn-icon" title="Editar">
+                                    <a href="<?php echo url('/admin/editar/' . $ad['id']); ?>" class="btn-icon" title="Editar">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                     </a>
-                                    <a href="/anuncio/<?php echo $ad['slug']; ?>" target="_blank" class="btn-icon" title="Ver no site">
+                                    <a href="<?php echo url('/anuncio/' . $ad['slug']); ?>" target="_blank" class="btn-icon" title="Ver no site">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                                     </a>
-                                    <form method="post" action="/admin/excluir" onsubmit="return confirm('Excluir este anúncio?')" style="display:inline;">
+                                    <form method="post" action="<?php echo url('/admin/excluir'); ?>" onsubmit="return confirm('Excluir este anúncio?')" style="display:inline;">
                                         <?php echo csrf_field(); ?>
                                         <input type="hidden" name="id" value="<?php echo $ad['id']; ?>">
                                         <input type="hidden" name="redirect" value="<?php echo $isAdsList ? '/admin/anuncios' : '/admin/dashboard'; ?>">
