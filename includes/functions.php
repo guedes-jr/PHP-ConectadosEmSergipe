@@ -172,9 +172,10 @@ function search_ads(PDO $pdo, string $term = '', string $city = '', string $cate
     $params = ['status' => 'ativo'];
 
     if ($term !== '') {
-        $sql .= ' AND (a.titulo LIKE :term1 OR a.descricao LIKE :term2)';
+        $sql .= ' AND (a.titulo LIKE :term1 OR a.descricao LIKE :term2 OR c.nome LIKE :term3)';
         $params['term1'] = '%' . $term . '%';
         $params['term2'] = '%' . $term . '%';
+        $params['term3'] = '%' . $term . '%';
     }
 
     if ($city !== '') {
