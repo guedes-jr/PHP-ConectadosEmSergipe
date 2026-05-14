@@ -36,13 +36,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cidade = trim($_POST['cidade'] ?? '');
         $estado = trim($_POST['estado'] ?? '');
         $regiao = trim($_POST['regiao'] ?? '');
+        $tipo = $_POST['tipo'] ?? 'prestador';
+        $cnpj = trim($_POST['cnpj'] ?? '') ?: null;
 
         if (!$nome || !$email) {
             $error = 'Nome e E-mail são obrigatórios.';
         } else {
             try {
-                $stmt = $pdo->prepare("UPDATE clientes SET nome = ?, email = ?, telefone = ?, whatsapp = ?, cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, regiao = ? WHERE id = ?");
-                $stmt->execute([$nome, $email, $telefone, $whatsapp, $cep, $rua, $bairro, $cidade, $estado, $regiao, $id]);
+                $stmt = $pdo->prepare("UPDATE clientes SET nome = ?, email = ?, telefone = ?, whatsapp = ?, cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, regiao = ?, tipo = ?, cnpj = ? WHERE id = ?");
+                $stmt->execute([$nome, $email, $telefone, $whatsapp, $cep, $rua, $bairro, $cidade, $estado, $regiao, $tipo, $cnpj, $id]);
                 $message = 'Dados atualizados com sucesso!';
                 
                 // Refresh data
@@ -103,6 +105,19 @@ render_admin_header('Editar Profissional', 'clientes');
             <div style="display:flex; flex-direction:column; gap:0.5rem;">
                 <label style="font-size:0.875rem; font-weight:600;">WhatsApp</label>
                 <input type="text" name="whatsapp" id="whatsapp" value="<?php echo e($client['whatsapp']); ?>" maxlength="15" style="padding:0.75rem 1rem; border:1px solid var(--border); border-radius:0.75rem; background:var(--muted-bg); color:var(--foreground);">
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                <label style="font-size:0.875rem; font-weight:600;">Tipo de Anunciante *</label>
+                <select name="tipo" required style="padding:0.75rem 1rem; border:1px solid var(--border); border-radius:0.75rem; background:var(--muted-bg); color:var(--foreground);">
+                    <option value="prestador" <?php echo ($client['tipo'] ?? 'prestador') === 'prestador' ? 'selected' : ''; ?>>Prestador de Serviço</option>
+                    <option value="loja" <?php echo ($client['tipo'] ?? '') === 'loja' ? 'selected' : ''; ?>>Loja / Comércio</option>
+                </select>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                <label style="font-size:0.875rem; font-weight:600;">CNPJ (Opcional)</label>
+                <input type="text" name="cnpj" value="<?php echo e($client['cnpj'] ?? ''); ?>" placeholder="00.000.000/0000-00" style="padding:0.75rem 1rem; border:1px solid var(--border); border-radius:0.75rem; background:var(--muted-bg); color:var(--foreground);">
             </div>
 
             <h2 style="grid-column: span 2; font-size: 1rem; color: var(--primary); font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Endereço</h2>

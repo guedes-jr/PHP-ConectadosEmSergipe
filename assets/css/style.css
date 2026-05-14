@@ -2008,13 +2008,12 @@ input, textarea, select, button {
 
     /* -- Trending Carousel -- */
     .trending-carousel {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        overflow: hidden;
         padding-bottom: 1.5rem;
     }
 
     .trending-track {
-        animation: none !important;
+        animation: scroll 45s linear infinite !important;
         display: flex;
         gap: 1rem;
         padding: 0 1rem;

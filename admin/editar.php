@@ -101,7 +101,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image_id'])) 
                         facebook = :facebook,
                         cliente_id = :cliente_id,
                         tipo = :tipo,
-                        cnpj = :cnpj
+                        cnpj = :cnpj,
+                        updated_at = NOW()
                     WHERE id = :id
                 ");
                 $stmt->execute([
@@ -114,7 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image_id'])) 
                     'imagem_principal' => $img_principal,
                     'imagem_banner' => $img_banner,
                     'destaque' => $destaque,
-                    'status' => $status,
                     'instagram' => $instagram,
                     'facebook' => $facebook,
                     'cliente_id' => (int)($_POST['cliente_id'] ?? $ad['cliente_id']),
