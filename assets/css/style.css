@@ -925,14 +925,24 @@ h1, h2, h3, h4 {
   align-items: center;
   justify-content: center;
   border-radius: 0.75rem;
-  color: var(--muted-foreground);
+  color: var(--foreground);
+  border: 1px solid var(--border);
   transition: all 0.2s ease;
 }
 
 .footer-social a:hover {
   background: var(--primary);
-  color: white;
+  color: white !important;
+  border-color: var(--primary);
   transform: translateY(-3px);
+}
+
+.footer-social a[aria-label="Instagram"]:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.footer-social a[aria-label="YouTube"]:hover {
+  background: #ff0000;
 }
 
 .footer-col h3 {
