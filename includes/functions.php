@@ -85,7 +85,7 @@ function fetch_featured_ads(PDO $pdo, int $limit = 8): array
 {
     $stmt = $pdo->prepare(
         'SELECT a.id, a.titulo, a.slug, a.descricao, a.cidade, a.imagem_principal, a.imagem_banner, a.nota, a.avaliacoes,
-                c.nome AS categoria, c.icone AS categoria_icone, a.destaque
+                c.nome AS categoria, c.icone AS categoria_icone, a.destaque, a.tipo
          FROM anuncios a
          INNER JOIN categorias c ON c.id = a.categoria_id
          WHERE a.status = "ativo" AND a.destaque = 1
@@ -100,7 +100,7 @@ function fetch_recent_ads(PDO $pdo, int $limit = 6): array
 {
     $stmt = $pdo->prepare(
         'SELECT a.id, a.titulo, a.slug, a.descricao, a.cidade, a.imagem_principal, a.nota, a.avaliacoes,
-                c.nome AS categoria, c.icone AS categoria_icone
+                c.nome AS categoria, c.icone AS categoria_icone, a.tipo
          FROM anuncios a
          INNER JOIN categorias c ON c.id = a.categoria_id
          WHERE a.status = "ativo"
@@ -122,7 +122,7 @@ function find_category_by_slug(PDO $pdo, string $slug): ?array
 function fetch_ads_by_category(PDO $pdo, int $categoryId): array
 {
     $stmt = $pdo->prepare(
-        'SELECT id, titulo, slug, cidade, imagem_principal
+        'SELECT id, titulo, slug, cidade, imagem_principal, tipo
          FROM anuncios
          WHERE categoria_id = :categoria_id AND status = :status
          ORDER BY destaque DESC, created_at DESC'
@@ -164,7 +164,7 @@ function fetch_images_by_ad(PDO $pdo, int $adId): array
 
 function search_ads(PDO $pdo, string $term = '', string $city = '', string $category = '', string $rating = '', string $region = '', string $estado = ''): array
 {
-    $sql = 'SELECT a.id, a.titulo, a.slug, a.cidade, a.regiao, a.imagem_principal, a.nota, a.avaliacoes, a.destaque, c.nome AS categoria_nome, c.icone AS categoria_icone
+    $sql = 'SELECT a.id, a.titulo, a.slug, a.cidade, a.regiao, a.imagem_principal, a.nota, a.avaliacoes, a.destaque, a.tipo, c.nome AS categoria_nome, c.icone AS categoria_icone
             FROM anuncios a
             INNER JOIN categorias c ON c.id = a.categoria_id
             WHERE a.status = :status';

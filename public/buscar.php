@@ -142,6 +142,7 @@ render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categori
                                 <?php if (isset($ad['destaque']) && $ad['destaque']): ?>
                                     <span class="badge-featured">★ EM DESTAQUE</span>
                                 <?php endif; ?>
+                                <span class="badge-store"><?php echo ($ad['tipo'] ?? 'prestador') === 'loja' ? 'LOJA' : 'PRESTADOR'; ?></span>
                             </div>
                         </a>
                         <div class="card-body">

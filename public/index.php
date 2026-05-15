@@ -177,7 +177,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                             alt="<?php echo e($ad['titulo']); ?>">
                         <div class="card-badges">
                             <span class="badge-featured">★ EM DESTAQUE</span>
-                            <span class="badge-store">LOJA</span>
+                            <span class="badge-store"><?php echo $ad['tipo'] === 'loja' ? 'LOJA' : 'PRESTADOR'; ?></span>
                         </div>
                     </div>
                     <div class="card-body">
@@ -226,7 +226,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                             <?php if (isset($ad['destaque']) && $ad['destaque']): ?>
                                 <span class="badge-featured">★ EM DESTAQUE</span>
                             <?php endif; ?>
-                            <span class="badge-store">LOJA</span>
+                            <span class="badge-store"><?php echo $ad['tipo'] === 'loja' ? 'LOJA' : 'PRESTADOR'; ?></span>
                         </div>
                     </div>
                     <div class="card-body">
