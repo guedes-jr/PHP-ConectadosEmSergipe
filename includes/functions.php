@@ -64,9 +64,13 @@ function only_digits(string $value): string
     return preg_replace('/\D+/', '', $value) ?? '';
 }
 
-function whatsapp_link(string $phone): string
+function whatsapp_link(string $phone, string $message = ''): string
 {
-    return 'https://wa.me/55' . only_digits($phone);
+    $url = 'https://wa.me/55' . only_digits($phone);
+    if (!empty($message)) {
+        $url .= '?text=' . urlencode($message);
+    }
+    return $url;
 }
 
 function fetch_all_categories(PDO $pdo): array

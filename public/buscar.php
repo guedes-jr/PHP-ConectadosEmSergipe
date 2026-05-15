@@ -162,7 +162,7 @@ render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categori
                                     <i data-lucide="map-pin" style="width:14px; height:14px;"></i>
                                     <span><?php echo e($ad['cidade']); ?></span>
                                 </div>
-                                <a href="<?php echo whatsapp_link($ad['cliente_telefone'] ?? $ad['telefone'] ?? '0000000000'); ?>" target="_blank" class="whatsapp-float-btn">
+                                <a href="<?php echo whatsapp_link($ad['cliente_telefone'] ?? $ad['telefone'] ?? '0000000000', 'Olá, encontrei seu anúncio pelo Conectado em Sergipe'); ?>" target="_blank" class="whatsapp-float-btn">
                                     <i data-lucide="message-circle" style="width:14px; height:14px;"></i> Whats
                                 </a>
                             </div>
