@@ -35,32 +35,39 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
 <section class="hero">
     <div class="hero-slider">
         <?php foreach ($heroBanners as $index => $banner): ?>
-        <div class="hero-slide <?php echo $index === 0 ? 'active' : ''; ?>">
-            <?php if (!empty($banner['url'])): ?>
-            <a href="<?php echo $banner['url']; ?>" style="display:block; width:100%; height:100%;">
-            <?php endif; ?>
-            <img src="<?php echo $banner['src']; ?>" alt="<?php echo e($banner['alt']); ?>" style="object-fit: cover; width:100%; height:100%;">
-            <div class="hero-overlay"></div>
-            <?php if (!empty($banner['url'])): ?>
-            </a>
-            <?php endif; ?>
-        </div>
+            <div class="hero-slide <?php echo $index === 0 ? 'active' : ''; ?>">
+                <?php if (!empty($banner['url'])): ?>
+                    <a href="<?php echo $banner['url']; ?>" style="display:block; width:100%; height:100%;">
+                    <?php endif; ?>
+                    <img src="<?php echo $banner['src']; ?>" alt="<?php echo e($banner['alt']); ?>"
+                        style="object-fit: cover; width:100%; height:100%;">
+                    <div class="hero-overlay"></div>
+                    <?php if (!empty($banner['url'])): ?>
+                    </a>
+                <?php endif; ?>
+            </div>
         <?php endforeach; ?>
     </div>
     <div class="hero-nav">
         <?php foreach ($heroBanners as $index => $banner): ?>
-        <button class="hero-dot <?php echo $index === 0 ? 'active' : ''; ?>" data-slide="<?php echo $index; ?>"></button>
+            <button class="hero-dot <?php echo $index === 0 ? 'active' : ''; ?>"
+                data-slide="<?php echo $index; ?>"></button>
         <?php endforeach; ?>
     </div>
     <button class="hero-arrow prev">‹</button>
     <button class="hero-arrow next">›</button>
     <div class="container">
         <div class="hero-content">
-            <h1><?php echo get_setting($pdo, 'hero_titulo', 'A plataforma ideal para encontrar serviços locais na sua cidade'); ?></h1>
-            <p class="lead"><?php echo get_setting($pdo, 'hero_subtitulo', 'Conectamos prestadores qualificados a pessoas que realmente precisam.'); ?></p>
+            <h1><?php echo get_setting($pdo, 'hero_titulo', 'A plataforma ideal para encontrar serviços locais na sua cidade'); ?>
+            </h1>
+            <p class="lead">
+                <?php echo get_setting($pdo, 'hero_subtitulo', 'Conectamos prestadores qualificados a pessoas que realmente precisam.'); ?>
+            </p>
             <div class="hero-actions">
                 <a class="btn btn-primary" href="<?php echo url('/buscar'); ?>">Explorar categorias</a>
-                <a class="btn btn-outline" href="https://wa.me/557996327084?text=Gostaria%20de%20anunciar%20na%20Conectado%20em%20Sergipe" target="_blank">Quero anunciar</a>
+                <a class="btn btn-outline"
+                    href="https://wa.me/557996327084?text=Gostaria%20de%20anunciar%20na%20Conectado%20em%20Sergipe"
+                    target="_blank">Quero anunciar</a>
             </div>
         </div>
     </div>
@@ -87,7 +94,8 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                             <option value="<?php echo e($city); ?>"><?php echo e($city); ?></option>
                         <?php endforeach; ?>
                     </select>
-                    <button id="btnConsultar" class="btn btn-primary" style="height: 48px; padding: 0 1.5rem; border-radius: 0.75rem;">Consultar</button>
+                    <button id="btnConsultar" class="btn btn-primary"
+                        style="height: 48px; padding: 0 1.5rem; border-radius: 0.75rem;">Consultar</button>
                 </div>
             </div>
             <div class="quick-pills">
@@ -114,13 +122,17 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
             <div class="trending-track">
                 <?php foreach ($featuredAds as $ad): ?>
                     <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="mini-card">
-                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>"
-                            alt="<?php echo e($ad['titulo']); ?>">
+                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>" alt="<?php echo e($ad['titulo']); ?>">
                         <div class="mini-card-body">
                             <span class="card-cat"><?php echo e($ad['categoria']); ?></span>
                             <strong><?php echo e($ad['titulo']); ?></strong>
-                            <div style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.375rem; display: flex; align-items: center; gap: 0.25rem;">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <div
+                                style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.375rem; display: flex; align-items: center; gap: 0.25rem;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
                                 <span><?php echo e($ad['cidade']); ?></span>
                             </div>
                         </div>
@@ -129,13 +141,17 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                 <!-- Duplicate for infinite effect -->
                 <?php foreach ($featuredAds as $ad): ?>
                     <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="mini-card">
-                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>"
-                            alt="<?php echo e($ad['titulo']); ?>">
+                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>" alt="<?php echo e($ad['titulo']); ?>">
                         <div class="mini-card-body">
                             <span class="card-cat"><?php echo e($ad['categoria']); ?></span>
                             <strong><?php echo e($ad['titulo']); ?></strong>
-                            <div style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.375rem; display: flex; align-items: center; gap: 0.25rem;">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <div
+                                style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.375rem; display: flex; align-items: center; gap: 0.25rem;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
                                 <span><?php echo e($ad['cidade']); ?></span>
                             </div>
                         </div>
@@ -181,8 +197,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
             <?php foreach ($featuredAds as $ad): ?>
                 <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="service-card">
                     <div class="card-cover">
-                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>"
-                            alt="<?php echo e($ad['titulo']); ?>">
+                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>" alt="<?php echo e($ad['titulo']); ?>">
                         <div class="card-badges">
                             <span class="badge-featured">★ EM DESTAQUE</span>
                             <span class="badge-store"><?php echo $ad['tipo'] === 'loja' ? 'LOJA' : 'PRESTADOR'; ?></span>
@@ -228,8 +243,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
             <?php foreach ($recentAds as $ad): ?>
                 <a href="/anuncio/<?php echo e($ad['slug']); ?>" class="service-card">
                     <div class="card-cover">
-                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>"
-                            alt="<?php echo e($ad['titulo']); ?>">
+                        <img src="<?php echo asset_url($ad['imagem_principal']); ?>" alt="<?php echo e($ad['titulo']); ?>">
                         <div class="card-badges">
                             <?php if (isset($ad['destaque']) && $ad['destaque']): ?>
                                 <span class="badge-featured">★ EM DESTAQUE</span>
@@ -286,4 +300,5 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
     </div>
 </section>
 
-<script>document.addEventListener("DOMContentLoaded", function() { const btnConsultar = document.getElementById("btnConsultar"); const categoryFilter = document.getElementById("categoryFilter"); const cityFilter = document.getElementById("cityFilter"); if (btnConsultar) { btnConsultar.addEventListener("click", function() { const cat = categoryFilter.value; const city = cityFilter.value; let url = "<?php echo url("/buscar"); ?>?"; const params = []; if (cat) params.push("categoria=" + encodeURIComponent(cat)); if (city) params.push("cidade=" + encodeURIComponent(city)); window.location.href = url + params.join("&"); }); } });</script><?php render_footer(); ?>
+<script>document.addEventListener("DOMContentLoaded", function () { const btnConsultar = document.getElementById("btnConsultar"); const categoryFilter = document.getElementById("categoryFilter"); const cityFilter = document.getElementById("cityFilter"); if (btnConsultar) { btnConsultar.addEventListener("click", function () { const cat = categoryFilter.value; const city = cityFilter.value; let url = "<?php echo url("/buscar"); ?>?"; const params = []; if (cat) params.push("categoria=" + encodeURIComponent(cat)); if (city) params.push("cidade=" + encodeURIComponent(city)); window.location.href = url + params.join("&"); }); } });</script>
+<?php render_footer(); ?>
