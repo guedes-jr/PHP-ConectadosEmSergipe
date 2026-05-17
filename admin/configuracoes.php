@@ -9,18 +9,76 @@ require_admin();
 $message = '';
 $error = '';
 
+// Garantir que as chaves de banner existam
+$bannersDefaults = [
+    1 => ['/assets/img/hero-orla.png', 'Banner 1 (Recomendado 1920x1080)'],
+    2 => ['/assets/img/sergipe-cidade1.jpg', 'Banner 2 (Recomendado 1920x1080)'],
+    3 => ['/assets/img/sergipe-cidade2.jpg', 'Banner 3 (Recomendado 1920x1080)'],
+    4 => ['/assets/img/sergipe-cidade3.jpg', 'Banner 4 (Recomendado 1920x1080)'],
+    5 => ['/assets/img/caranguejo.png', 'Banner 5 (Recomendado 1920x1080)']
+];
+foreach ($bannersDefaults as $i => $data) {
+    $chave = 'hero_banner_' . $i;
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM configuracoes WHERE chave = ?");
+    $stmt->execute([$chave]);
+    if ($stmt->fetchColumn() == 0) {
+        $stmt = $pdo->prepare("INSERT INTO configuracoes (chave, valor, categoria, descricao) VALUES (?, '', 'Banners Principais', ?)");
+        $stmt->execute([$chave, $data[1]]);
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!validate_csrf()) {
         $error = 'Token de segurança inválido.';
     } else {
         try {
             $pdo->beginTransaction();
-            foreach ($_POST['settings'] as $chave => $valor) {
+            foreach ($_POST['settings'] ?? [] as $chave => $valor) {
                 $stmt = $pdo->prepare("UPDATE configuracoes SET valor = ? WHERE chave = ?");
                 $stmt->execute([$valor, $chave]);
             }
+
+            $uploadErrors = [];
+            // Handle banner removal
+            if (!empty($_POST['remove_banner'])) {
+                foreach ($_POST['remove_banner'] as $chave => $remove) {
+                    if ($remove == '1') {
+                        $stmt = $pdo->prepare("UPDATE configuracoes SET valor = '' WHERE chave = ?");
+                        $stmt->execute([$chave]);
+                    }
+                }
+            }
+
+            if (!empty($_FILES['settings_file'])) {
+                foreach ($_FILES['settings_file']['name'] as $chave => $name) {
+                    if ($_FILES['settings_file']['error'][$chave] === UPLOAD_ERR_OK) {
+                        $file = [
+                            'name' => $_FILES['settings_file']['name'][$chave],
+                            'type' => $_FILES['settings_file']['type'][$chave],
+                            'tmp_name' => $_FILES['settings_file']['tmp_name'][$chave],
+                            'error' => $_FILES['settings_file']['error'][$chave],
+                            'size' => $_FILES['settings_file']['size'][$chave],
+                        ];
+                        $path = upload_image($file, 'banners');
+                        if ($path) {
+                            $stmt = $pdo->prepare("UPDATE configuracoes SET valor = ? WHERE chave = ?");
+                            $stmt->execute(['/' . $path, $chave]);
+                        } else {
+                            $uploadErrors[] = "A imagem do {$chave} não é suportada (apenas JPG, PNG, WEBP) ou houve erro de permissão.";
+                        }
+                    } elseif ($_FILES['settings_file']['error'][$chave] !== UPLOAD_ERR_NO_FILE) {
+                        $uploadErrors[] = "Erro ao enviar {$chave}: Código " . $_FILES['settings_file']['error'][$chave];
+                    }
+                }
+            }
+
             $pdo->commit();
-            $message = 'Configurações atualizadas com sucesso!';
+            if (empty($uploadErrors)) {
+                $message = 'Configurações atualizadas com sucesso!';
+            } else {
+                $message = 'Algumas configurações foram salvas.';
+                $error = implode('<br>', $uploadErrors);
+            }
         } catch (Exception $e) {
             $pdo->rollBack();
             $error = 'Erro ao salvar: ' . $e->getMessage();
@@ -69,7 +127,7 @@ render_admin_header('Configurações do Site', 'configuracoes', $headerButtons);
     <?php endif; ?>
 
     <div class="form-wrapper">
-        <form id="settingsForm" method="post">
+        <form id="settingsForm" method="post" enctype="multipart/form-data">
             <?php echo csrf_field(); ?>
             
             <?php foreach ($groupedSettings as $categoria => $settings): ?>
@@ -78,7 +136,19 @@ render_admin_header('Configurações do Site', 'configuracoes', $headerButtons);
                     <?php foreach ($settings as $s): ?>
                         <div class="config-group">
                             <label><?php echo e($s['descricao']); ?></label>
-                            <?php if (strlen($s['valor']) > 100 || str_contains($s['chave'], 'titulo')): ?>
+                            <?php if (str_starts_with($s['chave'], 'hero_banner_')): ?>
+                                <?php if (!empty($s['valor'])): ?>
+                                    <div style="margin-bottom: 0.5rem;">
+                                        <img src="<?php echo asset_url($s['valor']); ?>" style="max-height: 100px; border-radius: 8px; object-fit: cover;">
+                                    </div>
+                                    <label style="font-weight:normal; font-size:0.8rem; display:flex; align-items:center; gap:0.35rem; margin-bottom:0.5rem; cursor:pointer;">
+                                        <input type="checkbox" name="remove_banner[<?php echo $s['chave']; ?>]" value="1">
+                                        Remover esta imagem e voltar para a foto padrão
+                                    </label>
+                                <?php endif; ?>
+                                <input type="file" name="settings_file[<?php echo $s['chave']; ?>]" accept="image/*" style="padding: 0.5rem; background: #fff;">
+                                <small>Para manter a imagem atual, não envie nada neste campo.</small>
+                            <?php elseif (strlen($s['valor']) > 100 || str_contains($s['chave'], 'titulo')): ?>
                                 <textarea name="settings[<?php echo $s['chave']; ?>]" rows="3"><?php echo e($s['valor']); ?></textarea>
                             <?php else: ?>
                                 <input type="text" name="settings[<?php echo $s['chave']; ?>]" value="<?php echo e($s['valor']); ?>">

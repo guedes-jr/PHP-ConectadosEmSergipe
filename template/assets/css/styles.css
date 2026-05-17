@@ -87,16 +87,19 @@ a{text-decoration:none;color:inherit}
 .category-pills{display:flex;gap:10px;flex-wrap:wrap}
 .pill{background:var(--card);border:2px solid var(--line);border-radius:999px;padding:10px 18px;font-size:.95rem;font-weight:600;cursor:pointer;transition:.2s;display:inline-flex}
 .pill:hover,.pill.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-.category-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px}
-.category-card{background:var(--card);border-radius:20px;padding:24px;text-align:center;transition:.25s;cursor:pointer}
+.category-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
+.category-card{background:var(--card);border-radius:16px;padding:16px;text-align:center;transition:.25s;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
 .category-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-.category-card strong{display:block;font-size:1.1rem;margin-bottom:4px}
-.category-card small{color:var(--muted);font-size:.9rem}
+.category-card strong{display:block;font-size:0.95rem;margin-bottom:0}
+.category-card small{color:var(--muted);font-size:.8rem}
+.cat-icon-wrapper{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:rgba(11,79,179,0.08);color:var(--blue);margin-bottom:8px}
+.cat-icon-wrapper svg{width:20px;height:20px}
 
 /* Cards */
 .section{padding:56px 0}
 .card-box{background:#fff;border:1px solid #e3ebf7;border-radius:16px;margin:0 auto 24px;width:min(1160px,calc(100% - 32px)}
 .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
+.cards-grid.small{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
 .service-card{background:var(--card);border-radius:20px;overflow:hidden;transition:.25s;cursor:pointer;display:block}
 .service-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .card-cover{position:relative;aspect-ratio:16/10;overflow:hidden}
@@ -247,7 +250,7 @@ a{text-decoration:none;color:inherit}
 }
 @media(max-width:480px){
 .category-grid{grid-template-columns:1fr 1fr;gap:12px}
-.category-card{padding:16px}
+.category-card{padding:12px;border-radius:12px}
 .btn{padding:10px 16px;font-size:.9rem}
 .nav{height:68px}
 .brand img{width:40px;height:40px}

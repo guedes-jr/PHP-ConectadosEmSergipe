@@ -17,7 +17,13 @@ $states = fetch_unique_states($pdo);
 $cities = fetch_unique_cities($pdo, $estado);
 $regions = fetch_unique_regions($pdo, $estado);
 $cityMapping = get_city_region_mapping();
-$results = search_ads($pdo, $q, $cidade, $categoria, $rating, $regiao, $estado);
+$page = isset($_GET['p']) ? max(1, (int)$_GET['p']) : 1;
+$perPage = 24;
+$offset = ($page - 1) * $perPage;
+
+$totalResults = search_ads($pdo, $q, $cidade, $categoria, $rating, $regiao, $estado, 0, 0, true);
+$results = search_ads($pdo, $q, $cidade, $categoria, $rating, $regiao, $estado, $perPage, $offset, false);
+$totalPages = ceil($totalResults / $perPage);
 
 render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categoria ou cidade.');
 ?>
@@ -126,11 +132,11 @@ render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categori
 
     <main class="search-results">
         <div class="results-header animate-fade-in">
-            <p><?php echo count($results); ?> profissionais encontrados</p>
+            <p><?php echo $totalResults; ?> profissionais encontrados</p>
         </div>
         
-        <?php if (count($results) > 0): ?>
-            <div class="cards-grid">
+        <?php if ($totalResults > 0): ?>
+            <div class="cards-grid small">
                 <?php foreach ($results as $ad): ?>
                     <div class="service-card animate-fade-in">
                         <button class="btn-favorite" data-id="<?php echo $ad['id']; ?>" title="Favoritar">
@@ -170,6 +176,28 @@ render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categori
                     </div>
                 <?php endforeach; ?>
             </div>
+
+            <?php if ($totalPages > 1): ?>
+                <div class="pagination" style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 3rem;">
+                    <?php
+                    $baseQuery = $_GET;
+                    unset($baseQuery['p']);
+                    $queryString = http_build_query($baseQuery);
+                    $baseUrl = url('/buscar') . '?' . ($queryString ? $queryString . '&' : '');
+                    ?>
+                    
+                    <?php if ($page > 1): ?>
+                        <a href="<?php echo $baseUrl . 'p=' . ($page - 1); ?>" class="btn btn-outline" style="color:var(--primary); border-color:var(--border);">Anterior</a>
+                    <?php endif; ?>
+                    
+                    <span class="page-info" style="color:var(--muted-foreground); font-size:0.95rem;">Página <?php echo $page; ?> de <?php echo $totalPages; ?></span>
+                    
+                    <?php if ($page < $totalPages): ?>
+                        <a href="<?php echo $baseUrl . 'p=' . ($page + 1); ?>" class="btn btn-outline" style="color:var(--primary); border-color:var(--border);">Próxima</a>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+
         <?php else: ?>
             <div class="no-results animate-fade-in" style="padding: 4rem; text-align: center; background: var(--card); border-radius: 2rem; border: 1px solid var(--border);">
                 <i data-lucide="search-x" style="width:48px; height:48px; color:var(--muted-foreground); margin-bottom:1rem;"></i>

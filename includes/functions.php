@@ -166,10 +166,14 @@ function fetch_images_by_ad(PDO $pdo, int $adId): array
     return $stmt->fetchAll();
 }
 
-function search_ads(PDO $pdo, string $term = '', string $city = '', string $category = '', string $rating = '', string $region = '', string $estado = ''): array
+function search_ads(PDO $pdo, string $term = '', string $city = '', string $category = '', string $rating = '', string $region = '', string $estado = '', int $limit = 0, int $offset = 0, bool $countOnly = false)
 {
-    $sql = 'SELECT a.id, a.titulo, a.slug, a.cidade, a.regiao, a.imagem_principal, a.nota, a.avaliacoes, a.destaque, a.tipo, c.nome AS categoria_nome, c.icone AS categoria_icone
-            FROM anuncios a
+    if ($countOnly) {
+        $sql = 'SELECT COUNT(a.id)';
+    } else {
+        $sql = 'SELECT a.id, a.titulo, a.slug, a.cidade, a.regiao, a.imagem_principal, a.nota, a.avaliacoes, a.destaque, a.tipo, c.nome AS categoria_nome, c.icone AS categoria_icone';
+    }
+    $sql .= ' FROM anuncios a
             INNER JOIN categorias c ON c.id = a.categoria_id
             WHERE a.status = :status';
 
@@ -207,10 +211,19 @@ function search_ads(PDO $pdo, string $term = '', string $city = '', string $cate
         $params['rating'] = (float)$rating;
     }
 
-    $sql .= ' ORDER BY a.destaque DESC, a.created_at DESC';
+    if (!$countOnly) {
+        $sql .= ' ORDER BY a.destaque DESC, a.created_at DESC';
+        if ($limit > 0) {
+            $sql .= ' LIMIT ' . (int)$limit . ' OFFSET ' . (int)$offset;
+        }
+    }
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
+    
+    if ($countOnly) {
+        return (int)$stmt->fetchColumn();
+    }
     return $stmt->fetchAll();
 }
 

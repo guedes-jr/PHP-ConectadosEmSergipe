@@ -6,28 +6,30 @@ require_once __DIR__ . '/../includes/seo.php';
 
 $categories = fetch_all_categories($pdo);
 $allCities = fetch_unique_cities($pdo);
-$featuredAds = fetch_featured_ads($pdo);
+$featuredAds = fetch_featured_ads($pdo, 20);
 $recentAds = fetch_recent_ads($pdo, 6);
 
+$defaults = [
+    1 => '/assets/img/hero-orla.png',
+    2 => '/assets/img/sergipe-cidade1.jpg',
+    3 => '/assets/img/sergipe-cidade2.jpg',
+    4 => '/assets/img/sergipe-cidade3.jpg',
+    5 => '/assets/img/caranguejo.png'
+];
+
 $heroBanners = [];
-foreach ($featuredAds as $ad) {
-    if (!empty($ad['imagem_banner'])) {
-        $heroBanners[] = [
-            'src' => asset_url($ad['imagem_banner']),
-            'alt' => $ad['titulo'],
-            'url' => url('/anuncio/' . $ad['slug'])
-        ];
+for ($i = 1; $i <= 5; $i++) {
+    $img = get_setting($pdo, 'hero_banner_' . $i);
+    if (empty($img)) {
+        $img = $defaults[$i];
     }
-}
-if (empty($heroBanners)) {
-    $heroBanners = [
-        ['src' => '/assets/img/hero-orla.png', 'alt' => 'Orla de Aracaju', 'url' => ''],
-        ['src' => '/assets/img/sergipe-cidade1.jpg', 'alt' => 'Sergipe', 'url' => ''],
-        ['src' => '/assets/img/sergipe-cidade2.jpg', 'alt' => 'Sergipe', 'url' => ''],
-        ['src' => '/assets/img/sergipe-cidade3.jpg', 'alt' => 'Sergipe', 'url' => ''],
-        ['src' => '/assets/img/caranguejo.png', 'alt' => 'Cultura sergipana', 'url' => '']
+    $heroBanners[] = [
+        'src' => asset_url($img),
+        'alt' => 'Banner Principal ' . $i,
+        'url' => ''
     ];
 }
+
 
 render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais com facilidade.');
 ?>
@@ -172,7 +174,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
             <a href="<?php echo url('/buscar'); ?>" class="view-all">Todas as categorias</a>
         </div>
         <div class="category-grid">
-            <?php foreach ($categories as $category): ?>
+            <?php foreach (array_slice($categories, 0, 15) as $category): ?>
                 <a href="/buscar?categoria=<?php echo e($category['slug']); ?>" class="category-card">
                     <div class="cat-icon-wrapper">
                         <?php echo get_category_icon($category['nome']); ?>
