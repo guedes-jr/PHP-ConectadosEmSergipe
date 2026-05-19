@@ -9,6 +9,12 @@ if ($path === '' || $path === '/') {
     return;
 }
 
+if ($path === '/sitemap.xml') {
+    header('Content-Type: application/xml; charset=utf-8');
+    require __DIR__ . '/public/sitemap.php';
+    return;
+}
+
 if (str_starts_with($path, '/categoria/')) {
     $slug = substr($path, strlen('/categoria/'));
     header("Location: /buscar?categoria=$slug");

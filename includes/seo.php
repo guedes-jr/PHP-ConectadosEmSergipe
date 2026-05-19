@@ -29,6 +29,7 @@ function render_seo_tags(PDO $pdo, string $title, string $description, string $i
     echo "<!-- SEO Tags -->\n";
     echo "<title>{$fullTitle}</title>\n";
     echo "<meta name=\"description\" content=\"{$cleanDesc}\">\n";
+    echo "<meta name=\"google-site-verification\" content=\"zUie6fKOmAQLS_cfc9WaVlwMqq11sFy9-ZgbrqPg-2w\" />\n";
     echo "<link rel=\"canonical\" href=\"{$fullUrl}\">\n";
     
     echo "<!-- Open Graph / Facebook -->\n";

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /build/
+Disallow: /scratch/
+Disallow: /template/
+
+Sitemap: https://conectadoemsergipe.com/sitemap.xml
