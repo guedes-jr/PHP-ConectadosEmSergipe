@@ -88,7 +88,7 @@ function fetch_all_clients(PDO $pdo): array
 function fetch_featured_ads(PDO $pdo, int $limit = 8): array
 {
     $stmt = $pdo->prepare(
-        'SELECT a.id, a.titulo, a.slug, a.descricao, a.cidade, a.imagem_principal, a.imagem_banner, a.nota, a.avaliacoes,
+        'SELECT a.id, a.titulo, a.slug, a.descricao, a.cidade, a.imagem_principal, a.imagem_banner, COALESCE(NULLIF(a.nota, 0), 5.0) AS nota, a.avaliacoes,
                 c.nome AS categoria, c.icone AS categoria_icone, a.destaque, a.tipo
          FROM anuncios a
          INNER JOIN categorias c ON c.id = a.categoria_id
@@ -103,7 +103,7 @@ function fetch_featured_ads(PDO $pdo, int $limit = 8): array
 function fetch_recent_ads(PDO $pdo, int $limit = 6): array
 {
     $stmt = $pdo->prepare(
-        'SELECT a.id, a.titulo, a.slug, a.descricao, a.cidade, a.imagem_principal, a.nota, a.avaliacoes,
+        'SELECT a.id, a.titulo, a.slug, a.descricao, a.cidade, a.imagem_principal, COALESCE(NULLIF(a.nota, 0), 5.0) AS nota, a.avaliacoes,
                 c.nome AS categoria, c.icone AS categoria_icone, a.tipo
          FROM anuncios a
          INNER JOIN categorias c ON c.id = a.categoria_id
@@ -141,7 +141,8 @@ function fetch_ads_by_category(PDO $pdo, int $categoryId): array
 function find_ad_by_slug(PDO $pdo, string $slug): ?array
 {
     $stmt = $pdo->prepare(
-        'SELECT a.*, c.nome AS categoria_nome, c.slug AS categoria_slug, 
+        'SELECT a.id, a.titulo, a.slug, a.descricao, a.categoria_id, a.telefone, a.whatsapp, a.email, a.endereco, a.cidade, a.imagem_principal, a.imagem_banner, a.destaque, a.status, COALESCE(NULLIF(a.nota, 0), 5.0) AS nota, a.avaliacoes, a.visualizacoes, a.created_at, a.updated_at, a.cliente_id, a.tipo, a.regiao, a.estado,
+                c.nome AS categoria_nome, c.slug AS categoria_slug, 
                 cl.nome AS cliente_nome, cl.email AS cliente_email, 
                 cl.telefone AS cliente_telefone, cl.whatsapp AS cliente_whatsapp, 
                 cl.cidade AS cliente_cidade
@@ -171,7 +172,7 @@ function search_ads(PDO $pdo, string $term = '', string $city = '', string $cate
     if ($countOnly) {
         $sql = 'SELECT COUNT(a.id)';
     } else {
-        $sql = 'SELECT a.id, a.titulo, a.slug, a.cidade, a.regiao, a.imagem_principal, a.nota, a.avaliacoes, a.destaque, a.tipo, c.nome AS categoria_nome, c.icone AS categoria_icone';
+        $sql = 'SELECT a.id, a.titulo, a.slug, a.cidade, a.regiao, a.imagem_principal, COALESCE(NULLIF(a.nota, 0), 5.0) AS nota, a.avaliacoes, a.destaque, a.tipo, c.nome AS categoria_nome, c.icone AS categoria_icone';
     }
     $sql .= ' FROM anuncios a
             INNER JOIN categorias c ON c.id = a.categoria_id
@@ -207,7 +208,7 @@ function search_ads(PDO $pdo, string $term = '', string $city = '', string $cate
     }
 
     if ($rating !== '') {
-        $sql .= ' AND a.nota >= :rating';
+        $sql .= ' AND COALESCE(NULLIF(a.nota, 0), 5.0) >= :rating';
         $params['rating'] = (float)$rating;
     }
 

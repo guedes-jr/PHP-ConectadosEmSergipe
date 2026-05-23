@@ -66,8 +66,7 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
                     <h1 style="font-family: 'Outfit', sans-serif;"><?php echo e($ad['titulo']); ?></h1>
                     <div class="ad-header-meta">
                         <div class="meta-item rating">
-                            <i data-lucide="star" style="width:16px; height:16px; fill:currentColor;"></i>
-                            <span><?php echo e($ad['nota']); ?> (<?php echo e($ad['avaliacoes']); ?> avaliações)</span>
+                            <span>⭐⭐⭐⭐⭐</span>
                         </div>
                         <div class="meta-item">
                             <i data-lucide="map-pin" style="width:16px; height:16px;"></i>

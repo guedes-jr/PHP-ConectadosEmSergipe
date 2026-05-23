@@ -158,8 +158,7 @@ render_header($pdo, seo_title('Buscar'), 'Busque anúncios por título, categori
                                     <span class="card-cat" style="color:var(--muted-foreground); text-transform:uppercase;"><?php echo e($ad['categoria_nome']); ?></span>
                                 </div>
                                 <div class="rating">
-                                    <i data-lucide="star" style="width:14px; height:14px; fill:currentColor;"></i>
-                                    <span><?php echo $ad['nota'] ?? '5.0'; ?></span>
+                                    <span>⭐⭐⭐⭐⭐</span>
                                 </div>
                             </div>
                             <a href="/anuncio/<?php echo e($ad['slug']); ?>"><h3><?php echo e($ad['titulo']); ?></h3></a>

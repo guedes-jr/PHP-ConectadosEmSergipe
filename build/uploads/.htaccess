@@ -1,5 +1,0 @@
-# Protect uploads directory
-<Files ~ "\.(php|phtml|phar|pl|cgi|py|asp|aspx)$">
-    Deny from all
-</Files>
-Options -Indexes

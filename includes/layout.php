@@ -16,7 +16,10 @@ function render_header(PDO $pdo, string $title, string $description = '', string
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
     echo '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">';
     echo '<link rel="stylesheet" href="/assets/css/style.css?v=' . filemtime(__DIR__ . '/../assets/css/style.css') . '">';
-    echo '<link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">';
+    echo '<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicon/apple-touch-icon.png">';
+    echo '<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon/favicon-32x32.png">';
+    echo '<link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon/favicon-16x16.png">';
+    echo '<link rel="manifest" href="/assets/img/favicon/site.webmanifest">';
     echo '</head>';
     echo '<body>';
     echo '<header class="site-header">';

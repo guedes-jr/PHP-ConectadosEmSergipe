@@ -218,11 +218,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                                 <span><?php echo e($ad['cidade']); ?></span>
                             </div>
                             <div class="rating">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                                    <polygon
-                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                                </svg>
-                                <span><?php echo $ad['nota']; ?> · <?php echo $ad['avaliacoes'] ?? '0'; ?></span>
+                                <span>⭐⭐⭐⭐⭐</span>
                             </div>
                         </div>
                     </div>
@@ -266,11 +262,7 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                                 <span><?php echo e($ad['cidade']); ?></span>
                             </div>
                             <div class="rating">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                                    <polygon
-                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                                </svg>
-                                <span><?php echo $ad['nota'] ?? '5.0'; ?> · <?php echo $ad['avaliacoes'] ?? '0'; ?></span>
+                                <span>⭐⭐⭐⭐⭐</span>
                             </div>
                         </div>
                     </div>
