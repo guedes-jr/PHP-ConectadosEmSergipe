@@ -73,6 +73,15 @@ function whatsapp_link(string $phone, string $message = ''): string
     return $url;
 }
 
+function get_ad_whatsapp_number(array $ad): string
+{
+    if (!empty($ad['cliente_whatsapp'])) return $ad['cliente_whatsapp'];
+    if (!empty($ad['whatsapp'])) return $ad['whatsapp'];
+    if (!empty($ad['cliente_telefone'])) return $ad['cliente_telefone'];
+    if (!empty($ad['telefone'])) return $ad['telefone'];
+    return '0000000000';
+}
+
 function fetch_all_categories(PDO $pdo): array
 {
     $stmt = $pdo->query('SELECT c.id, c.nome, c.slug, c.icone, COUNT(a.id) AS Total FROM categorias c LEFT JOIN anuncios a ON a.categoria_id = c.id AND a.status = "ativo" GROUP BY c.id ORDER BY c.nome ASC');
@@ -88,7 +97,7 @@ function fetch_all_clients(PDO $pdo): array
 function fetch_featured_ads(PDO $pdo, int $limit = 8): array
 {
     $stmt = $pdo->prepare(
-        'SELECT a.id, a.titulo, a.slug, a.descricao, a.cidade, a.imagem_principal, a.imagem_banner, COALESCE(NULLIF(a.nota, 0), 5.0) AS nota, a.avaliacoes,
+        'SELECT a.id, a.titulo, a.slug, a.descricao, a.cidade, a.endereco, a.imagem_principal, a.imagem_banner, COALESCE(NULLIF(a.nota, 0), 5.0) AS nota, a.avaliacoes,
                 c.nome AS categoria, c.icone AS categoria_icone, a.destaque, a.tipo
          FROM anuncios a
          INNER JOIN categorias c ON c.id = a.categoria_id
@@ -172,10 +181,11 @@ function search_ads(PDO $pdo, string $term = '', string $city = '', string $cate
     if ($countOnly) {
         $sql = 'SELECT COUNT(a.id)';
     } else {
-        $sql = 'SELECT a.id, a.titulo, a.slug, a.cidade, a.regiao, a.imagem_principal, COALESCE(NULLIF(a.nota, 0), 5.0) AS nota, a.avaliacoes, a.destaque, a.tipo, c.nome AS categoria_nome, c.icone AS categoria_icone';
+        $sql = 'SELECT a.id, a.titulo, a.slug, a.cidade, a.regiao, a.imagem_principal, COALESCE(NULLIF(a.nota, 0), 5.0) AS nota, a.avaliacoes, a.destaque, a.tipo, a.telefone, a.whatsapp, cl.telefone AS cliente_telefone, cl.whatsapp AS cliente_whatsapp, c.nome AS categoria_nome, c.icone AS categoria_icone';
     }
     $sql .= ' FROM anuncios a
             INNER JOIN categorias c ON c.id = a.categoria_id
+            LEFT JOIN clientes cl ON a.cliente_id = cl.id
             WHERE a.status = :status';
 
     $params = ['status' => 'ativo'];

@@ -128,10 +128,9 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                         <div class="mini-card-body">
                             <span class="card-cat"><?php echo e($ad['categoria']); ?></span>
                             <strong><?php echo e($ad['titulo']); ?></strong>
-                            <div
-                                style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.375rem; display: flex; align-items: center; gap: 0.25rem;">
+                            <div class="mini-card-address">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                     <circle cx="12" cy="10" r="3"></circle>
                                 </svg>
@@ -147,10 +146,9 @@ render_header($pdo, seo_title('Início'), 'Encontre serviços e negócios locais
                         <div class="mini-card-body">
                             <span class="card-cat"><?php echo e($ad['categoria']); ?></span>
                             <strong><?php echo e($ad['titulo']); ?></strong>
-                            <div
-                                style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.375rem; display: flex; align-items: center; gap: 0.25rem;">
+                            <div class="mini-card-address">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                     <circle cx="12" cy="10" r="3"></circle>
                                 </svg>

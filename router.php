@@ -42,6 +42,11 @@ if ($path === '/privacidade') {
     return;
 }
 
+if ($path === '/planos') {
+    require __DIR__ . '/public/planos.php';
+    return;
+}
+
 if ($path === '/admin' || $path === '/admin/') {
     require __DIR__ . '/admin/index.php';
     return;

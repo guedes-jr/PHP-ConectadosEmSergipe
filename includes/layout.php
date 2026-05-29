@@ -31,7 +31,7 @@ function render_header(PDO $pdo, string $title, string $description = '', string
     echo '<div class="nav-center">';
     echo '<a href="' . url('/') . '" class="nav-link">Início</a>';
     echo '<a href="' . url('/buscar') . '" class="nav-link">Buscar</a>';
-    echo '<a href="' . url('/admin/') . '" class="nav-link">Painel</a>';
+    echo '<a href="' . url('/planos') . '" class="nav-link">Planos</a>';
     echo '</div>';
     echo '<div class="nav-actions">';
     echo '<a class="btn btn-primary" href="/admin/criar">Anunciar serviço</a>';
@@ -43,7 +43,7 @@ function render_header(PDO $pdo, string $title, string $description = '', string
     echo '<div class="nav-links-mobile" id="mobileMenu">';
     echo '<a href="' . url('/') . '">Início</a>';
     echo '<a href="' . url('/buscar') . '">Buscar</a>';
-    echo '<a href="' . url('/admin/') . '">Painel</a>';
+    echo '<a href="' . url('/planos') . '">Planos</a>';
     echo '<a href="' . url('/admin/criar') . '" class="btn btn-primary">Anunciar serviço</a>';
     echo '</div>';
     echo '</header>';
@@ -68,9 +68,9 @@ function render_footer(): void
     echo '</div></div>';
     echo '<div class="footer-col"><h3>Para clientes</h3><nav class="footer-links"><a href="' . url('/buscar') . '">Buscar serviços</a><a href="' . url('/buscar?categoria=eletricista') . '">Eletricistas</a><a href="' . url('/buscar?categoria=diarista') . '">Diaristas</a><a href="' . url('/buscar?categoria=pintor') . '">Pintores</a><a href="' . url('/buscar?categoria=pedreiro') . '">Pedreiros</a></nav></div>';
     echo '<div class="footer-col"><h3>Para profissionais</h3><nav class="footer-links"><a href="' . url('/admin/') . '">Painel de Controle</a><a href="' . url('/admin/criar') . '">Criar loja gratuita</a><a href="https://wa.me/5579999999999" target="_blank" rel="noopener">Falar no WhatsApp</a></nav></div>';
-    echo '<div class="footer-col"><h3>Institucional</h3><nav class="footer-links"><a href="' . url('/') . '">Início</a><a href="' . url('/buscar') . '">Buscar</a><a href="' . url('/privacidade') . '">Política de privacidade</a><a href="' . url('/termos') . '">Termos de uso</a></nav></div>';
+    echo '<div class="footer-col"><h3>Institucional</h3><nav class="footer-links"><a href="' . url('/') . '">Início</a><a href="' . url('/buscar') . '">Buscar</a><a href="' . url('/planos') . '">Planos</a><a href="' . url('/privacidade') . '">Política de privacidade</a><a href="' . url('/termos') . '">Termos de uso</a></nav></div>';
     echo '</div></div>';
-    echo '<div class="footer-bottom"><div class="container footer-bottom-inner"><p>&copy; ' . $year . ' Conectado em Sergipe. Todos os direitos reservados.</p><p class="footer-location">📍 Sergipe — Brasil</p></div></div>';
+    echo '<div class="footer-bottom"><div class="container footer-bottom-inner"><p>&copy; ' . $year . ' Conectado em Sergipe. Todos os direitos reservados.</p><p class="footer-location">📍 Sergipe — Brasil</p><a href="' . url('/admin/') . '" class="admin-link-icon" title="Painel Administrativo" aria-label="Acessar Painel Administrativo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24"></path></svg></a></div></div>';
     echo '</footer>';
     echo '<div class="theme-toggle-container">';
     echo '<button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Mudar tema" aria-haspopup="true" aria-expanded="false">';

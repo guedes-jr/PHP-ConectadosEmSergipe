@@ -76,7 +76,7 @@ render_header($pdo, $ad['titulo'], $ad['descricao'], $ad['imagem_principal'] ?: 
                 </div>
             </div>
             <div class="ad-header-actions">
-                <a href="<?php echo e(whatsapp_link($ad['cliente_whatsapp'] ?: $ad['cliente_telefone'], 'Olá, encontrei seu anúncio pelo Conectado em Sergipe')); ?>" class="btn-action whatsapp" target="_blank">
+                <a href="<?php echo e(whatsapp_link(get_ad_whatsapp_number($ad), 'Olá, encontrei seu anúncio pelo Conectado em Sergipe')); ?>" class="btn-action whatsapp" target="_blank">
                     <i data-lucide="message-circle"></i> WhatsApp
                 </a>
                 <a href="tel:<?php echo only_digits($ad['cliente_telefone']); ?>" class="btn-action outline">
