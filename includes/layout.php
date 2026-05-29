@@ -34,7 +34,6 @@ function render_header(PDO $pdo, string $title, string $description = '', string
     echo '<a href="' . url('/planos') . '" class="nav-link">Planos</a>';
     echo '</div>';
     echo '<div class="nav-actions">';
-    echo '<a class="btn btn-primary" href="/admin/criar">Anunciar serviço</a>';
     echo '<button class="menu-toggle" aria-label="Abrir menu">';
     echo '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
     echo '</button>';
@@ -44,7 +43,6 @@ function render_header(PDO $pdo, string $title, string $description = '', string
     echo '<a href="' . url('/') . '">Início</a>';
     echo '<a href="' . url('/buscar') . '">Buscar</a>';
     echo '<a href="' . url('/planos') . '">Planos</a>';
-    echo '<a href="' . url('/admin/criar') . '" class="btn btn-primary">Anunciar serviço</a>';
     echo '</div>';
     echo '</header>';
     echo '<main>';
@@ -83,6 +81,11 @@ function render_footer(): void
     echo '<button class="theme-option" data-theme-value="dark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> Escuro</button>';
     echo '<button class="theme-option" data-theme-value="system"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> Sistema</button>';
     echo '</div></div>';
+    
+    echo '<button id="backToTop" class="back-to-top" aria-label="Voltar ao topo" title="Voltar ao topo">';
+    echo '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>';
+    echo '</button>';
+
     echo '<script src="https://unpkg.com/lucide@latest"></script>';
     echo '<script>lucide.createIcons();</script>';
     echo '<script src="/assets/js/script.js" defer></script>';

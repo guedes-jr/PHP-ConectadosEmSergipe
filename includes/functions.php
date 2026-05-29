@@ -150,7 +150,7 @@ function fetch_ads_by_category(PDO $pdo, int $categoryId): array
 function find_ad_by_slug(PDO $pdo, string $slug): ?array
 {
     $stmt = $pdo->prepare(
-        'SELECT a.id, a.titulo, a.slug, a.descricao, a.categoria_id, a.telefone, a.whatsapp, a.email, a.endereco, a.cidade, a.imagem_principal, a.imagem_banner, a.destaque, a.status, COALESCE(NULLIF(a.nota, 0), 5.0) AS nota, a.avaliacoes, a.visualizacoes, a.created_at, a.updated_at, a.cliente_id, a.tipo, a.regiao, a.estado,
+        'SELECT a.id, a.titulo, a.slug, a.descricao, a.categoria_id, a.telefone, a.whatsapp, a.email, a.endereco, a.cidade, a.imagem_principal, a.imagem_banner, a.destaque, a.status, COALESCE(NULLIF(a.nota, 0), 5.0) AS nota, a.avaliacoes, a.visualizacoes, a.created_at, a.updated_at, a.cliente_id, a.tipo, a.regiao, a.estado, a.instagram, a.facebook,
                 c.nome AS categoria_nome, c.slug AS categoria_slug, 
                 cl.nome AS cliente_nome, cl.email AS cliente_email, 
                 cl.telefone AS cliente_telefone, cl.whatsapp AS cliente_whatsapp, 
